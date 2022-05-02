@@ -1,0 +1,27 @@
+{
+  "name": "micro-videos",
+  "version": "1.0.0",
+  "description": "Video catalog admin backend",
+  "main": "index.js",
+  "scripts": {
+    "ts-node": "ts-node",
+    "tsc": "tsc",
+    "clean:tsc": "rm tsconfig.tsbuildinfo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bampli/micro-videos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bampli/micro-videos/issues"
+  },
+  "homepage": "https://github.com/bampli/micro-videos#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.31",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  }
+}
