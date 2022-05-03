@@ -15,10 +15,11 @@ export class Category {
         return this.props.description;
     }
 
+    get is_active() {
+        return this.props.is_active;
+    }
+
     get created_at() {
         return this.props.created_at;
     }
 }
-
-// const category: Category = new Category({name: 'Movie'});
-
