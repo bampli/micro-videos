@@ -7,7 +7,7 @@ export type CategoryProperties = {
 export class Category {
     constructor(public readonly props: CategoryProperties) {
         this.description = this.props.description;
-        this.props.is_active = this.props.is_active ?? true;
+        this.is_active = this.props.is_active ?? true;
         this.props.created_at = this.props.created_at ?? new Date();
     };
 

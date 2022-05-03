@@ -23,6 +23,8 @@ npm install typescript @types/node --save-dev
 npm install npm@8.8.0 --save
 npm install jest @types/jest --save-dev
 npm install @swc/core @swc/jest --save-dev
+npm install lodash --save 
+npm install @types/lodash --save-dev
 
 ```
 
