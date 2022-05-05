@@ -42,4 +42,10 @@ describe('ValueObject Unit Test', () => {
         });
     });
 
+    it('immutable', () => {
+        const vo = new StubValueObject({ prop1: 'value1', nested: {prop2: 'value2'} });
+        vo['_value'].nested.prop2 = 'mudou';
+        console.log(vo);
+    });
+
 })
