@@ -1,6 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
+//import { v4 as uuidv4 } from "uuid";
 import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.vo';
 import Entity from '../../../@seedwork/domain/entity/entity';
+import ValidatorRules from '../../../@seedwork/validators/validator-rules';
+import { Omit } from "lodash";
 
 export type CategoryProperties = {
     name: string;
@@ -9,10 +11,11 @@ export type CategoryProperties = {
     created_at?: Date;
 }
 
-// entity has identity, behaviours & attributes
+// entity has identity, behaviors & attributes
 // uuid universal unique identifier v4 - IETF RFC 4122
 export class Category extends Entity<CategoryProperties>{
     constructor(public readonly props: CategoryProperties, id?: UniqueEntityId) {
+        //Category.validate(props);
         super(props, id);
         this.description = this.props.description;
         this.is_active = this.props.is_active ?? true;
@@ -20,8 +23,18 @@ export class Category extends Entity<CategoryProperties>{
     };
 
     update(name: string, description: string) {
+        Category.validate({
+            name,
+            description,
+        });
         this.name = name;
         this.description = description;
+    }
+
+    static validate(props: Omit<CategoryProperties, 'created_at'>){
+        ValidatorRules.values(props.name, "name").required().string();
+        ValidatorRules.values(props.description, "description").string();
+        ValidatorRules.values(props.is_active, "is_active").boolean();
     }
 
     activate() {
