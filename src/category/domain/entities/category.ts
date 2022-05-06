@@ -1,5 +1,6 @@
 import {v4 as uuidv4} from "uuid";
 import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.vo';
+import Entity from '../../../@seedwork/domain/entity/entity';
 
 export type CategoryProperties = {
     name: string;
@@ -10,12 +11,9 @@ export type CategoryProperties = {
 
 // entity has identity, behaviours & attributes
 // uuid universal unique identifier v4 - IETF RFC 4122
-export class Category {
-
-    public readonly id: UniqueEntityId;
-
+export class Category extends Entity<CategoryProperties>{
     constructor(public readonly props: CategoryProperties, id?: UniqueEntityId) {
-        this.id = id || new UniqueEntityId();
+        super(props, id);
         this.description = this.props.description;
         this.is_active = this.props.is_active ?? true;
         this.props.created_at = this.props.created_at ?? new Date();
