@@ -21,13 +21,13 @@ describe("Object Unit Tests", () => {
         });
 
         expect(() => {
-            (obj as any).prop1 = "teste";
+            (obj as any).prop1 = "test";
         }).toThrow(
             "Cannot assign to read only property 'prop1' of object '#<Object>'"
         );
 
         expect(() => {
-            (obj as any).deep.prop2 = "teste";
+            (obj as any).deep.prop2 = "test";
         }).toThrow(
             "Cannot assign to read only property 'prop2' of object '#<Object>'"
         );

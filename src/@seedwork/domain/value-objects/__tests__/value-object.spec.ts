@@ -51,13 +51,13 @@ describe('ValueObject Unit Test', () => {
         const vo = new StubValueObject(obj);
 
         expect(() => {
-            (vo as any).value.prop1 = "teste";
+            (vo as any).value.prop1 = "test";
         }).toThrow(
             "Cannot assign to read only property 'prop1' of object '#<Object>'"
         );
 
         expect(() => {
-            (vo as any).value.deep.prop2 = "teste";
+            (vo as any).value.deep.prop2 = "test";
         }).toThrow(
             "Cannot assign to read only property 'prop2' of object '#<Object>'"
         );
