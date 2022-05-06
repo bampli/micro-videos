@@ -1,4 +1,4 @@
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.vo';
 import Entity from '../../../@seedwork/domain/entity/entity';
 
@@ -19,8 +19,25 @@ export class Category extends Entity<CategoryProperties>{
         this.props.created_at = this.props.created_at ?? new Date();
     };
 
+    update(name: string, description: string) {
+        this.name = name;
+        this.description = description;
+    }
+
+    activate() {
+        this.is_active = true;
+    }
+
+    deactivate() {
+        this.is_active = false;
+    }
+
     get name() {
         return this.props.name;
+    }
+
+    private set name(value: string){
+        this.props.name = value;
     }
 
     get description() {
