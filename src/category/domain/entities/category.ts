@@ -15,8 +15,8 @@ export type CategoryProperties = {
 // uuid universal unique identifier v4 - IETF RFC 4122
 export class Category extends Entity<CategoryProperties>{
     constructor(public readonly props: CategoryProperties, id?: UniqueEntityId) {
-        //Category.validate(props);
         super(props, id);
+        Category.validate(props);
         this.description = this.props.description;
         this.is_active = this.props.is_active ?? true;
         this.props.created_at = this.props.created_at ?? new Date();
