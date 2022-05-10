@@ -1,7 +1,7 @@
 import ValidationError from "../errors/validation-error";
 
 export default class ValidatorRules {
-    private constructor(private value: any, private property: string) { }
+    private constructor( public value: any,  private property: string) { }
 
     static values(value: any, property: string) {
         return new ValidatorRules(value, property);

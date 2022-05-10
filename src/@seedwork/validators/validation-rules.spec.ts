@@ -27,10 +27,15 @@ function assertIsValid(expected: ExpectedRule) {
     }).not.toThrow(expected.error);
 }
 
-function runRule({ value, property, rule, params = [] }: Omit<ExpectedRule, "error">){
+function runRule({
+    value,
+    property,
+    rule,
+    params = []
+}: Omit<ExpectedRule, "error">) {
     const validator = ValidatorRules.values(value, property);
-        const method = validator[rule];
-        method.apply(validator, params);
+    const method = validator[rule];
+    method.apply(validator, params);
 }
 
 describe('ValidatorRules Unit Tests', () => {
@@ -178,27 +183,27 @@ describe('ValidatorRules Unit Tests', () => {
 
     it('should throw validation error on nested validation rules', () => {
         let validator = ValidatorRules.values(null, 'field');
-        expect(() => 
+        expect(() =>
             validator.required().string().maxLength(4)
         ).toThrow(new ValidationError("The field is required"));
 
         validator = ValidatorRules.values(5, 'field');
-        expect(() => 
+        expect(() =>
             validator.required().string().maxLength(4)
         ).toThrow(new ValidationError("The field must be a string"));
 
         validator = ValidatorRules.values("aaaaa", 'field');
-        expect(() => 
+        expect(() =>
             validator.required().string().maxLength(4)
         ).toThrow(new ValidationError("The field must have maximum 4 characters"));
 
         validator = ValidatorRules.values(null, 'field');
-        expect(() => 
+        expect(() =>
             validator.required().boolean()
         ).toThrow(new ValidationError("The field is required"));
 
         validator = ValidatorRules.values("test", 'field');
-        expect(() => 
+        expect(() =>
             validator.required().boolean()
         ).toThrow(new ValidationError("The field must be a boolean"));
     });
