@@ -3,6 +3,7 @@ import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entit
 import Entity from '../../../@seedwork/domain/entity/entity';
 import ValidatorRules from '../../../@seedwork/validators/validator-rules';
 import { Omit } from "lodash";
+import CategoryValidatorFactory from '../validators/category.validator';
 
 export type CategoryProperties = {
     name: string;
@@ -31,10 +32,16 @@ export class Category extends Entity<CategoryProperties>{
         this.description = description;
     }
 
-    static validate(props: Omit<CategoryProperties, 'created_at'>){
-        ValidatorRules.values(props.name, "name").required().string().maxLength(255);
-        ValidatorRules.values(props.description, "description").string();
-        ValidatorRules.values(props.is_active, "is_active").boolean();
+    // previous validation scheme
+    // static validate(props: Omit<CategoryProperties, 'created_at'>){
+    //     ValidatorRules.values(props.name, "name").required().string().maxLength(255);
+    //     ValidatorRules.values(props.description, "description").string();
+    //     ValidatorRules.values(props.is_active, "is_active").boolean();
+    // }
+
+    static validate(props: CategoryProperties){
+        const validator = CategoryValidatorFactory.create();
+        validator.validate(props);
     }
 
     activate() {
