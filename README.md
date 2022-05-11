@@ -33,5 +33,6 @@ npm install uuid @types/uuid --save
 ```
 jest @28.0.3
 uuid @8.3.2
+class-validator @0.13.2
 
 ```
