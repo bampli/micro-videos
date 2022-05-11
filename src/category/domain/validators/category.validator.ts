@@ -1,6 +1,6 @@
 import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
 import { create } from "lodash";
-import { ClassValidatorFields } from "../../../@seedwork/validators/class-validator-fields";
+import ClassValidatorFields from "../../../@seedwork/validators/class-validator-fields";
 import ValidatorFieldsInterface from "../../../@seedwork/validators/validator-fields-interface";
 import { CategoryProperties } from "../entities/category";
 
