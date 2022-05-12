@@ -9,12 +9,13 @@ export default interface ValidatorFieldsInterface<PropsValidated> {
     validatedData: PropsValidated;
     validate(data: any): boolean;
 }
-// const isValid = validator.validate(data)
-// validate.validatedData
+// if(validator.validate(data))
+//  then validator.validatedData
+//  else validator.errors
 
 // objectives:
 //  - create a validation abstraction for entities, powered by a lib
-//  - do not depend on any lib
+//  - do not depend on this lib
 
 // api rest:
 //  post /categories {name: 5, description: 5, is_active: 5}
@@ -22,8 +23,8 @@ export default interface ValidatorFieldsInterface<PropsValidated> {
 //      description must be a string
 //      is_active must be a boolean
 //
-//  return only first error is not efficient
-//  entity validation checks all errors at once
+//  return only one (first) error is not efficient
+//  entity validation should check all errors at once
 
 // validations: parameters, 2 or more, entity, domain service
 // types:

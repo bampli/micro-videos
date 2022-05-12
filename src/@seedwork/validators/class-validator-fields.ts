@@ -22,5 +22,5 @@ export default abstract class ClassValidatorFields<PropsValidated>
 }
 
 // {
-//     "isNotEmpty": "message"
+//     "isNotEmpty": ["message"]
 // }

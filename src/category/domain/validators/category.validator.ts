@@ -1,8 +1,7 @@
 import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
-import { create } from "lodash";
 import ClassValidatorFields from "../../../@seedwork/validators/class-validator-fields";
-import ValidatorFieldsInterface from "../../../@seedwork/validators/validator-fields-interface";
 import { CategoryProperties } from "../entities/category";
+//import ValidatorFieldsInterface from "../../../@seedwork/validators/validator-fields-interface";
 
 export class CategoryRules {
     @MaxLength(255)
@@ -30,10 +29,6 @@ export class CategoryRules {
     }: CategoryProperties) {
         Object.assign(this, { name, description, is_active, created_at });
     }
-    // Unsafe code for domain: more properties could be passed here
-    // constructor(data: CategoryProperties){
-    //     Object.assign(this, data);
-    // }
 }
 
 export class CategoryValidator extends ClassValidatorFields<CategoryRules>
@@ -49,3 +44,10 @@ export default class CategoryValidatorFactory{
         return new CategoryValidator();
     }
 }
+
+// Unsafe code for domain because more properties could be passed here
+// constructor(data: CategoryProperties){
+//     Object.assign(this, data);
+// }
+
+// any reason for comment 'implements' out from CategoryValidator?
