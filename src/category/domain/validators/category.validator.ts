@@ -35,7 +35,8 @@ export class CategoryValidator extends ClassValidatorFields<CategoryRules>
 //implements ValidatorFieldsInterface<CategoryRules>
 {
     validate(data: CategoryProperties): boolean {
-        return super.validate(new CategoryRules(data));
+        return super.validate(new CategoryRules(data ?? {} as any));
+        //return super.validate(new CategoryRules(data));   // error for null data
     }
 }
 
