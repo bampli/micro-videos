@@ -34,9 +34,18 @@ function runRule({
     params = []
 }: Omit<ExpectedRule, "error">) {
     const validator = ValidatorRules.values(value, property);
-    const method = validator[rule];
+    // Cast the function to accept any argument and normalize all validation rules
+    const method = validator[rule] as (...args: any[]) => ValidatorRules;
     method.apply(validator, params);
 }
+
+// https://forum.code.education/forum/topico/validator-rules-no-typescript-1456/
+// At constructor in @seedwork/domain/validators/validation-rules.ts:
+//  private constructor( public value: any,  private property: string) { }
+//  I tested 'public' instead of 'private' to fix compiler error at 'method.apply()
+//
+// This was not the solution but compiler stopped complaining about runRule. Why?
+//  const method = validator[rule];
 
 describe('ValidatorRules Unit Tests', () => {
     test('values method', () => {

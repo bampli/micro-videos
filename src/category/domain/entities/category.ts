@@ -1,7 +1,7 @@
 //import { v4 as uuidv4 } from "uuid";
 import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.vo';
 import Entity from '../../../@seedwork/domain/entity/entity';
-import ValidatorRules from '../../../@seedwork/validators/validator-rules';
+//import ValidatorRules from '../../../@seedwork/domain/validators/validator-rules';
 import { Omit } from "lodash";
 import CategoryValidatorFactory from '../validators/category.validator';
 
