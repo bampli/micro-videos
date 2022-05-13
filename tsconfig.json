@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/@seedwork/@types",
+    ],
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Projects */
