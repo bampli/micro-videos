@@ -45,3 +45,11 @@ export function isEmpty(value: any){
 //     .required()
 //     .string()
 //     .maxLength(255);
+
+// - this validator is not being used anymore
+// - it was previously used but is now upgraded to class-validator-fields 
+// static validate(props: Omit<CategoryProperties, 'created_at'>){
+//     ValidatorRules.values(props.name, "name").required().string().maxLength(255);
+//     ValidatorRules.values(props.description, "description").string();
+//     ValidatorRules.values(props.is_active, "is_active").boolean();
+// }

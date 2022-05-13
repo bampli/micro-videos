@@ -51,4 +51,4 @@ export default class CategoryValidatorFactory{
 //     Object.assign(this, data);
 // }
 
-// any reason for comment 'implements' out from CategoryValidator?
+// CategoryValidator: any special reason to comment out 'implements'?
