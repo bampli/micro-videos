@@ -1,6 +1,5 @@
 import ClassValidatorFields from "../validators/class-validator-fields";
 import { FieldsErrors } from "../validators/validator-fields-interface";
-//import objectContaining from "expect";
 
 type Expected = { validator: ClassValidatorFields<any>, data: any };
 
