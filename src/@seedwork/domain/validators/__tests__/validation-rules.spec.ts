@@ -40,11 +40,10 @@ function runRule({
 }
 
 // https://forum.code.education/forum/topico/validator-rules-no-typescript-1456/
-// At constructor in @seedwork/domain/validators/validation-rules.ts:
+// I changed constructor in @seedwork/domain/validators/validation-rules.ts to:
 //  private constructor( public value: any,  private property: string) { }
-//  I tested 'public' instead of 'private' to fix compiler error at 'method.apply()
-//
-// This was not the solution but compiler stopped complaining about runRule. Why?
+// Using 'public value' instead of 'private value' fixed the compiler error
+// This was not the solution but why compiler stopped complaining about line below?
 //  const method = validator[rule];
 
 describe('ValidatorRules Unit Tests', () => {
