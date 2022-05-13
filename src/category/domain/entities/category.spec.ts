@@ -3,9 +3,13 @@ import { omit } from 'lodash';
 import UniqueEntityId from '../../../@seedwork/domain/value-objects/unique-entity-id.vo';
 
 describe('Category Unit Tests', () => {
+    beforeEach(() => {
+        Category.validate = jest.fn();  // mock validate at unit tests
+    });
     test('category constructor', () => {
         let category: Category = new Category({ name: 'Movie' });
         let props = omit(category.props, 'created_at');
+        expect(Category.validate).toHaveBeenCalled();
         expect(props).toStrictEqual({
             name: 'Movie',
             description: null,
@@ -146,6 +150,7 @@ describe('Category Unit Tests', () => {
     it('should update a category', () => {
         const category = new Category({ name: 'Movie' });
         category.update("Documentary", "some description");
+        expect(Category.validate).toHaveBeenCalledTimes(2); // at constructor & update
         expect(category.name).toBe("Documentary");
         expect(category.description).toBe("some description");
     })
@@ -158,3 +163,8 @@ describe('Category Unit Tests', () => {
 
 // end to end API REST file.e2e.ts
 // since client request until UI answer
+
+// Test tools
+//  - stub: fake object
+//  - spyOn: spy a variable, class or method
+//  - mock: fake object with expectations
