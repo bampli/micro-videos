@@ -24,8 +24,8 @@ expect.extend({
             : {
                 pass: false,
                 message: () =>
-                    `The validation errors do not contain ${JSON.stringify(received)}.
-                    Current: ${JSON.stringify(validator.errors)}`,
+                    `The validation errors do not contain ${JSON.stringify(received)}.\n` +
+                    `Current: ${JSON.stringify(validator.errors)}`,
             };
     },
 });
