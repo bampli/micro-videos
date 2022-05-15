@@ -19,6 +19,7 @@ export default abstract class InMemoryRepository<E extends Entity> implements Re
     async findAll(): Promise<E[]> {
         return this.items;
     }
+    
     async update(entity: E): Promise<void> {
         await this._get(entity.id);
         const indexFound = this.items.findIndex(i => i.id === entity.id);

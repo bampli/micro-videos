@@ -26,6 +26,10 @@ npm install @swc/core @swc/jest --save-dev
 npm install lodash @types/lodash --save-dev
 npm install uuid @types/uuid --save
 
+# TODO: check why it was NOT necessary to install
+# Test InMemoryRepository part 1 (7:10)
+npm install regenerator-runtime --save-dev
+
 ```
 
 ## Versions
