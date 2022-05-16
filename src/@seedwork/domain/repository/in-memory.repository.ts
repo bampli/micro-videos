@@ -3,8 +3,9 @@ import NotFoundError from "../errors/not-found.error";
 import UniqueEntityId from "../value-objects/unique-entity-id.vo";
 import { RepositoryInterface } from "./repository-contracts";
 
-export default abstract class InMemoryRepository<E extends Entity> implements RepositoryInterface<E>{
-
+export default abstract class InMemoryRepository<E extends Entity>
+    implements RepositoryInterface<E>
+{
     items: E[] = [];
 
     async insert(entity: E): Promise<void> {
@@ -15,11 +16,11 @@ export default abstract class InMemoryRepository<E extends Entity> implements Re
         const _id = `${id}`;
         return this._get(_id);
     }
-    
+
     async findAll(): Promise<E[]> {
         return this.items;
     }
-    
+
     async update(entity: E): Promise<void> {
         await this._get(entity.id);
         const indexFound = this.items.findIndex(i => i.id === entity.id);
@@ -33,9 +34,9 @@ export default abstract class InMemoryRepository<E extends Entity> implements Re
         this.items.splice(indexFound, 1);
     }
 
-    protected async _get(id: string): Promise<E>{
+    protected async _get(id: string): Promise<E> {
         const item = this.items.find(i => i.id === id);
-        if(!item){
+        if (!item) {
             throw new NotFoundError(`Entity not found with ID ${id}`);
         }
         return item;
