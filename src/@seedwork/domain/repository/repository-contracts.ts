@@ -35,6 +35,11 @@ export class SearchParams {
     }
 
     get page() { return this._page; }
+    get per_page() { return this._per_page; }
+    get sort() { return this._sort; }
+    get sort_dir() { return this._sort_dir; }
+    get filter() { return this._filter; }
+    
     private set page(value: number) {
         let _page = +value;
 
@@ -44,33 +49,33 @@ export class SearchParams {
         this._page = _page;
     }
 
-    get per_page() { return this.per_page; }
     private set per_page(value: number) {
-        let _per_page = +value;
+        let _per_page = value === true as any ? this._per_page : +value;
 
         if (Number.isNaN(_per_page) || _per_page <= 0 || parseInt(_per_page as any) !== _per_page) {
-            _per_page = 1;
-        }
+            _per_page = this._per_page; // gets the default value = 15
+        }        
         this._per_page = _per_page;
     }
 
-    get sort() { return this._sort; }
     private set sort(value: string | null) {
-        this._sort = value === null || value === undefined || value === "" ? null : `${value}`; // convert to string
+        this._sort =
+            value === null || value === undefined || value === "" ? null : `${value}`; // convert to string
     }
 
-    get sort_dir() { return this._sort_dir; }
     private set sort_dir(value: SortDirection | null) {
-        if(!this.sort){
-            this.sort_dir = null;
+        if (!this.sort) {
+            this._sort_dir = null;
             return;
         }
         const dir = `${value}`.toLowerCase();   // convert to string then lower case
-        this.sort_dir = dir !== "asc" && dir !== "desc" ? "asc" : dir;
+        this._sort_dir = dir !== "asc" && dir !== "desc" ? "asc" : dir;
     }
 
-    get filter() { return this._filter; }
-    private set filter(value: string | null) { }
+    private set filter(value: string | null) {
+        this._filter =
+            value === null || value === undefined || value === "" ? null : `${value}`;
+    }
 }
 
 // const params = new SearchParams({});
