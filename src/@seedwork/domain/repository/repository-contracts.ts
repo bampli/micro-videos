@@ -39,7 +39,7 @@ export class SearchParams {
     get sort() { return this._sort; }
     get sort_dir() { return this._sort_dir; }
     get filter() { return this._filter; }
-    
+
     private set page(value: number) {
         let _page = +value;
 
@@ -54,7 +54,7 @@ export class SearchParams {
 
         if (Number.isNaN(_per_page) || _per_page <= 0 || parseInt(_per_page as any) !== _per_page) {
             _per_page = this._per_page; // gets the default value = 15
-        }        
+        }
         this._per_page = _per_page;
     }
 
@@ -81,14 +81,56 @@ export class SearchParams {
 // const params = new SearchParams({});
 // params.filter
 
-class SearchResult {
+type SearchResultProps<E extends Entity, Filter> = {
+    items: E[];
+    total: number;
+    current_page: number;
+    per_page: number;
+    sort: string | null;
+    sort_dir: string | null;
+    filter: Filter | null;
+}
 
+class SearchResult<E extends Entity, Filter = string> {
+    readonly items: E[];
+    readonly total: number;
+    readonly current_page: number;
+    readonly per_page: number;
+    readonly last_page: number;
+    readonly sort: string | null;
+    readonly sort_dir: string | null;
+    readonly filter: Filter;
+
+    constructor(props: SearchResultProps<E, Filter>) {
+        this.items = props.items;
+        this.total = props.total;
+        this.current_page = props.current_page;
+        this.per_page = props.per_page;
+        this.last_page = Math.ceil(this.total / this.per_page);
+        this.sort = props.sort;
+        this.sort_dir = props.sort_dir;
+        this.filter = props.filter;
+    }
+
+    toJSON() {
+        return {
+            items: this.items,
+            total: this.total,
+            current_page: this.current_page,
+            per_page: this.per_page,
+            last_page: this.last_page,
+            sort: this.sort,
+            sort_dir: this.sort_dir,
+            filter: this.filter,
+        }
+    }
 }
 
 export interface SearchableRepositoryInterface<
     E extends Entity,
-    SearchOutput,
-    SearchInput = SearchParams
+    Filter = string,
+    SearchInput = SearchParams,
+    SearchOutput = SearchResult<E, Filter>,
     > extends RepositoryInterface<E> {
     search(props: SearchInput): Promise<SearchOutput>;
 }
