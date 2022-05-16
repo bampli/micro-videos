@@ -12,13 +12,13 @@ export abstract class InMemoryRepository<E extends Entity>
         this.items.push(entity);
     }
 
+    async findAll(): Promise<E[]> {
+        return this.items;
+    }
+
     async findById(id: string | UniqueEntityId): Promise<E> {
         const _id = `${id}`;
         return this._get(_id);
-    }
-
-    async findAll(): Promise<E[]> {
-        return this.items;
     }
 
     async update(entity: E): Promise<void> {
@@ -42,8 +42,8 @@ export abstract class InMemoryRepository<E extends Entity>
         return item;
     }
 
-    // Option with _getIndex does 'this.items' search just once
-    // It would speed up update & delete for big arrays
+    // To speed up update & delete for big arrays
+    // _getIndex option does 'this.items' search just once
 
     // async findById(id: string | UniqueEntityId): Promise<E> {
     //     const _id = `${id}`;
