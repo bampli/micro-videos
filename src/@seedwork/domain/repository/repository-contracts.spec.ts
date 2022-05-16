@@ -1,4 +1,4 @@
-import { SearchParams } from './repository-contracts';
+import { SearchParams, SearchResult } from './repository-contracts';
 
 describe('SearchParams Unit Tests', () => {
     test('page prop', () => {
@@ -41,7 +41,7 @@ describe('SearchParams Unit Tests', () => {
             { per_page: true, expected: 15 },
             { per_page: false, expected: 15 },
             { per_page: {}, expected: 15 },
-            
+
             { per_page: 1, expected: 1 },
             { per_page: 2, expected: 2 },
             { per_page: 102, expected: 102 },
@@ -78,12 +78,12 @@ describe('SearchParams Unit Tests', () => {
         let params = new SearchParams();
         expect(params.sort_dir).toBeNull();
 
-        params = new SearchParams({sort: undefined});
+        params = new SearchParams({ sort: undefined });
         expect(params.sort_dir).toBeNull();
 
-        params = new SearchParams({sort: ""});
+        params = new SearchParams({ sort: "" });
         expect(params.sort_dir).toBeNull();
-        
+
         const arrange = [
             { sort_dir: null, expected: "asc" },
             { sort_dir: undefined, expected: "asc" },
@@ -122,5 +122,77 @@ describe('SearchParams Unit Tests', () => {
         arrange.forEach((i) => {
             expect(new SearchParams({ filter: i.filter as any }).filter).toBe(i.expected);
         })
+    });
+});
+
+describe('SearchResult Unit Tests', () => {
+    test('constructor props', () => {
+        let result = new SearchResult({
+            items: ["entity1", "entity2"] as any,
+            total: 4,
+            current_page: 1,
+            per_page: 2,
+            sort: null,
+            sort_dir: null,
+            filter: null,
+        });
+
+        expect(result.toJSON()).toStrictEqual({
+            items: ["entity1", "entity2"] as any,
+            total: 4,
+            current_page: 1,
+            per_page: 2,
+            last_page: 2,
+            sort: null,
+            sort_dir: null,
+            filter: null,
+        });
+
+        result = new SearchResult({
+            items: ["entity1", "entity2"] as any,
+            total: 4,
+            current_page: 1,
+            per_page: 2,
+            sort: "name",
+            sort_dir: "asc",
+            filter: "test",
+        });
+
+        expect(result.toJSON()).toStrictEqual({
+            items: ["entity1", "entity2"] as any,
+            total: 4,
+            current_page: 1,
+            per_page: 2,
+            last_page: 2,
+            sort: "name",
+            sort_dir: "asc",
+            filter: "test",
+        });
+    });
+
+    it('should set last_page = 1 if per_page > total', () => {
+        const result = new SearchResult({
+            items: [] as any,
+            total: 4,
+            current_page: 1,
+            per_page: 15,
+            sort: "name",
+            sort_dir: "asc",
+            filter: "test",
+        });
+        expect(result.last_page).toBe(1);
+    });
+
+    test('last_page when total is not multiple of per_page', () => {
+        const result = new SearchResult({
+            items: [] as any,
+            total: 101,
+            current_page: 1,
+            per_page: 20,
+            sort: "name",
+            sort_dir: "asc",
+            filter: "test",
+        });
+        expect(result.last_page).toBe(6);
     });
 });
