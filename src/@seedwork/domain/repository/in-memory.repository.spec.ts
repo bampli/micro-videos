@@ -8,21 +8,17 @@ type StubEntityProps = {
     price: number;
 }
 
-class StubEntity extends Entity<StubEntityProps>{
+class StubEntity extends Entity<StubEntityProps>{ }
 
-}
-
-class StubInMemoryRepository extends InMemoryRepository<StubEntity> {
-
-}
+class StubInMemoryRepository extends InMemoryRepository<StubEntity> { }
 
 describe('InMemoryRepository Unit Tests', () => {
 
     let repository: StubInMemoryRepository;
     beforeEach(() => (repository = new StubInMemoryRepository));
-    
+
     it('should insert a new entity', async () => {
-        const entity = new StubEntity({name: "name value", price: 5});
+        const entity = new StubEntity({ name: "name value", price: 5 });
         await repository.insert(entity);
         expect(entity.toJSON()).toStrictEqual(repository.items[0].toJSON());
     });
@@ -39,9 +35,9 @@ describe('InMemoryRepository Unit Tests', () => {
             new NotFoundError(`Entity not found with ID ${uuid}`)
         );
     });
-    
+
     it('should find an entity by id', async () => {
-        const entity = new StubEntity({name: "name value", price: 5});
+        const entity = new StubEntity({ name: "name value", price: 5 });
         await repository.insert(entity);
 
         let entityFound = await repository.findById(entity.id);
@@ -54,7 +50,7 @@ describe('InMemoryRepository Unit Tests', () => {
     });
 
     it('should return all entities', async () => {
-        const entity = new StubEntity({name: "name value", price: 5});
+        const entity = new StubEntity({ name: "name value", price: 5 });
         await repository.insert(entity);
 
         const entities = await repository.findAll();
@@ -62,20 +58,20 @@ describe('InMemoryRepository Unit Tests', () => {
     });
 
     it('should throw errors on update when entity is not found', () => {
-        const entity = new StubEntity({name: "name value", price: 5});
+        const entity = new StubEntity({ name: "name value", price: 5 });
         expect(repository.update(entity)).rejects.toThrow(
             new NotFoundError(`Entity not found with ID ${entity.id}`)
         );
     });
 
     it('should update an entity', async () => {
-        const entity = new StubEntity({name: "name value", price: 5});
+        const entity = new StubEntity({ name: "name value", price: 5 });
         await repository.insert(entity);
 
         const entityUpdated = new StubEntity(
-            {name: "updated", price: 1},
+            { name: "updated", price: 1 },
             entity.uniqueEntityId
-            );
+        );
 
         await repository.update(entityUpdated);
         expect(entityUpdated.toJSON()).toStrictEqual(repository.items[0].toJSON());
@@ -89,8 +85,8 @@ describe('InMemoryRepository Unit Tests', () => {
     });
 
     it('should delete an entity', async () => {
-        const entity = new StubEntity({name: "name value", price: 5});
-        
+        const entity = new StubEntity({ name: "name value", price: 5 });
+
         await repository.insert(entity);
         await repository.delete(entity.id);
         expect(repository.items).toHaveLength(0);

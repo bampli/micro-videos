@@ -42,4 +42,41 @@ export default abstract class InMemoryRepository<E extends Entity>
         return item;
     }
 
+    // async findById(id: string | UniqueEntityId): Promise<E> {
+    //     const _id = `${id}`;
+    //     const indexFound = await this._getIndex(_id);
+    //     return this.items[indexFound];
+    // }
+
+    // async update(entity: E): Promise<void> {        
+    //     const indexFound = await this._getIndex(entity.id);
+    //     this.items[indexFound] = entity;
+    // }
+
+    // async delete(id: string | UniqueEntityId): Promise<void> {
+    //     const _id = `${id}`;
+    //     const indexFound = await this._getIndex(_id);
+    //     this.items.splice(indexFound, 1);
+    // }
+
+    // protected async _getIndex(id: string): Promise<number> {
+    //     const indexFound = this.items.findIndex(i => i.id === id);
+    //     if (!this.items[indexFound]) {
+    //         throw new NotFoundError(`Entity not found with ID ${id}`);
+    //     }
+    //     return indexFound;
+    // }
 }
+
+// Option with _getIndex does 'this.items' search just once in update & delete
+// Same tests timing for both:
+// InMemoryRepository Unit Tests
+// ✓ should insert a new entity (6 ms)
+// ✓ should throw errors when entity is not found (11 ms)
+// ✓ should throw errors when entity is not found (2 ms)
+// ✓ should find an entity by id (2 ms)
+// ✓ should return all entities (1 ms)
+// ✓ should throw errors on update when entity is not found (2 ms)
+// ✓ should update an entity (2 ms)
+// ✓ should throw errors on delete when entity is not found (2 ms)
+// ✓ should delete an entity (3 ms)
