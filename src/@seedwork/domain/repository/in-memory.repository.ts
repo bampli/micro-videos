@@ -1,9 +1,9 @@
 import Entity from "../entity/entity";
 import NotFoundError from "../errors/not-found.error";
 import UniqueEntityId from "../value-objects/unique-entity-id.vo";
-import { RepositoryInterface } from "./repository-contracts";
+import { RepositoryInterface, SearchableRepositoryInterface } from "./repository-contracts";
 
-export default abstract class InMemoryRepository<E extends Entity>
+export abstract class InMemoryRepository<E extends Entity>
     implements RepositoryInterface<E>
 {
     items: E[] = [];
@@ -42,6 +42,9 @@ export default abstract class InMemoryRepository<E extends Entity>
         return item;
     }
 
+    // Option with _getIndex does 'this.items' search just once
+    // It would speed up update & delete for big arrays
+
     // async findById(id: string | UniqueEntityId): Promise<E> {
     //     const _id = `${id}`;
     //     const indexFound = await this._getIndex(_id);
@@ -68,15 +71,15 @@ export default abstract class InMemoryRepository<E extends Entity>
     // }
 }
 
-// Option with _getIndex does 'this.items' search just once in update & delete
-// Same tests timing for both:
-// InMemoryRepository Unit Tests
-// ✓ should insert a new entity (6 ms)
-// ✓ should throw errors when entity is not found (11 ms)
-// ✓ should throw errors when entity is not found (2 ms)
-// ✓ should find an entity by id (2 ms)
-// ✓ should return all entities (1 ms)
-// ✓ should throw errors on update when entity is not found (2 ms)
-// ✓ should update an entity (2 ms)
-// ✓ should throw errors on delete when entity is not found (2 ms)
-// ✓ should delete an entity (3 ms)
+export abstract class InMemorySearchableRepository<E extends Entity>
+    extends InMemoryRepository<E>
+    implements SearchableRepositoryInterface<E, any, any>{
+
+    search(props: any): Promise<any> {
+        throw new Error("Method not implemented.");
+    }
+
+}
+// this extension would be useful to implement soft deletes for example
+// no need to change the existing implementation
+// use typescript mixin, like a plug-in?
