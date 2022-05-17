@@ -39,7 +39,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
     describe('applyFilter method', () => {
         it('should not filter items when filter param is null', async () => {
-            const items = [new StubEntity({name: "name value", price: 5})];
+            const items = [new StubEntity({ name: "name value", price: 5 })];
             const spyFilterMethod = jest.spyOn(items, 'filter' as any);
             const itemsFiltered = await repository['applyFilter'](items, null);
             expect(itemsFiltered).toStrictEqual(items);
@@ -48,9 +48,9 @@ describe('InMemorySearchableRepository Unit Tests', () => {
 
         it('should filter with a filter param', async () => {
             const items = [
-                new StubEntity({name: "test", price: 5}),
-                new StubEntity({name: "TEST", price: 5}),
-                new StubEntity({name: "fake", price: 0}),
+                new StubEntity({ name: "test", price: 5 }),
+                new StubEntity({ name: "TEST", price: 5 }),
+                new StubEntity({ name: "fake", price: 0 }),
             ];
             const spyFilterMethod = jest.spyOn(items, 'filter' as any);
 
@@ -69,6 +69,35 @@ describe('InMemorySearchableRepository Unit Tests', () => {
     });
 
     describe('applySort method', () => {
+        it('should sort no items when sort param is null', async () => {
+            const items = [
+                new StubEntity({ name: "b", price: 5 }),
+                new StubEntity({ name: "a", price: 5 }),
+            ];
+
+            // jest.spy cannot be used because a 'copy of items' is used at applySort()
+            // return [...items].sort((a, b) => {});
+
+            let itemsSorted = await repository['applySort'](items, null, null);
+            expect(itemsSorted).toStrictEqual(items);
+
+            itemsSorted = await repository['applySort'](items, "price", "asc");
+            expect(itemsSorted).toStrictEqual(items);
+        });
+
+        it('should sort items with a sort param', async () => {
+            const items = [
+                new StubEntity({ name: "b", price: 5 }),
+                new StubEntity({ name: "a", price: 5 }),
+                new StubEntity({ name: "c", price: 5 }),
+            ];
+
+            let itemsSorted = await repository['applySort'](items, "name", "asc");
+            expect(itemsSorted).toStrictEqual([items[1], items[0], items[2]]);
+
+            itemsSorted = await repository['applySort'](items, "name", "desc");
+            expect(itemsSorted).toStrictEqual([items[2], items[0], items[1]]);
+        });
     });
 
     describe('applyPaginate method', () => {
