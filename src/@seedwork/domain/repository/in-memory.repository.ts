@@ -1,7 +1,7 @@
 import Entity from "../entity/entity";
 import NotFoundError from "../errors/not-found.error";
 import UniqueEntityId from "../value-objects/unique-entity-id.vo";
-import { RepositoryInterface, SearchableRepositoryInterface, SearchParams, SearchResult } from "./repository-contracts";
+import { RepositoryInterface, SearchableRepositoryInterface, SearchParams, SearchResult, SortDirection } from "./repository-contracts";
 
 export abstract class InMemoryRepository<E extends Entity>
     implements RepositoryInterface<E>
@@ -75,6 +75,8 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     extends InMemoryRepository<E>
     implements SearchableRepositoryInterface<E>{
 
+    sortableFields: string[] = [];
+
     async search(props: SearchParams): Promise<SearchResult<E>> {
         const itemsFiltered = await this.applyFilter(this.items, props.filter);
         const itemsSorted = await this.applySort(itemsFiltered, props.sort, props.sort_dir);
@@ -96,13 +98,27 @@ export abstract class InMemorySearchableRepository<E extends Entity>
         filter: string | null
     ): Promise<E[]>;
 
-    protected abstract async applySort(
+    protected async applySort(
         items: E[],
         sort: string | null,
-        sort_dir: string | null
-    ): Promise<E[]> { }
+        sort_dir: SortDirection | null
+    ): Promise<E[]> {
+        if (!sort || !this.sortableFields.includes(sort)) {
+            return items;
+        }
+        
+        return [...items].sort((a, b) => {
+            if (a.props[sort] < b.props[sort]) {     // Category.props['name'] < Category.props['name']
+                return sort_dir === "asc" ? -1 : 1;
+            }
+            if (a.props[sort] > b.props[sort]) {
+                return sort_dir === "asc" ? 1 : -1;
+            }
+            return 0;
+        });
+    }
 
-    protected abstract async applyPaginate(
+    protected async applyPaginate(
         items: E[],
         page: SearchParams["page"],
         per_page: SearchParams["per_page"]
