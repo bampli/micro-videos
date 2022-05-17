@@ -38,7 +38,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
     );
 
     describe('applyFilter method', () => {
-        it('should not filter items when filter param is null', async () => {
+        it('should not filter when filter param is null', async () => {
             const items = [new StubEntity({ name: "name value", price: 5 })];
             const spyFilterMethod = jest.spyOn(items, 'filter' as any);
             const itemsFiltered = await repository['applyFilter'](items, null);
@@ -69,7 +69,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
     });
 
     describe('applySort method', () => {
-        it('should sort no items when sort param is null', async () => {
+        it('should not sort when sort param is null', async () => {
             const items = [
                 new StubEntity({ name: "b", price: 5 }),
                 new StubEntity({ name: "a", price: 5 }),
@@ -85,7 +85,7 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             expect(itemsSorted).toStrictEqual(items);
         });
 
-        it('should sort items with a sort param', async () => {
+        it('should sort with sort/sort_dir params', async () => {
             const items = [
                 new StubEntity({ name: "b", price: 5 }),
                 new StubEntity({ name: "a", price: 5 }),
@@ -101,6 +101,27 @@ describe('InMemorySearchableRepository Unit Tests', () => {
     });
 
     describe('applyPaginate method', () => {
+        it('should paginate with page/per_page params', async () => {
+            const items = [
+                new StubEntity({ name: "a", price: 5 }),
+                new StubEntity({ name: "b", price: 5 }),
+                new StubEntity({ name: "c", price: 5 }),
+                new StubEntity({ name: "d", price: 5 }),
+                new StubEntity({ name: "e", price: 5 }),
+            ];
+
+            let itemsPaginated = await repository['applyPaginate'](items, 1, 2);
+            expect(itemsPaginated).toStrictEqual([items[0], items[1]]);
+
+            itemsPaginated = await repository['applyPaginate'](items, 2, 2);
+            expect(itemsPaginated).toStrictEqual([items[2], items[3]]);
+
+            itemsPaginated = await repository['applyPaginate'](items, 3, 2);
+            expect(itemsPaginated).toStrictEqual([items[4]]);
+
+            itemsPaginated = await repository['applyPaginate'](items, 4, 2);
+            expect(itemsPaginated).toStrictEqual([]);
+        });
     });
 
     describe('search method', () => {
