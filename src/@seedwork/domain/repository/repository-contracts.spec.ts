@@ -22,7 +22,8 @@ describe('SearchParams Unit Tests', () => {
         ];
 
         arrange.forEach((i) => {
-            expect(new SearchParams({ page: i.page as any }).page).toBe(i.expected);
+            expect(new SearchParams({ page: i.page as any }).page)
+                .toBe(i.expected);
         })
     });
 
@@ -48,7 +49,8 @@ describe('SearchParams Unit Tests', () => {
         ];
 
         arrange.forEach((i) => {
-            expect(new SearchParams({ per_page: i.per_page as any }).per_page).toBe(i.expected);
+            expect(new SearchParams({ per_page: i.per_page as any }).per_page)
+                .toBe(i.expected);
         })
     });
 
@@ -70,7 +72,8 @@ describe('SearchParams Unit Tests', () => {
         ];
 
         arrange.forEach((i) => {
-            expect(new SearchParams({ sort: i.sort as any }).sort).toBe(i.expected);
+            expect(new SearchParams({ sort: i.sort as any }).sort)
+                .toBe(i.expected);
         })
     });
 
@@ -98,7 +101,8 @@ describe('SearchParams Unit Tests', () => {
         ];
 
         arrange.forEach((i) => {
-            expect(new SearchParams({ sort: "field", sort_dir: i.sort_dir as any }).sort_dir).toBe(i.expected);
+            expect(new SearchParams({ sort: "field", sort_dir: i.sort_dir as any }).sort_dir)
+                .toBe(i.expected);
         })
     });
 
@@ -120,7 +124,8 @@ describe('SearchParams Unit Tests', () => {
         ];
 
         arrange.forEach((i) => {
-            expect(new SearchParams({ filter: i.filter as any }).filter).toBe(i.expected);
+            expect(new SearchParams({ filter: i.filter as any }).filter)
+                .toBe(i.expected);
         })
     });
 });

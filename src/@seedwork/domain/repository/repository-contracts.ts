@@ -34,11 +34,21 @@ export class SearchParams {
         this.filter = props.filter;
     }
 
-    get page() { return this._page; }
-    get per_page() { return this._per_page; }
-    get sort() { return this._sort; }
-    get sort_dir() { return this._sort_dir; }
-    get filter() { return this._filter; }
+    get page() {
+        return this._page;
+    }
+    get per_page() {
+        return this._per_page;
+    }
+    get sort(): string | null {
+        return this._sort;
+    }
+    get sort_dir(): string | null {
+        return this._sort_dir;
+    }
+    get filter(): string | null {
+        return this._filter;
+    }
 
     private set page(value: number) {
         let _page = +value;
@@ -63,7 +73,7 @@ export class SearchParams {
             value === null || value === undefined || value === "" ? null : `${value}`; // convert to string
     }
 
-    private set sort_dir(value: SortDirection | null) {
+    private set sort_dir(value: string | null) {
         if (!this.sort) {
             this._sort_dir = null;
             return;
