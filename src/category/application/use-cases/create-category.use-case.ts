@@ -1,7 +1,7 @@
 import { Category } from "../../domain/entities/category";
 import CategoryRepository from "../../domain/repository/category.repository";
 
-export class CreateCategoryUseCase {
+export default class CreateCategoryUseCase {
 
     constructor(private categoryRepo: CategoryRepository.Repository) { };
 
