@@ -2,13 +2,12 @@ import { Category } from "../../domain/entities/category";
 import CategoryRepository from "../../domain/repository/category.repository";
 import { CategoryOutput } from "../dto/category-output.dto";
 
-export default class CreateCategoryUseCase {
+export default class GetCategoryUseCase {
 
     constructor(private categoryRepo: CategoryRepository.Repository) { };
 
     async execute(input: Input): Promise<Output> {
-        const entity = new Category(input);
-        await this.categoryRepo.insert(entity);
+        const entity = await this.categoryRepo.findById(input.id);
         return {
             id: entity.id,
             name: entity.name,
@@ -20,20 +19,10 @@ export default class CreateCategoryUseCase {
 }
 
 // DTO: data transfer objects
+// Input/Output ~ Request/Response
 
 export type Input = {
-    name: string;
-    description?: string;
-    is_active?: boolean;
+    id: string;
 };
 
 export type Output = CategoryOutput;
-
-// Common DTO created at "../dto/category-output.dto"
-// export type Output = {
-//     id: string;
-//     name: string;
-//     description: string | null;
-//     is_active: boolean;
-//     created_at: Date
-// }
