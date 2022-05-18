@@ -1,6 +1,10 @@
 # micro-videos
 Video catalog admin backend
 
+![image](https://user-images.githubusercontent.com/86032/169137869-414c9e67-19a6-4458-a453-76c7d8273562.png)
+
+
+```
 - dev tools
 - app node.js + typescript
 - category entity
@@ -13,6 +17,15 @@ Video catalog admin backend
 - nest.js api rest
 - RabbitMQ & Encoder integ
 - E2E tests
+
+```
+
+```
+
+- entity: crucial rules (exist)
+- services: app rules (persist)
+
+```
 
 ## Templates
 

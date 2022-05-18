@@ -2,6 +2,9 @@ import { Category } from "../entities/category";
 import { InMemorySearchableRepository } from "../../../@seedwork/domain/repository/in-memory.repository";
 import { SearchParams, SearchResult } from "../../../@seedwork/domain/repository/repository-contracts";
 
+// exercise to evaluate mixing parameters
+// apply sort by 'created_at' when filter param is null
+
 class StubInMemorySearchableCategoryRepository extends InMemorySearchableRepository<Category> {
 
     sortableFields: string[] = ['name', 'created_at'];
