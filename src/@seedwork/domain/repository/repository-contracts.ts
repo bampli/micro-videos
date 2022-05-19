@@ -103,7 +103,7 @@ type SearchResultProps<E extends Entity, Filter> = {
     filter: Filter | null;
 }
 
-export class SearchResult<E extends Entity, Filter = string> {
+export class SearchResult<E extends Entity = Entity, Filter = string> {
     readonly items: E[];
     readonly total: number;
     readonly current_page: number;
@@ -147,3 +147,8 @@ export interface SearchableRepositoryInterface<
     sortableFields: string[];
     search(props: SearchInput): Promise<SearchOutput>;
 }
+
+// export class SearchResult<E extends Entity = Entity, Filter = string> {
+// E extends Entity = Entity
+// '= Entity' is cool, to free initialization on consumers
+// see PaginationOutputMapper

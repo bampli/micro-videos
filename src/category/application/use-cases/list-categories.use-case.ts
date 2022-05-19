@@ -1,31 +1,51 @@
 import UseCase from "../../../@seedwork/application/use-case";
 import CategoryRepository from "../../domain/repository/category.repository";
-import { CategoryOutput } from "../dto/category-output.dto";
-import { SearchInputDto } from "../dto/search-input.dto";
+import { CategoryOutput } from "../dto/category-output";
+import { SearchInputDto } from "../dto/search-input";
+import { PaginationOutputDto, PaginationOutputMapper } from "../dto/pagination-output";
+import { CategoryOutputMapper } from "../dto/category-output";
 
 export default class ListCategoriesUseCase implements UseCase<Input, Output>{
     constructor(private categoryRepo: CategoryRepository.Repository) { };
 
     async execute(input: Input): Promise<Output> {
         const params = new CategoryRepository.SearchParams(input);
-        const entities = await this.categoryRepo.search(params);
+        const searchResult = await this.categoryRepo.search(params);
+        return this.toOutput(searchResult);
+    }
+
+    private toOutput(searchResult: CategoryRepository.SearchResult): Output {
+        const items = searchResult.items.map((i) => {
+            return CategoryOutputMapper.toOutput(i)
+        });
+        const pagination = PaginationOutputMapper.toPaginationOutput(searchResult);
+
         return {
-            id: entity.id,
-            name: entity.name,
-            description: entity.description,
-            is_active: entity.is_active,
-            created_at: entity.created_at
-        };
+            items,
+            ...pagination
+        }
     }
 }
 
-// DTO: data transfer objects
-// Input/Output ~ Request/Response
-
-// params copied from type SearchProps<Filter = string>
-// it's acceptable, but SearchProps would need to be added to namespace
-// export type Input = SearchInputDto<CategoryRepository.SearchProps['filter']>;
-
 export type Input = SearchInputDto;
 
-export type Output = CategoryOutput;
+export type Output = PaginationOutputDto<CategoryOutput>;
+
+// DTO: data transfer objects ~ Input/Output ~ similar to Request/Response
+
+// Input params were copied from type SearchProps<Filter = string>
+
+// Input acceptable, but SearchProps would need to be added to namespace
+// export type Input = SearchInputDto<CategoryRepository.SearchProps['filter']>;
+
+// PaginationOutputDto also copied and adapted from SearchResult
+// export type Output = {
+//     items: CategoryOutput[];
+//     total: number;
+//     current_page: number;
+//     per_page: number;
+//     last_page: number;
+//     // sort: string | null;
+//     // sort_dir: string | null;
+//     // filter: Filter;
+// };
