@@ -7,7 +7,7 @@ export default class DeleteCategoryUseCase implements UseCase<Input, Output> {
 
     async execute(input: Input): Promise<Output> {
         const entity = await this.categoryRepo.findById(input.id);        
-        if(entity) await this.categoryRepo.delete(input.id);        
+        await this.categoryRepo.delete(input.id);        
         return;
     }
 }

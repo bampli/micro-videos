@@ -23,7 +23,7 @@ describe('DeleteCategoryUseCase Unit Tests', () => {
         const spyUpdate = jest.spyOn(repository, "delete");
         const entity = new Category({ name: 'Movie' });
         repository.items = [entity];
-        let output = await useCase.execute({ id: entity.id });
+        await useCase.execute({ id: entity.id });
         expect(spyUpdate).toHaveBeenCalledTimes(1);
         expect(repository.items).toHaveLength(0);
     });
