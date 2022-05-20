@@ -7,16 +7,16 @@ export default class UpdateCategoryUseCase implements UseCase<Input, Output> {
 
     async execute(input: Input): Promise<Output> {
         const entity = await this.categoryRepo.findById(input.id);
-        entity.update(entity.name, entity.description);
-
-        if(input.is_active === true) {
+        entity.update(input.name, input.description);
+        
+        if (input.is_active === true) {
             entity.activate();
         }
-        if(input.is_active === false) {
+        if (input.is_active === false) {
             entity.deactivate();
         }
         await this.categoryRepo.update(entity);
-
+        
         return CategoryOutputMapper.toOutput(entity);
     }
 }
