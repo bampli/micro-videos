@@ -1,7 +1,7 @@
 import DeleteCategoryUseCase from "../delete-category.use-case";
 import CategoryInMemoryRepository from "../../../infra/repository/category-in-memory.repository";
-import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "../../../domain/entities/category";
+import NotFoundError from "#seedwork/domain/errors/not-found.error";
+import { Category } from "#category/domain/entities/category";
 
 describe('DeleteCategoryUseCase Unit Tests', () => {
     let useCase: DeleteCategoryUseCase;
@@ -23,7 +23,7 @@ describe('DeleteCategoryUseCase Unit Tests', () => {
         const spyUpdate = jest.spyOn(repository, "delete");
         const entity = new Category({ name: 'Movie' });
         repository.items = [entity];
-        let output = await useCase.execute({ id: entity.id });
+        await useCase.execute({ id: entity.id });
         expect(spyUpdate).toHaveBeenCalledTimes(1);
         expect(repository.items).toHaveLength(0);
     });

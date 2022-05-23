@@ -1,7 +1,7 @@
 import UpdateCategoryUseCase from "../update-category.use-case";
 import CategoryInMemoryRepository from "../../../infra/repository/category-in-memory.repository";
-import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "../../../domain/entities/category";
+import NotFoundError from "#seedwork/domain/errors/not-found.error";
+import { Category } from "#category/domain/entities/category";
 
 describe('UpdateCategoryUseCase Unit Tests', () => {
     let useCase: UpdateCategoryUseCase;
@@ -118,7 +118,7 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
                     id: entity.id,
                     name: "test",
                     description: "some description",
-                    is_active: false,       // should activate!
+                    is_active: false,       // should deactivate!
                     created_at: entity.created_at
                 }
             }
@@ -131,4 +131,4 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
     });
 })
 
-// is_active tests explored bugs that are hard to handle in the future
+// is_active: testing nasty bugs to handle in the future

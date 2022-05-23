@@ -1,5 +1,5 @@
-import UseCase from "../../../@seedwork/application/use-case";
-import { CategoryRepository } from "../../domain/repository/category.repository";
+import UseCase from "#seedwork/application/use-case";
+import { CategoryRepository } from "#category/domain/repository/category.repository";
 import { CategoryOutput, CategoryOutputMapper } from "../dto/category-output";
 
 export default class DeleteCategoryUseCase implements UseCase<Input, Output> {
@@ -7,7 +7,7 @@ export default class DeleteCategoryUseCase implements UseCase<Input, Output> {
 
     async execute(input: Input): Promise<Output> {
         const entity = await this.categoryRepo.findById(input.id);        
-        if(entity) await this.categoryRepo.delete(input.id);        
+        await this.categoryRepo.delete(input.id);        
         return;
     }
 }
