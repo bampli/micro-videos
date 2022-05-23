@@ -1,5 +1,5 @@
 {
-  "name": "micro-videos",
+  "name": "@fc/micro-videos",
   "version": "1.0.0",
   "description": "Video catalog admin backend",
   "main": "index.js",
