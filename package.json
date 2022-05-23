@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Video catalog admin backend",
   "main": "index.js",
+  "imports": {
+    "#seedwork/*": "./dist/@seedwork/*.js",
+    "#category/*": "./dist/category/*.js"
+  },
   "scripts": {
     "ts-node": "ts-node",
     "tsc": "tsc",

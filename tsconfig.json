@@ -2,32 +2,41 @@
   "compilerOptions": {
     /* Projects */
     "incremental": true,                              /* Enable incremental compilation */
+
     /* Language and Environment */
     "target": "es2017",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
+
     /* Modules */
     "module": "commonjs",                                /* Specify what module code is generated. */
     "baseUrl": "./src",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {                                           /* Specify a set of entries that re-map imports to additional lookup locations. */
-      "@seedwork/*": [
+      "#seedwork/*": [
         "./@seedwork/*"
+      ],
+      "#category/*": [
+        "./category/*"
       ]
     },
-      // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     "typeRoots": [                                       /* Specify multiple folders that act like `./node_modules/@types`. */
       "./node_modules/@types",
       "./src/@seedwork/@types",
     ],
+
     /* Interop Constraints */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
     "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+
     /* Type Checking */
     "strict": true,                                      /* Enable all strict type-checking options. */
     "strictNullChecks": false,                         /* When type checking, take into account `null` and `undefined`. */    
+
     /* Completeness */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */,
     "outDir": "./dist",
-    "declaration": true
+
+    /* Emit */
+    "declaration": true                                 /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
   },
   "include": ["src/"]
 }
