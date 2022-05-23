@@ -38,6 +38,7 @@ npm install jest @types/jest --save-dev
 npm install @swc/core @swc/jest --save-dev
 npm install lodash @types/lodash --save-dev
 npm install uuid @types/uuid --save
+npm install create-ts-index --save-dev
 
 # TODO: check why it was NOT necessary to install
 # Test InMemoryRepository part 1 (7:10)
