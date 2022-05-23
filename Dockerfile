@@ -1,4 +1,4 @@
-FROM node:16.14.0-slim
+FROM node:18.2.0-slim
 
 RUN apt update && \
     apt install -y \
@@ -9,6 +9,8 @@ RUN apt update && \
     curl \
     wget \
     fonts-powerline
+
+RUN npm install -g @nestjs/cli@8.2.6
 
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 

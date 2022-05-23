@@ -20,7 +20,7 @@
     },
     "typeRoots": [                                       /* Specify multiple folders that act like `./node_modules/@types`. */
       "./node_modules/@types",
-      "./src/@seedwork/@types",
+      "#seedwork/@types",
     ],
 
     /* Interop Constraints */
