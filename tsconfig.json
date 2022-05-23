@@ -25,7 +25,9 @@
     "strict": true,                                      /* Enable all strict type-checking options. */
     "strictNullChecks": false,                         /* When type checking, take into account `null` and `undefined`. */    
     /* Completeness */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */,
+    "outDir": "./dist",
+    "declaration": true
   },
   "include": ["src/"]
 }
