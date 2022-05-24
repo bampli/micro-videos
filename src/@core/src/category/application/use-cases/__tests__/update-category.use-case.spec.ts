@@ -1,15 +1,15 @@
-import UpdateCategoryUseCase from "../update-category.use-case";
+import { UpdateCategoryUseCase } from "../update-category.use-case";
 import CategoryInMemoryRepository from "../../../infra/repository/category-in-memory.repository";
-import NotFoundError from "#seedwork/domain/errors/not-found.error";
-import { Category } from "#category/domain/entities/category";
+import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
+import { Category } from "../../../domain/entities/category";
 
 describe('UpdateCategoryUseCase Unit Tests', () => {
-    let useCase: UpdateCategoryUseCase;
+    let useCase: UpdateCategoryUseCase.UseCase;
     let repository: CategoryInMemoryRepository;
 
     beforeEach(() => {
         repository = new CategoryInMemoryRepository();
-        useCase = new UpdateCategoryUseCase(repository);
+        useCase = new UpdateCategoryUseCase.UseCase(repository);
     });
 
     it('should throw error when entity is not found', async () => {
@@ -34,8 +34,8 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
         });
 
         type Arrange = {
-            input: {id: string, name: string, description?: null | string, is_active?: boolean},
-            expected: {id: string, name: string, description: null | string, is_active: boolean, created_at: Date},
+            input: { id: string, name: string, description?: null | string, is_active?: boolean },
+            expected: { id: string, name: string, description: null | string, is_active: boolean, created_at: Date },
         }
 
         const arrange: Arrange[] = [

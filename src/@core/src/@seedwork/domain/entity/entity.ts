@@ -1,6 +1,6 @@
 import UniqueEntityId from '../value-objects/unique-entity-id.vo';
 
-export default abstract class Entity<Props = any>{
+export abstract class Entity<Props = any>{
     public readonly uniqueEntityId: UniqueEntityId;
 
     constructor(public readonly props: Props, id?: UniqueEntityId) {
@@ -18,6 +18,8 @@ export default abstract class Entity<Props = any>{
         } as Required<{ id: string } & Props>;
     }
 }
+
+export default Entity;
 
 // Props should be explicitly declared 'any': Entity<Props = any>
 // if 'any' is missing, 'consumer' classes would require Props type declaration

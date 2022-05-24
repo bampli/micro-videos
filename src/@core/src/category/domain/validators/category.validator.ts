@@ -40,11 +40,13 @@ export class CategoryValidator extends ClassValidatorFields<CategoryRules>
     }
 }
 
-export default class CategoryValidatorFactory{
+export class CategoryValidatorFactory{
     static create(){
         return new CategoryValidator();
     }
 }
+
+export default CategoryValidatorFactory;
 
 // Unsafe code for domain because more properties could be passed here
 // constructor(data: CategoryProperties){

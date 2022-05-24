@@ -1,15 +1,15 @@
-import GetCategoryUseCase from "../get-category.use-case";
+import { GetCategoryUseCase } from "../get-category.use-case";
 import CategoryInMemoryRepository from "../../../infra/repository/category-in-memory.repository";
-import NotFoundError from "#seedwork/domain/errors/not-found.error";
-import { Category } from "#category/domain/entities/category";
+import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
+import { Category } from "../../../domain/entities/category";
 
 describe('GetCategoryUseCase Unit Tests', () => {
-    let useCase: GetCategoryUseCase;
+    let useCase: GetCategoryUseCase.UseCase;
     let repository: CategoryInMemoryRepository;
 
     beforeEach(() => {
         repository = new CategoryInMemoryRepository();
-        useCase = new GetCategoryUseCase(repository);
+        useCase = new GetCategoryUseCase.UseCase(repository);
     });
 
     it('should throw error when entity is not found', async () => {
@@ -20,11 +20,11 @@ describe('GetCategoryUseCase Unit Tests', () => {
 
     it('should return a category', async () => {
         const items = [
-            new Category({name: 'Movie'})
+            new Category({ name: 'Movie' })
         ];
         repository.items = items;
         const spyFindById = jest.spyOn(repository, "findById");
-        let output = await useCase.execute({id: items[0].id});
+        let output = await useCase.execute({ id: items[0].id });
         expect(spyFindById).toHaveBeenCalledTimes(1);
         expect(output).toStrictEqual({
             id: items[0].id,

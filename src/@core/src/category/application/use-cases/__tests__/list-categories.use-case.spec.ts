@@ -1,16 +1,16 @@
-import ListCategoryUseCase from "../list-categories.use-case";
+import { ListCategoriesUseCase } from "../list-categories.use-case";
 import CategoryInMemoryRepository from "../../../infra/repository/category-in-memory.repository";
-//import NotFoundError from "../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "#category/domain/entities/category";
-import { CategoryRepository } from "#category/domain/repository/category.repository";
+//import NotFoundError from "#seedwork/domain/errors/not-found.error";
+import { Category } from "../../../domain/entities/category";
+import { CategoryRepository } from "../../../domain/repository/category.repository";
 
-describe('ListCategoryUseCase Unit Tests', () => {
-    let useCase: ListCategoryUseCase;
+describe('ListCategoriesUseCase Unit Tests', () => {
+    let useCase: ListCategoriesUseCase.UseCase;
     let repository: CategoryInMemoryRepository;
 
     beforeEach(() => {
         repository = new CategoryInMemoryRepository();
-        useCase = new ListCategoryUseCase(repository);
+        useCase = new ListCategoriesUseCase.UseCase(repository);
     });
 
     test('toOutput method', async () => {
@@ -78,7 +78,7 @@ describe('ListCategoryUseCase Unit Tests', () => {
             new Category({ name: 'AaA' }),
             new Category({ name: 'b' }),
             new Category({ name: 'c' }),
-            
+
         ];
         repository.items = items;
 
