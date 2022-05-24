@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
-//@ts-ignore
 import { Category } from '@fc/micro-videos/category/domain';
 
 @Controller()
