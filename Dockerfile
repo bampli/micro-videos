@@ -10,7 +10,7 @@ RUN apt update && \
     wget \
     fonts-powerline
 
-RUN npm install -g @nestjs/cli@8.2.6 npm@8.9.0
+RUN npm install -g @nestjs/cli@8.2.6 npm@8.10.0
 
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 

@@ -10,10 +10,10 @@
         "./category/*"
       ]
     },
-    "typeRoots": [                                       /* Specify multiple folders that act like `./node_modules/@types`. */
-      "./node_modules/@types",
-      "#seedwork/@types",
-    ],
+    // "typeRoots": [                                       /* Specify multiple folders that act like `./node_modules/@types`. */
+    //   "./node_modules/@types",
+    //   "#seedwork/@types",
+    // ],
     "outDir": "./dist",                               /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
   },
   "include": ["./src"]

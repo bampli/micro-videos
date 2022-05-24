@@ -46,6 +46,18 @@ npm install regenerator-runtime --save-dev
 
 ```
 
+### Workflow
+
+```
+
+# Build @core
+npm run build -w @fc/micro-videos
+
+# Start nestjs development
+npm run start:dev
+
+```
+
 ## Versions
 
 ```
