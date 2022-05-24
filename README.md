@@ -62,7 +62,11 @@ npm run cti:@core -w @fc/micro-videos
 # Compile @core --noEmit
 npm run tsc:check -w @fc/micro-videos
 
-# Tests @core
+# Tests @core & nestjs
+npm run test
+npm run test -- --projects src/@core
+npm run test -- --projects src/nestjs
+
 npm run test -w @fc/micro-videos
 
 ```
