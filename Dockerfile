@@ -1,4 +1,4 @@
-FROM node:16.14.0-slim
+FROM node:18.2.0-slim
 
 RUN apt update && \
     apt install -y \
@@ -9,6 +9,8 @@ RUN apt update && \
     curl \
     wget \
     fonts-powerline
+
+RUN npm install -g @nestjs/cli@8.2.6 npm@8.10.0
 
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
 
@@ -28,7 +30,7 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/download/
 RUN echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc && \
     echo 'HISTFILE=/home/node/zsh/.zsh_history' >> ~/.zshrc
 
-CMD [ "sh", "-c", "npm install && tail -f /dev/null" ]
+#CMD [ "sh", "-c", "npm install && tail -f /dev/null" ]
 
-#CMD ["tail", "-f", "/dev/null"]
+CMD ["tail", "-f", "/dev/null"]
 
