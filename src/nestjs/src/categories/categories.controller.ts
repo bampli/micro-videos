@@ -16,19 +16,21 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoriesController {
   constructor(
     private readonly categoriesService: CategoriesService,
-    private createUseCase: CreateCategoryUseCase.UseCase,
-    private listUseCase: ListCategoriesUseCase.UseCase,
+    // private createUseCase: CreateCategoryUseCase.UseCase,
+    // private listUseCase: ListCategoriesUseCase.UseCase,
   ) { }
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.createUseCase.execute({ name: 'testing' });
+    return this.categoriesService.create({ name: 'test' });
+    //return this.createUseCase.execute({ name: 'testing' });
     //return this.categoriesService.create(createCategoryDto);
   }
 
   @Get()
   findAll() {
-    return this.listUseCase.execute({});
+    return this.categoriesService.search({});
+    //return this.listUseCase.execute({});
     //return this.categoriesService.findAll();
   }
 
