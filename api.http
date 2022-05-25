@@ -1,1 +1,29 @@
-GET http://localhost:3000/
+GET http://localhost:3003/categories
+
+###
+POST http://localhost:3003/categories
+
+
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json; charset=utf-8
+Content-Length: 205
+ETag: W/"cd-dnLeCsTF+e6xN4FdCnXaIK9FE04"
+Date: Wed, 25 May 2022 21:21:33 GMT
+Connection: close
+
+{
+  "items": [
+    {
+      "id": "b052f684-6b12-4642-8bc6-41249d776ffc",
+      "name": "testing",
+      "description": null,
+      "is_active": true,
+      "created_at": "2022-05-25T21:21:30.753Z"
+    }
+  ],
+  "total": 1,
+  "current_page": 1,
+  "last_page": 1,
+  "per_page": 15
+}
