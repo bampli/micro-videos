@@ -7,6 +7,7 @@ import {
   Patch,
   Param,
   Delete,
+  Inject,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -14,11 +15,15 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Controller('categories')
 export class CategoriesController {
-  constructor(
-    private readonly categoriesService: CategoriesService,
-    // private createUseCase: CreateCategoryUseCase.UseCase,
-    // private listUseCase: ListCategoriesUseCase.UseCase,
-  ) { }
+
+  @Inject(CategoriesService)
+  private readonly categoriesService: CategoriesService;
+
+  // constructor(
+  //   private readonly categoriesService: CategoriesService,
+  //   // private createUseCase: CreateCategoryUseCase.UseCase,
+  //   // private listUseCase: ListCategoriesUseCase.UseCase,
+  // ) { }
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
