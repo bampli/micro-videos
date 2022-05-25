@@ -1,26 +1,30 @@
 # micro-videos
 Video catalog admin backend
 
+### DDD
+
 ![image](https://user-images.githubusercontent.com/86032/169137869-414c9e67-19a6-4458-a453-76c7d8273562.png)
 
+### Nest.js
+
+[more](https://github.com/bampli/micro-videos/issues/10)
+
+![image](https://user-images.githubusercontent.com/86032/170346318-6e89b8f9-d51d-45df-a7bf-a09fd2512472.png)
+
+### Monorepo with @core & nestjs
 
 ```
 - dev tools
 - app node.js + typescript
-- category entity
-- tests unit & integ
-- uses cases & repo
-- test integ
+- domain category entity validation
+- unit & integration tests
+- use-case & repository
 
 - other entities: genre, cast member, video
 
 - nest.js api rest
-- RabbitMQ & Encoder integ
+- RabbitMQ & Encoder integration
 - E2E tests
-
-```
-
-```
 
 - entity: crucial rules (exist)
 - services: app rules (persist)
@@ -41,6 +45,7 @@ npm install uuid @types/uuid --save
 npm install create-ts-index --save-dev
 
 npm install @swc/jest --save-dev -w nestjs
+npm install @swc/core --save-dev -w nestjs
 
 # TODO: check why it was NOT necessary to install
 # Test InMemoryRepository part 1 (7:10)
