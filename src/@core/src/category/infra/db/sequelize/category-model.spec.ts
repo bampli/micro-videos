@@ -8,7 +8,7 @@ describe('CategoryModel Unit Tests', () => {
     beforeAll(() => sequelize = new Sequelize({
         dialect: 'sqlite',
         host: ':memory',
-        logging: true,
+        logging: false,         // show db logs at tests
         models: [CategoryModel],
     }));
 
@@ -19,6 +19,17 @@ describe('CategoryModel Unit Tests', () => {
     afterAll(async () => {
         await sequelize.close()
     });
+
+    test('create', async () => {
+        const arrange = {
+            id: '957334c5-91b9-4986-9b43-0d42f2edfbe9',
+            name: 'test',
+            is_active: true,
+            created_at: new Date()
+        };
+        const category = await CategoryModel.create(arrange);
+        expect(category.toJSON()).toStrictEqual(arrange);
+    })
 
     it('anything', () => {
 
