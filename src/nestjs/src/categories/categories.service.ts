@@ -3,16 +3,16 @@ import {
   ListCategoriesUseCase,
 } from '@fc/micro-videos/category/application';
 import { Inject, Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
+//import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
-  @Inject(CreateCategoryUseCase.UseCase)
-  private createUseCase: CreateCategoryUseCase.UseCase;
+  // @Inject(CreateCategoryUseCase.UseCase)
+  // private createUseCase: CreateCategoryUseCase.UseCase;
 
-  @Inject(ListCategoriesUseCase.UseCase)
-  private listUseCase: ListCategoriesUseCase.UseCase;
+  // @Inject(ListCategoriesUseCase.UseCase)
+  // private listUseCase: ListCategoriesUseCase.UseCase;
 
   // constructor(
   //   private readonly categoriesService: CategoriesService,
@@ -21,11 +21,13 @@ export class CategoriesService {
   // ) {}
 
   create(createCategoryDto: CreateCategoryUseCase.Input) {
-    return this.createUseCase.execute(createCategoryDto);
+    return `This action creates a category`;
+    //return this.createUseCase.execute(createCategoryDto);
   }
 
   search(input: ListCategoriesUseCase.Input) {
-    return this.listUseCase.execute(input);
+    return `This action list categories`;
+    //return this.listUseCase.execute(input);
   }
 
   findOne(id: number) {
