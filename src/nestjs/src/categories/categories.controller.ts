@@ -38,7 +38,7 @@ export class CategoriesController {
 
   @Inject(ListCategoriesUseCase.UseCase)
   private listUseCase: ListCategoriesUseCase.UseCase;
-
+  // methods
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.createUseCase.execute(createCategoryDto);
