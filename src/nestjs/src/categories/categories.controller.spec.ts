@@ -1,4 +1,9 @@
-import { CreateCategoryUseCase, GetCategoryUseCase } from '@fc/micro-videos/category/application';
+import {
+  CreateCategoryUseCase,
+  GetCategoryUseCase,
+  ListCategoriesUseCase,
+} from '@fc/micro-videos/category/application';
+import { SortDirection } from '@fc/micro-videos/dist/@seedwork/domain/repository/repository-contracts';
 import { CategoriesController } from './categories.controller';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -104,7 +109,36 @@ describe('CategoriesController Unit Tests', () => {
     expect(output).toStrictEqual(expectedOutput);
   });
 
-  it('should list categories', () => {
-    expect(controller).toBeDefined();
+  it('should list categories', async () => {
+    const expectedOutput: ListCategoriesUseCase.Output = {
+      items: [
+        {
+          id: '957334c5-91b9-4986-9b43-0d42f2edfbe9',
+          name: 'Movie',
+          description: 'some description',
+          is_active: true,
+          created_at: new Date(),
+        },
+      ],
+      current_page: 1,
+      last_page: 1,
+      per_page: 1,
+      total: 1,
+    };
+    const mockListUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
+    };
+    //@ts-expect-error
+    controller['listUseCase'] = mockListUseCase;
+    const searchParams = {
+      page: 1,
+      per_page: 2,
+      sort: 'name',
+      sort_dir: 'desc' as SortDirection,
+      filter: 'test',
+    };
+    const output = await controller.search(searchParams);
+    expect(mockListUseCase.execute).toBeCalledWith(searchParams);
+    expect(output).toStrictEqual(expectedOutput);
   });
 });
