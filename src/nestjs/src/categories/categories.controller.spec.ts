@@ -1,6 +1,7 @@
 import { CreateCategoryUseCase } from '@fc/micro-videos/category/application';
 import { CategoriesController } from './categories.controller';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 //import { Test, TestingModule } from '@nestjs/testing';
 //import { CategoriesService } from './categories.service';
 
@@ -23,7 +24,7 @@ describe('CategoriesController Unit Tests', () => {
   //   expect(controller).toBeDefined();
   // });
 
-  it('should create a category', async() => {
+  it('should create a category', async () => {
     const expectedOutput: CreateCategoryUseCase.Output = {
       id: '957334c5-91b9-4986-9b43-0d42f2edfbe9',
       name: 'Movie',
@@ -46,8 +47,28 @@ describe('CategoriesController Unit Tests', () => {
     expect(output).toStrictEqual(expectedOutput);
   });
 
-  it('should update a category', () => {
-    expect(controller).toBeDefined();
+  it('should update a category', async () => {
+    const id = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
+    const expectedOutput: CreateCategoryUseCase.Output = {
+      id,
+      name: 'Movie',
+      description: 'some description',
+      is_active: true,
+      created_at: new Date(),
+    };
+    const mockUpdateUseCase = {
+      execute: jest.fn().mockReturnValue(expectedOutput),
+    };
+    //@ts-expect-error
+    controller['updateUseCase'] = mockUpdateUseCase;
+    const input: UpdateCategoryDto = {
+      name: 'Movie',
+      description: 'some description',
+      is_active: true,
+    };
+    const output = await controller.update(id, input);
+    expect(mockUpdateUseCase.execute).toBeCalledWith({ id, ...input });
+    expect(output).toStrictEqual(expectedOutput);
   });
 
   it('should delete a category', () => {
