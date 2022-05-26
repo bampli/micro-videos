@@ -9,5 +9,5 @@ export class UpdateCategoryDto implements UpdateCategoryUseCase.Input {
   id: string;
   name: string;
   description?: string;
-  is_actve?: boolean;
+  is_active?: boolean;
 }

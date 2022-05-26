@@ -1,11 +1,4 @@
 import {
-  CreateCategoryUseCase,
-  DeleteCategoryUseCase,
-  GetCategoryUseCase,
-  ListCategoriesUseCase,
-  UpdateCategoryUseCase,
-} from '@fc/micro-videos/category/application';
-import {
   Controller,
   Get,
   Post,
@@ -17,6 +10,13 @@ import {
   HttpCode,
   Query,
 } from '@nestjs/common';
+import {
+  CreateCategoryUseCase,
+  DeleteCategoryUseCase,
+  GetCategoryUseCase,
+  ListCategoriesUseCase,
+  UpdateCategoryUseCase,
+} from '@fc/micro-videos/category/application';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
