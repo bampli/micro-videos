@@ -1,5 +1,4 @@
-import { Model } from 'sequelize';
-import { Column, DataType, PrimaryKey, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
 
 type CategoryModelProperties = {
     id: string;
@@ -21,9 +20,9 @@ export class CategoryModel extends Model<CategoryModelProperties> {
     @Column({ type: DataType.TEXT })
     description: string | null;
 
-    @Column({ allowNull: false })
+    @Column({ allowNull: false, type: DataType.BOOLEAN })
     is_active: boolean;
 
-    @Column({ allowNull: false })
+    @Column({ allowNull: false, type: DataType.DATE })
     created_at: Date;
 }
