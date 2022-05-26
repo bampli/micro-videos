@@ -1,4 +1,4 @@
-import { CreateCategoryUseCase } from '@fc/micro-videos/category/application';
+import { CreateCategoryUseCase, GetCategoryUseCase } from '@fc/micro-videos/category/application';
 import { CategoriesController } from './categories.controller';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
@@ -85,8 +85,23 @@ describe('CategoriesController Unit Tests', () => {
     expect(output).toStrictEqual(expectedOutput);
   });
 
-  it('should get a category', () => {
-    expect(controller).toBeDefined();
+  it('should get a category', async () => {
+    const id = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
+    const expectedOutput: GetCategoryUseCase.Output = {
+      id,
+      name: 'Movie',
+      description: 'some description',
+      is_active: true,
+      created_at: new Date(),
+    };
+    const mockGetUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
+    };
+    //@ts-expect-error
+    controller['getUseCase'] = mockGetUseCase;
+    const output = await controller.findOne(id);
+    expect(mockGetUseCase.execute).toBeCalledWith({ id });
+    expect(output).toStrictEqual(expectedOutput);
   });
 
   it('should list categories', () => {
