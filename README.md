@@ -46,6 +46,8 @@ npm install create-ts-index --save-dev
 
 npm install @swc/jest --save-dev -w nestjs
 npm install @swc/core --save-dev -w nestjs
+npm install sequelize sequelize-typescript -w @fc/micro-videos --save
+npm install sqlite3 -w @fc/micro-videos --save
 
 # TODO: check why it was NOT necessary to install
 # Test InMemoryRepository part 1 (7:10)
@@ -108,5 +110,8 @@ npm run test -w @fc/micro-videos
 jest @28.0.3
 uuid @8.3.2
 class-validator @0.13.2
+sequelize @6.20.0
+sequelize-typescript @2.1.3
+sqlite3 @5.0.8
 
 ```
