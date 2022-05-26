@@ -33,7 +33,7 @@ describe('CategoriesController Unit Tests', () => {
       created_at: new Date(),
     };
     const mockCreateUseCase = {
-      execute: jest.fn().mockReturnValue(expectedOutput),
+      execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
     };
     //@ts-expect-error
     controller['createUseCase'] = mockCreateUseCase;
@@ -57,7 +57,7 @@ describe('CategoriesController Unit Tests', () => {
       created_at: new Date(),
     };
     const mockUpdateUseCase = {
-      execute: jest.fn().mockReturnValue(expectedOutput),
+      execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
     };
     //@ts-expect-error
     controller['updateUseCase'] = mockUpdateUseCase;
@@ -71,8 +71,18 @@ describe('CategoriesController Unit Tests', () => {
     expect(output).toStrictEqual(expectedOutput);
   });
 
-  it('should delete a category', () => {
-    expect(controller).toBeDefined();
+  it('should delete a category', async () => {
+    const expectedOutput = undefined;
+    const mockDeleteUseCase = {
+      execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
+    };
+    //@ts-expect-error
+    controller['deleteUseCase'] = mockDeleteUseCase;
+    const id = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
+    expect(controller.remove(id)).toBeInstanceOf(Promise);
+    const output = await controller.remove(id);
+    expect(mockDeleteUseCase.execute).toHaveBeenCalledWith({ id });
+    expect(output).toStrictEqual(expectedOutput);
   });
 
   it('should get a category', () => {
