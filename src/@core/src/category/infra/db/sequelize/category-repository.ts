@@ -1,7 +1,8 @@
 import { UniqueEntityId } from "#seedwork/domain";
 import { CategoryRepository, Category } from "#category/domain";
 import { CategoryModel } from "./category-model";
-
+import { CategoryModelMapper } from "./category-mapper";
+import { NotFoundError } from '#seedwork/domain';
 
 export class CategorySequelizeRepository
     implements CategoryRepository.Repository {
@@ -13,12 +14,25 @@ export class CategorySequelizeRepository
     async insert(entity: Category): Promise<void> {
         await this.categoryModel.create(entity.toJSON());
     }
-    //@ts-expect-error
-    async findById(id: string | UniqueEntityId): Promise<Category> { }
+
+    async findById(id: string | UniqueEntityId): Promise<Category> {
+        const _id = `${id}`;
+        const model = await this._get(_id);
+        return CategoryModelMapper.toEntity(model);
+    }
+
     //@ts-expect-error
     async findAll(): Promise<Category[]> { }
     async update(entity: Category): Promise<void> { }
     async delete(id: string | UniqueEntityId): Promise<void> { }
+
+    private async _get(id: string): Promise<CategoryModel> {
+        return this.categoryModel.findByPk(id, {
+            rejectOnEmpty: new NotFoundError(`Entity not found with ID ${id}`)
+        });
+
+    }
+
     async search(
         props: CategoryRepository.SearchParams
         //@ts-expect-error
