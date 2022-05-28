@@ -1,8 +1,7 @@
-import { UniqueEntityId } from "#seedwork/domain";
+import { UniqueEntityId, NotFoundError } from "#seedwork/domain";
 import { CategoryRepository, Category } from "#category/domain";
 import { CategoryModel } from "./category-model";
 import { CategoryModelMapper } from "./category-mapper";
-import { NotFoundError } from '#seedwork/domain';
 
 export class CategorySequelizeRepository
     implements CategoryRepository.Repository {
