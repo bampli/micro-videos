@@ -29,7 +29,7 @@ describe('CategoryModelMapper Unit Tests', () => {
         const model = CategoryModel.build({ id: uuid });
         try {
             CategoryModelMapper.toEntity(model);
-            fail('Category is valid, it was supposed to throw LoadEntityError');
+            fail('Category is valid, but it was supposed to throw LoadEntityError');
         } catch (e) {
             expect(e).toBeInstanceOf(LoadEntityError);
             expect(e.error).toMatchObject({
@@ -38,7 +38,6 @@ describe('CategoryModelMapper Unit Tests', () => {
                     "name must be a string",
                     "name must be shorter than or equal to 255 characters",
                 ],
-
             })
         }
     })
