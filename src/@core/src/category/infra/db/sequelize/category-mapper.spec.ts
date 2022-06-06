@@ -45,15 +45,37 @@ describe('CategoryModelMapper Unit Tests', () => {
     it('should throw a generic error', () => {
         const error = new Error("generic Error");
         const spyValidate = jest
-        .spyOn(Category, "validate")
-        .mockImplementation(() => {
-            throw error;
-        });
+            .spyOn(Category, "validate")
+            .mockImplementation(() => {
+                throw error;
+            });
 
         const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
         const model = CategoryModel.build({ id: uuid });
         expect(() => CategoryModelMapper.toEntity(model)).toThrow(error);
         expect(spyValidate).toHaveBeenCalled();
+    });
+
+    it('should convert category model to category entity', () => {
+        const created_at = new Date();
+        const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
+        const model = CategoryModel.build({
+            id: uuid,
+            name: "some name",
+            description: "some description",
+            is_active: true,
+            created_at
+        });
+        const entity = CategoryModelMapper.toEntity(model);
+        expect(entity.toJSON()).toStrictEqual((
+            new Category({
+                name: "some name",
+                description: "some description",
+                is_active: true,
+                created_at
+            },
+            new UniqueEntityId(uuid)).toJSON()
+        ));
     });
 
 })
