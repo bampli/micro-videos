@@ -20,8 +20,12 @@ export class CategorySequelizeRepository
         return CategoryModelMapper.toEntity(model);
     }
 
-    //@ts-expect-error
-    async findAll(): Promise<Category[]> { }
+    async findAll(): Promise<Category[]> {
+        const models = await this.categoryModel.findAll();
+        return models.map((m) => CategoryModelMapper.toEntity(m));
+    }
+
+
     async update(entity: Category): Promise<void> { }
     async delete(id: string | UniqueEntityId): Promise<void> { }
 
