@@ -36,16 +36,16 @@ export class CategorySequelizeRepository
 
     }
 
-    // Search needs to issue a couple SQL queries:
+    // Search issues a couple SQL queries to DB:
     //  1. search for total count based on filter
-    //  2. search for corresponding page content
+    //  2. search for sorted page content
     async search(
         props: CategoryRepository.SearchParams
     ): Promise<CategoryRepository.SearchResult> {
         const offset = (props.page - 1) * props.per_page;
         const limit = props.per_page;
         const { rows: models, count } = await this.categoryModel.findAndCountAll({
-            ...(props.filter && {
+            ...(props.filter && {   // smart typescript: if props not null then
                 where: { name: { [Op.like]: `%${props.filter}%` } }
             }),
             ...(props.sort && this.sortableFields.includes(props.sort)

@@ -12,7 +12,7 @@ export class CategoryModelMapper {
         try {
             return new Category(otherData, new UniqueEntityId(id));
         } catch (e) {
-            if (e instanceof EntityValidationError) {
+            if (e instanceof EntityValidationError) {   // handle DB failure
                 throw new LoadEntityError(e.error);
             }
             throw e;
