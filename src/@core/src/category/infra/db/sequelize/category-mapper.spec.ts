@@ -1,29 +1,15 @@
 import { CategoryModel } from "./category-model";
-import { Sequelize } from "sequelize-typescript";
-import { CategorySequelizeRepository } from "./category-repository";
 import { Category } from '#category/domain';
 import { UniqueEntityId, LoadEntityError, NotFoundError } from "#seedwork/domain";
 import { CategoryModelMapper } from "./category-mapper";
-
+import { setupSequelize } from "../../../../@seedwork/infra/testing/helpers/db";
 
 describe('CategoryModelMapper Unit Tests', () => {
-    let sequelize: Sequelize;
 
-    beforeAll(() => sequelize = new Sequelize({
-        dialect: 'sqlite',
-        host: ':memory',
-        logging: false,         // show db logs at tests
+    const sequelize = setupSequelize({
         models: [CategoryModel],
-    }));
-
-    beforeEach(async () => {
-        await sequelize.sync({ force: true });
     });
-
-    afterAll(async () => {
-        await sequelize.close()
-    });
-
+    
     it('should throw error when category is invalid', () => {
         const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
         const model = CategoryModel.build({ id: uuid });
@@ -54,6 +40,7 @@ describe('CategoryModelMapper Unit Tests', () => {
         const model = CategoryModel.build({ id: uuid });
         expect(() => CategoryModelMapper.toEntity(model)).toThrow(error);
         expect(spyValidate).toHaveBeenCalled();
+        spyValidate.mockRestore();  // added here to avoid error at next test
     });
 
     it('should convert category model to category entity', () => {
@@ -74,7 +61,7 @@ describe('CategoryModelMapper Unit Tests', () => {
                 is_active: true,
                 created_at
             },
-            new UniqueEntityId(uuid)).toJSON()
+                new UniqueEntityId(uuid)).toJSON()
         ));
     });
 

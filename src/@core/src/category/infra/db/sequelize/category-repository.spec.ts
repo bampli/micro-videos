@@ -3,26 +3,17 @@ import { CategoryModel } from "./category-model";
 import { CategorySequelizeRepository } from "./category-repository";
 import { Category } from '#category/domain';
 import { UniqueEntityId, NotFoundError } from "#seedwork/domain";
+import { setupSequelize } from "../../../../@seedwork/infra/testing/helpers/db";
 
 describe('CategorySequelizeRepository Unit Tests', () => {
-    let sequelize: Sequelize;
-    let repository: CategorySequelizeRepository;
-
-    // init connection, create table before each test & disconnect
-    beforeAll(() => sequelize = new Sequelize({
-        dialect: 'sqlite',
-        host: ':memory',
-        logging: false,         // show db logs at tests
+    
+    const sequelize = setupSequelize({
         models: [CategoryModel],
-    }));
+    });    
+    let repository: CategorySequelizeRepository;
 
     beforeEach(async () => {
         repository = new CategorySequelizeRepository(CategoryModel);
-        await sequelize.sync({ force: true });
-    });
-
-    afterAll(async () => {
-        await sequelize.close()
     });
 
     it('should insert a new entity', async () => {
@@ -74,6 +65,6 @@ describe('CategorySequelizeRepository Unit Tests', () => {
 
     it('should search', async () => {
         await CategoryModel.factory().create();
-        console.log(await CategoryModel.findAll());
+        //console.log(await CategoryModel.findAll());
     });
 });

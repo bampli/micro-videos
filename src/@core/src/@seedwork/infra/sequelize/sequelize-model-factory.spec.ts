@@ -1,7 +1,15 @@
-import { Column, DataType, Model, PrimaryKey, Sequelize, Table } from "sequelize-typescript";
+import {
+    Column,
+    DataType,
+    Model,
+    PrimaryKey,
+    Sequelize,
+    Table
+} from "sequelize-typescript";
 import { SequelizeModelFactory } from './sequelize-model-factory';
 import _chance from 'chance';
 import { validate as uuidValidate } from 'uuid';
+import { setupSequelize } from "../../../@seedwork/infra/testing/helpers/db";
 
 const chance = _chance();
 
@@ -27,23 +35,9 @@ class StubModel extends Model {
 
 describe('SequelizeModelFactory Unit Tests', () => {
 
-    let sequelize: Sequelize;
-
-    beforeAll(() => sequelize = new Sequelize({
-        dialect: 'sqlite',
-        host: ':memory',
-        logging: false,         // show db logs at tests
+    const sequelize = setupSequelize({
         models: [StubModel],
-    }));
-
-    beforeEach(async () => {
-        await sequelize.sync({ force: true });
     });
-
-    afterAll(async () => {
-        await sequelize.close()
-    });
-
 
     test('create method', async () => {
         let model = await StubModel.factory().create();
@@ -53,7 +47,7 @@ describe('SequelizeModelFactory Unit Tests', () => {
         // get model from DB
         let modelFound = await StubModel.findByPk(model.id);
         expect(model.id).toBe(modelFound.id);
-        
+
         // repeat with custom data
         const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
         model = await StubModel.factory().create({
