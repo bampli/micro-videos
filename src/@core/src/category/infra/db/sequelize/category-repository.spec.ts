@@ -71,4 +71,8 @@ describe('CategorySequelizeRepository Unit Tests', () => {
         expect(entities).toHaveLength(1);
         expect(JSON.stringify(entities)).toBe(JSON.stringify([entity]));
     });
+
+    it('should search', async () => {
+        
+    });
 });
