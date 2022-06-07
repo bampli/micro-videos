@@ -6,7 +6,7 @@ export class SequelizeModelFactory {
     }
 
     async create(data?) {
-        this.model.create(data ? data : this.factoryProps());
+        return this.model.create(data ? data : this.factoryProps());
     }
 
     make() { }
