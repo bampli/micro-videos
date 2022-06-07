@@ -48,6 +48,8 @@ npm install @swc/jest --save-dev -w nestjs
 npm install @swc/core --save-dev -w nestjs
 npm install sequelize sequelize-typescript -w @fc/micro-videos --save
 npm install sqlite3 -w @fc/micro-videos --save
+npm install chance -w @fc/micro-videos --save
+npm install @types/chance -w @fc/micro-videos --save-dev
 
 # TODO: check why it was NOT necessary to install
 # Test InMemoryRepository part 1 (7:10)
@@ -113,5 +115,6 @@ class-validator @0.13.2
 sequelize @6.20.0
 sequelize-typescript @2.1.3
 sqlite3 @5.0.8
+chance @1.1.8
 
 ```

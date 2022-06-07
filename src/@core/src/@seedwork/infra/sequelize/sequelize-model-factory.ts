@@ -1,6 +1,13 @@
 
 export class SequelizeModelFactory {
-    async create() { }
+
+    constructor(private model, private factoryProps: () => any){
+
+    }
+
+    async create(data?) {
+        this.model.create(data ? data : this.factoryProps());
+    }
 
     make() { }
 
@@ -8,3 +15,5 @@ export class SequelizeModelFactory {
 
     bulkMake() { }
 }
+
+// CategoryModel.factory().create()

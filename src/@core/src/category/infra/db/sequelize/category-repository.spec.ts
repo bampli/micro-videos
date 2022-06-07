@@ -73,6 +73,7 @@ describe('CategorySequelizeRepository Unit Tests', () => {
     });
 
     it('should search', async () => {
-        
+        await CategoryModel.factory().create();
+        console.log(await CategoryModel.findAll());
     });
 });
