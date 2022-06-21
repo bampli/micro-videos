@@ -29,7 +29,10 @@ class StubModel extends Model {
 
     static factory() {
         //const chance: Chance.Chance = require('chance')();
-        return new SequelizeModelFactory(StubModel, StubModel.mockFactory);
+        return new SequelizeModelFactory<
+            StubModel,
+            {id: string; name: string}
+        >(StubModel, StubModel.mockFactory);
     }
 }
 
@@ -63,7 +66,7 @@ describe('SequelizeModelFactory Unit Tests', () => {
     });
 
     test('make method', async () => {
-        let model = await StubModel.factory().make();
+        let model = StubModel.factory().make();
         expect(uuidValidate(model.id)).toBeTruthy();
         expect(model.id).not.toBeNull();
         expect(model.name).not.toBeNull();
@@ -71,7 +74,7 @@ describe('SequelizeModelFactory Unit Tests', () => {
 
         // repeat with custom data
         const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
-        model = await StubModel.factory().make({
+        model = StubModel.factory().make({
             id: uuid,
             name: 'test'
         });
@@ -143,15 +146,15 @@ describe('SequelizeModelFactory Unit Tests', () => {
     });
 
     test('bulkMake method using count = 1', async () => {
-        let models = await StubModel.factory().bulkMake();
+        let models = StubModel.factory().bulkMake();
         expect(models).toHaveLength(1);
         expect(models[0].id).not.toBeNull();
         expect(models[0].name).not.toBeNull();
         expect(StubModel.mockFactory).toHaveBeenCalled();
-        
+
         // repeat with custom data
         const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
-        models = await StubModel.factory().bulkMake(() => ({
+        models = StubModel.factory().bulkMake(() => ({
             id: uuid,
             name: 'test'
         }));
@@ -162,7 +165,7 @@ describe('SequelizeModelFactory Unit Tests', () => {
     });
 
     test('bulkMake method using count > 1', async () => {
-        let models = await StubModel.factory().count(2).bulkMake();
+        let models = StubModel.factory().count(2).bulkMake();
         expect(models).toHaveLength(2);
         expect(models[0].id).not.toBeNull();
         expect(models[0].name).not.toBeNull();
@@ -172,7 +175,7 @@ describe('SequelizeModelFactory Unit Tests', () => {
 
         // repeat with custom data
         const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
-        models = await StubModel.factory().count(2).bulkMake(() => ({
+        models = StubModel.factory().count(2).bulkMake(() => ({
             id: chance.guid({ version: 4 }),
             name: 'test'
         }));
