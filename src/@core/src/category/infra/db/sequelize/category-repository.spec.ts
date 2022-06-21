@@ -5,6 +5,7 @@ import { Category, CategoryRepository } from '#category/domain';
 import { UniqueEntityId, NotFoundError } from "#seedwork/domain";
 import { setupSequelize } from "../../../../@seedwork/infra/testing/helpers/db";
 import _chance from 'chance';
+import { CategoryModelMapper } from "./category-mapper";
 
 describe('CategorySequelizeRepository Unit Tests', () => {
 
@@ -68,17 +69,24 @@ describe('CategorySequelizeRepository Unit Tests', () => {
     });
 
     describe('search method tests', () => {
-        it('should apply paginate when other params are null', async () => {
+        it('should apply paginate when search params are null', async () => {
             const created_at = new Date();
-            await CategoryModel.factory().count(16).bulkCreate(() => ({
-                id: chance.guid({ version: 4 }),
-                name: 'Movie',
-                description: null,
-                is_active: true,
-                created_at
-            }));
-            const searchOutput = await repository.search(new CategoryRepository.SearchParams());
+            await CategoryModel.factory()
+                .count(16)
+                .bulkCreate(() => ({
+                    id: chance.guid({ version: 4 }),
+                    name: 'Movie',
+                    description: null,
+                    is_active: true,
+                    created_at
+                }));
+            const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
+
+            const searchOutput = await repository.search(
+                new CategoryRepository.SearchParams()
+            );
             expect(searchOutput).toBeInstanceOf(CategoryRepository.SearchResult);
+            expect(spyToEntity).toHaveBeenCalledTimes(15);
             expect(searchOutput.toJSON()).toMatchObject({
                 total: 16,
                 current_page: 1,
@@ -101,8 +109,33 @@ describe('CategorySequelizeRepository Unit Tests', () => {
                     created_at
                 })
             );
+        });
+
+        it('should order by created_at DESC when search params are null', async () => {
+            const created_at = new Date();
+            await CategoryModel.factory()
+                .count(16)
+                .bulkCreate((index) => ({
+                    id: chance.guid({ version: 4 }),
+                    name: `Movie${index}`,
+                    description: null,
+                    is_active: true,
+                    created_at: new Date(created_at.getTime() + 100 * index)
+                }));
+            const searchOutput = await repository.search(
+                new CategoryRepository.SearchParams()
+            );
+            searchOutput.items.reverse().forEach((item, index) => {
+                expect(`${item.name}${index + 1}`);
+            });
+
+            // option to avoid typescript errors
+            // const items = searchOutput.items;
+            // [...items].reverse().forEach((item, index) => {
+            //     expect(`${item.name}${index + 1}`);
+            // });
+        });
     });
-});
 
 
 });
