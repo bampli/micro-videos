@@ -24,7 +24,12 @@ export class SequelizeModelFactory {
         return this.model.bulkCreate(data);
     }
 
-    bulkMake() { }
+    bulkMake(factoryProps?: (index: number) => any) {
+        const data = new Array(this._count)
+            .fill(factoryProps ? factoryProps : this.defaultFactoryProps)
+            .map((factory, index) => factory(index));
+        return this.model.bulkBuild(data);
+    }
 }
 
 // CategoryModel.factory().create()
