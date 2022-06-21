@@ -1,21 +1,31 @@
-
 export class SequelizeModelFactory {
 
-    constructor(private model, private factoryProps: () => any){
+    private _count = 1;
 
+    constructor(private model, private defaultFactoryProps: () => any) { }
+
+    count(count: number) {
+        this._count = count;
+        return this;
     }
 
     async create(data?) {
-        return this.model.create(data ? data : this.factoryProps());
+        return this.model.create(data ? data : this.defaultFactoryProps());
     }
 
     make(data?) {
-        return this.model.build(data ? data : this.factoryProps());
+        return this.model.build(data ? data : this.defaultFactoryProps());
     }
 
-    async bulkCreate() { }
+    async bulkCreate(factoryProps?: (index: number) => any) {
+        const data = new Array(this._count)
+            .fill(factoryProps ? factoryProps : this.defaultFactoryProps)
+            .map((factory, index) => factory(index));
+        return this.model.bulkCreate(data);
+    }
 
     bulkMake() { }
 }
 
 // CategoryModel.factory().create()
+// CategoryModel.factory().count(100).bulkCreate()
