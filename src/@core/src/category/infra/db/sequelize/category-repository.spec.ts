@@ -1,16 +1,20 @@
 import { Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "./category-model";
 import { CategorySequelizeRepository } from "./category-repository";
-import { Category } from '#category/domain';
+import { Category, CategoryRepository } from '#category/domain';
 import { UniqueEntityId, NotFoundError } from "#seedwork/domain";
 import { setupSequelize } from "../../../../@seedwork/infra/testing/helpers/db";
+import _chance from 'chance';
 
 describe('CategorySequelizeRepository Unit Tests', () => {
-    
-    const sequelize = setupSequelize({
-        models: [CategoryModel],
-    });    
+
+    setupSequelize({ models: [CategoryModel] });
+    let chance: Chance.Chance;
     let repository: CategorySequelizeRepository;
+
+    beforeAll(() => {
+        chance = _chance();
+    })
 
     beforeEach(async () => {
         repository = new CategorySequelizeRepository(CategoryModel);
@@ -63,8 +67,42 @@ describe('CategorySequelizeRepository Unit Tests', () => {
         expect(JSON.stringify(entities)).toBe(JSON.stringify([entity]));
     });
 
-    it('should search', async () => {
-        await CategoryModel.factory().create();
-        //console.log(await CategoryModel.findAll());
+    describe('search method tests', () => {
+        it('should apply paginate when other params are null', async () => {
+            const created_at = new Date();
+            await CategoryModel.factory().count(16).bulkCreate(() => ({
+                id: chance.guid({ version: 4 }),
+                name: 'Movie',
+                description: null,
+                is_active: true,
+                created_at
+            }));
+            const searchOutput = await repository.search(new CategoryRepository.SearchParams());
+            expect(searchOutput).toBeInstanceOf(CategoryRepository.SearchResult);
+            expect(searchOutput.toJSON()).toMatchObject({
+                total: 16,
+                current_page: 1,
+                last_page: 2,
+                per_page: 15,
+                sort: null,
+                sort_dir: null,
+                filter: null
+            });
+            searchOutput.items.forEach(item => {
+                expect(item).toBeInstanceOf(Category);
+                expect(item.id).toBeDefined();
+            });
+            const items = searchOutput.items.map((item) => item.toJSON());
+            expect(items).toMatchObject(
+                new Array(15).fill({
+                    name: 'Movie',
+                    description: null,
+                    is_active: true,
+                    created_at
+                })
+            );
     });
+});
+
+
 });
