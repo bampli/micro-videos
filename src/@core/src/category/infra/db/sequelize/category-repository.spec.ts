@@ -137,7 +137,6 @@ describe('CategorySequelizeRepository Unit Tests', () => {
         });
 
         it('should combine paginate and filter', async () => {
-
             const defaultProps = {
                 description: null,
                 is_active: true,
@@ -185,5 +184,92 @@ describe('CategorySequelizeRepository Unit Tests', () => {
                 }).toJSON(true)
             );
         });
+
+        it('should combine paginate and sort', async () => {
+            expect(repository.sortableFields).toStrictEqual(["name", "created_at"]);
+            const defaultProps = {
+                description: null,
+                is_active: true,
+                created_at: new Date()
+            };
+
+            const categoriesProp = [
+                { id: chance.guid({ version: 4 }), name: "b", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "a", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "d", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "e", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "c", ...defaultProps },
+            ];
+            const categories = await CategoryModel.bulkCreate(categoriesProp);
+
+            const arrange = [
+                {
+                    params: new CategoryRepository.SearchParams({ page: 1, per_page: 2, sort: 'name' }),
+                    result: new CategoryRepository.SearchResult({
+                        items: [
+                            CategoryModelMapper.toEntity(categories[1]),
+                            CategoryModelMapper.toEntity(categories[0]),
+                        ],
+                        total: 5,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        filter: null
+                    })
+                },
+                {
+                    params: new CategoryRepository.SearchParams({ page: 2, per_page: 2, sort: 'name' }),
+                    result: new CategoryRepository.SearchResult({
+                        items: [
+                            CategoryModelMapper.toEntity(categories[4]),
+                            CategoryModelMapper.toEntity(categories[2]),
+                        ],
+                        total: 5,
+                        current_page: 2,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        filter: null
+                    })
+                },
+                {
+                    params: new CategoryRepository.SearchParams({ page: 1, per_page: 2, sort: 'name', sort_dir: "desc" }),
+                    result: new CategoryRepository.SearchResult({
+                        items: [
+                            CategoryModelMapper.toEntity(categories[3]),
+                            CategoryModelMapper.toEntity(categories[2]),
+                        ],
+                        total: 5,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'desc',
+                        filter: null
+                    })
+                },
+                {
+                    params: new CategoryRepository.SearchParams({ page: 2, per_page: 2, sort: 'name', sort_dir: "desc" }),
+                    result: new CategoryRepository.SearchResult({
+                        items: [
+                            CategoryModelMapper.toEntity(categories[4]),
+                            CategoryModelMapper.toEntity(categories[0]),
+                        ],
+                        total: 5,
+                        current_page: 2,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'desc',
+                        filter: null
+                    })
+                },
+            ];
+
+            for (const i of arrange) {
+                let searchOutput = await repository.search(new CategoryRepository.SearchParams(i.params));
+                expect(searchOutput.toJSON(true)).toMatchObject(i.result.toJSON(true))
+            }
+        });
+
     });
 });
