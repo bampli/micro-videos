@@ -135,7 +135,55 @@ describe('CategorySequelizeRepository Unit Tests', () => {
             //     expect(`${item.name}${index + 1}`);
             // });
         });
+
+        it('should combine paginate and filter', async () => {
+
+            const defaultProps = {
+                description: null,
+                is_active: true,
+                created_at: new Date()
+            };
+
+            const categoriesProp = [
+                { id: chance.guid({ version: 4 }), name: "test", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "a", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "TEST", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "TeSt", ...defaultProps },
+            ];
+            const categories = await CategoryModel.bulkCreate(categoriesProp);
+
+            let searchOutput = await repository.search(
+                new CategoryRepository.SearchParams({ page: 1, per_page: 2, filter: 'TEST' })
+            );
+            expect(searchOutput.toJSON(true)).toMatchObject(
+                new CategoryRepository.SearchResult({
+                    items: [
+                        CategoryModelMapper.toEntity(categories[0]),
+                        CategoryModelMapper.toEntity(categories[2])
+                    ],
+                    total: 3,
+                    current_page: 1,
+                    per_page: 2,
+                    sort: null,
+                    sort_dir: null,
+                    filter: 'TEST',
+                }).toJSON(true)
+            );
+
+            searchOutput = await repository.search(
+                new CategoryRepository.SearchParams({ page: 2, per_page: 2, filter: 'TEST' })
+            );
+            expect(searchOutput.toJSON(true)).toMatchObject(
+                new CategoryRepository.SearchResult({
+                    items: [CategoryModelMapper.toEntity(categories[3])],
+                    total: 3,
+                    current_page: 2,
+                    per_page: 2,
+                    sort: null,
+                    sort_dir: null,
+                    filter: 'TEST'
+                }).toJSON(true)
+            );
+        });
     });
-
-
 });
