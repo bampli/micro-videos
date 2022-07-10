@@ -323,5 +323,52 @@ describe('CategorySequelizeRepository Unit Tests', () => {
             }
         });
 
+        it('should combine again (v2) paginate, sort and filter', async () => {
+            const defaultProps = {
+                description: null,
+                is_active: true,
+                created_at: new Date()
+            };
+            const categoriesProp = [
+                { id: chance.guid({ version: 4 }), name: "test", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "a", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "TEST", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "e", ...defaultProps },
+                { id: chance.guid({ version: 4 }), name: "TeSt", ...defaultProps },
+            ];
+            const categories = await CategoryModel.bulkCreate(categoriesProp);
+            const arrange = [
+                {
+                    params: new CategoryRepository.SearchParams({ page: 1, per_page: 2, sort: 'name', filter: 'TEST' }),
+                    result: new CategoryRepository.SearchResult({
+                        items: [CategoryModelMapper.toEntity(categories[2]), CategoryModelMapper.toEntity(categories[4])],
+                        total: 3,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        filter: 'TEST'
+                    })
+                },
+                {
+                    params: new CategoryRepository.SearchParams({ page: 2, per_page: 2, sort: 'name', filter: 'TEST' }),
+                    result: new CategoryRepository.SearchResult({
+                        items: [CategoryModelMapper.toEntity(categories[0])],
+                        total: 3,
+                        current_page: 2,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        filter: 'TEST'
+                    })
+                },
+            ];
+
+            for (const i of arrange) {
+                let result = await repository.search(new CategoryRepository.SearchParams(i.params));
+                expect(result.toJSON(true)).toMatchObject(i.result.toJSON(true))
+            }
+        });
+
     });
 });
