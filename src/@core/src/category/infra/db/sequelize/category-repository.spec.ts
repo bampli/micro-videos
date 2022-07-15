@@ -7,15 +7,12 @@ import { setupSequelize } from "../../../../@seedwork/infra/testing/helpers/db";
 import _chance from 'chance';
 import { CategoryModelMapper } from "./category-mapper";
 
+const chance = _chance();
+
 describe('CategorySequelizeRepository Unit Tests', () => {
 
     setupSequelize({ models: [CategoryModel] });
-    let chance: Chance.Chance;
     let repository: CategorySequelizeRepository;
-
-    beforeAll(() => {
-        chance = _chance();
-    })
 
     beforeEach(async () => {
         repository = new CategorySequelizeRepository(CategoryModel);
@@ -323,25 +320,32 @@ describe('CategorySequelizeRepository Unit Tests', () => {
             }
         });
 
-        it('should combine again (v2) paginate, sort and filter', async () => {
+        describe('should combine paginate, sort and filter with test.each()', () => {
             const defaultProps = {
                 description: null,
                 is_active: true,
                 created_at: new Date()
             };
-            const categoriesProp = [
+            const categoriesProps = [
                 { id: chance.guid({ version: 4 }), name: "test", ...defaultProps },
                 { id: chance.guid({ version: 4 }), name: "a", ...defaultProps },
                 { id: chance.guid({ version: 4 }), name: "TEST", ...defaultProps },
                 { id: chance.guid({ version: 4 }), name: "e", ...defaultProps },
                 { id: chance.guid({ version: 4 }), name: "TeSt", ...defaultProps },
             ];
-            const categories = await CategoryModel.bulkCreate(categoriesProp);
-            const arrange = [
+            let arrange = [
                 {
-                    params: new CategoryRepository.SearchParams({ page: 1, per_page: 2, sort: 'name', filter: 'TEST' }),
-                    result: new CategoryRepository.SearchResult({
-                        items: [CategoryModelMapper.toEntity(categories[2]), CategoryModelMapper.toEntity(categories[4])],
+                    search_params: new CategoryRepository.SearchParams({
+                        page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        filter: 'TEST'
+                    }),
+                    search_result: new CategoryRepository.SearchResult({
+                        items: [
+                            new Category(categoriesProps[2]), 
+                            new Category(categoriesProps[4])
+                        ],
                         total: 3,
                         current_page: 1,
                         per_page: 2,
@@ -351,9 +355,9 @@ describe('CategorySequelizeRepository Unit Tests', () => {
                     })
                 },
                 {
-                    params: new CategoryRepository.SearchParams({ page: 2, per_page: 2, sort: 'name', filter: 'TEST' }),
-                    result: new CategoryRepository.SearchResult({
-                        items: [CategoryModelMapper.toEntity(categories[0])],
+                    search_params: new CategoryRepository.SearchParams({ page: 2, per_page: 2, sort: 'name', filter: 'TEST' }),
+                    search_result: new CategoryRepository.SearchResult({
+                        items: [new Category(categoriesProps[0])],
                         total: 3,
                         current_page: 2,
                         per_page: 2,
@@ -364,10 +368,16 @@ describe('CategorySequelizeRepository Unit Tests', () => {
                 },
             ];
 
-            for (const i of arrange) {
-                let result = await repository.search(new CategoryRepository.SearchParams(i.params));
-                expect(result.toJSON(true)).toMatchObject(i.result.toJSON(true))
-            }
+            beforeEach(async () => {
+                await CategoryModel.bulkCreate(categoriesProps);
+            });
+
+            test.each(arrange)(
+                'when values is %j',        // 'when values is $search_params'
+                async ({ search_params, search_result }) => {
+                    let result = await repository.search(search_params);
+                    expect(result.toJSON(true)).toMatchObject(search_result.toJSON(true))
+                })
         });
 
     });
