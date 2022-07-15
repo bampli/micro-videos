@@ -246,6 +246,78 @@ describe('InMemorySearchableRepository Unit Tests', () => {
             }
         });
 
+        describe('combine paginate and sort with test.each()', () => {
+            const items = [
+                new StubEntity({ name: "b", price: 5 }),
+                new StubEntity({ name: "a", price: 5 }),
+                new StubEntity({ name: "d", price: 5 }),
+                new StubEntity({ name: "e", price: 5 }),
+                new StubEntity({ name: "c", price: 5 }),
+            ];
+
+            const arrange = [
+                {
+                    search_params: new SearchParams({ page: 1, per_page: 2, sort: 'name' }),
+                    search_result: new SearchResult({
+                        items: [items[1], items[0]],
+                        total: 5,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        filter: null
+                    })
+                },
+                {
+                    search_params: new SearchParams({ page: 2, per_page: 2, sort: 'name' }),
+                    search_result: new SearchResult({
+                        items: [items[4], items[2]],
+                        total: 5,
+                        current_page: 2,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'asc',
+                        filter: null
+                    })
+                },
+                {
+                    search_params: new SearchParams({ page: 1, per_page: 2, sort: 'name', sort_dir: "desc" }),
+                    search_result: new SearchResult({
+                        items: [items[3], items[2]],
+                        total: 5,
+                        current_page: 1,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'desc',
+                        filter: null
+                    })
+                },
+                {
+                    search_params: new SearchParams({ page: 2, per_page: 2, sort: 'name', sort_dir: "desc" }),
+                    search_result: new SearchResult({
+                        items: [items[4], items[0]],
+                        total: 5,
+                        current_page: 2,
+                        per_page: 2,
+                        sort: 'name',
+                        sort_dir: 'desc',
+                        filter: null
+                    })
+                },
+            ];
+
+            beforeEach(() => {
+                repository.items = items;
+            })
+
+            test.each(arrange)(
+                "when value is %j",
+                async ({ search_params, search_result }) => {
+                    let result = await repository.search(search_params);
+                    expect(result).toStrictEqual(search_result)
+                });
+        });
+
         it('should combine paginate, sort and filter', async () => {
             const items = [
                 new StubEntity({ name: "test", price: 5 }),
