@@ -103,6 +103,7 @@ npm run test -- --projects src/@core
 npm run test -- --projects src/nestjs
 
 npm run test -w @fc/micro-videos
+npm run test:cov -w @fc/micro-videos
 
 ```
 

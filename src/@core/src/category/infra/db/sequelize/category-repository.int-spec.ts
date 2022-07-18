@@ -69,6 +69,48 @@ describe('CategorySequelizeRepository Unit Tests', () => {
         expect(JSON.stringify(entities)).toBe(JSON.stringify([entity]));
     });
 
+    it('should throw error on update when entity is not found', async () => {
+        const entity = new Category({ name: "Movie" });
+        await expect(repository.update(entity)).rejects.toThrow(
+            new NotFoundError(
+                `Entity not found with ID ${entity.id}`
+            )
+        );
+    });
+
+    it('should update an entity', async () => {
+        const entity = new Category({ name: "Movie" });
+        await repository.insert(entity);
+
+        entity.update("Movie updated", entity.description);
+        await repository.update(entity);
+
+        let entityFound = await repository.findById(entity.id);
+        expect(entity.toJSON()).toStrictEqual(entityFound.toJSON());
+    });
+
+    it('should throw error on delete when entity is not found', async () => {
+        await expect(repository.delete("fake id"))
+            .rejects.toThrow(
+                new NotFoundError(`Entity not found with ID fake id`)
+            );
+
+        const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
+        await expect(repository.delete(new UniqueEntityId(uuid)))
+            .rejects.toThrow(
+                new NotFoundError(`Entity not found with ID ${uuid}`)
+            );
+    });
+
+    it('should delete an entity', async () => {
+        const entity = new Category({ name: "Movie" });
+        await repository.insert(entity);
+        await repository.delete(entity.id);
+
+        const entityFound = await CategoryModel.findByPk(entity.id);
+        expect(entityFound).toBeNull();
+    });
+
     describe('search method tests', () => {
         it('should apply paginate when search params are null', async () => {
             const created_at = new Date();
@@ -347,7 +389,7 @@ describe('CategorySequelizeRepository Unit Tests', () => {
                     }),
                     search_result: new CategoryRepository.SearchResult({
                         items: [
-                            new Category(categoriesProps[2]), 
+                            new Category(categoriesProps[2]),
                             new Category(categoriesProps[4])
                         ],
                         total: 3,
