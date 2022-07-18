@@ -1,14 +1,18 @@
 import { UpdateCategoryUseCase } from "../../update-category.use-case";
-import CategoryInMemoryRepository from "../../../../infra/db/in-memory/category-in-memory.repository";
 import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "../../../../domain/entities/category";
+import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
+import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
-describe('UpdateCategoryUseCase Unit Tests', () => {
+const { CategoryRepository, CategoryModel, CategoryModelMapper } = CategorySequelize;
+
+describe('UpdateCategoryUseCase Integration Tests', () => {
     let useCase: UpdateCategoryUseCase.UseCase;
-    let repository: CategoryInMemoryRepository;
+    let repository: CategorySequelize.CategoryRepository;
+
+    setupSequelize({ models: [CategoryModel] });
 
     beforeEach(() => {
-        repository = new CategoryInMemoryRepository();
+        repository = new CategoryRepository(CategoryModel);
         useCase = new UpdateCategoryUseCase.UseCase(repository);
     });
 
@@ -20,17 +24,15 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
     });
 
     it('should update a category', async () => {
-        const spyUpdate = jest.spyOn(repository, "update");
-        const entity = new Category({ name: 'Movie' });
-        repository.items = [entity];
-        let output = await useCase.execute({ id: entity.id, name: "test" });
-        expect(spyUpdate).toHaveBeenCalledTimes(1);
+        const model = await CategoryModel.factory().create();
+        
+        let output = await useCase.execute({ id: model.id, name: "test" });
         expect(output).toStrictEqual({
-            id: entity.id,
+            id: model.id,
             name: "test",
             description: null,
             is_active: true,
-            created_at: entity.created_at
+            created_at: model.created_at
         });
 
         type Arrange = {
@@ -41,85 +43,85 @@ describe('UpdateCategoryUseCase Unit Tests', () => {
         const arrange: Arrange[] = [
             {
                 input: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: "some description"
                 },
                 expected: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: "some description",    // changed description
                     is_active: true,
-                    created_at: entity.created_at
+                    created_at: model.created_at
                 }
             },
             {
                 input: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                 },
                 expected: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: null,      // description should be null again!
                     is_active: true,
-                    created_at: entity.created_at
+                    created_at: model.created_at
                 }
             },
             {
                 input: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     is_active: false
                 },
                 expected: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: null,
                     is_active: false,       // should deactivate!
-                    created_at: entity.created_at
+                    created_at: model.created_at
                 }
             },
             {
                 input: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                 },
                 expected: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: null,
                     is_active: false,       // should keep false!
-                    created_at: entity.created_at
+                    created_at: model.created_at
                 }
             },
             {
                 input: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     is_active: true
                 },
                 expected: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: null,
                     is_active: true,       // should activate!
-                    created_at: entity.created_at
+                    created_at: model.created_at
                 }
             },
             {
                 input: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: "some description",
                     is_active: false
                 },
                 expected: {
-                    id: entity.id,
+                    id: model.id,
                     name: "test",
                     description: "some description",
                     is_active: false,       // should deactivate!
-                    created_at: entity.created_at
+                    created_at: model.created_at
                 }
             }
         ];
