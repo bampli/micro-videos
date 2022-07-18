@@ -1,6 +1,5 @@
 import { GetCategoryUseCase } from "../../get-category.use-case";
 import NotFoundError from "../../../../../@seedwork/domain/errors/not-found.error";
-import { Category } from "../../../../domain/entities/category";
 import { CategorySequelize } from "#category/infra/db/sequelize/category-sequelize";
 import { setupSequelize } from "#seedwork/infra/testing/helpers/db";
 
