@@ -1,4 +1,4 @@
-import { config } from "#seedwork/infra/config";
+import { configTest as config } from "#seedwork/infra/config";
 import { Sequelize, SequelizeOptions } from "sequelize-typescript";
 
 const sequelizeOptions: SequelizeOptions = {
@@ -32,6 +32,10 @@ export function setupSequelize(options: SequelizeOptions = {}) {
             return _sequelize;
         },
     };
-}
+};
+
+// function makeSequelizeOptions(config: Config){
+
+// }
 
 // const sequelize = setupSequelize();

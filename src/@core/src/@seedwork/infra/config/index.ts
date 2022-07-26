@@ -1,20 +1,45 @@
 import { config as readEnv } from 'dotenv';
 import { join } from 'path';
 
-const envTestingFile = join(__dirname, '../../../../.env.testing');
-
-readEnv({ path: envTestingFile });  // read .env file into process.env
-
-export const config = {
+type Config = {
     db: {
-        vendor: process.env.DB_VENDOR as any,   // any avoids error in db.ts
-        host: process.env.DB_HOST,
-        logging: process.env.DB_LOGGING === 'true'
-    },
-    // mail: {
+        vendor: any,
+        host: string,
+        logging: boolean
+    }
+}
 
-    // },
-    // storages: {
+function makeConfig(envFile): Config {
+    const output = readEnv({ path: envFile });  // read .env file into process.env
 
-    // }
+    // console.log(readEnv({ path: envFile }));
+    // {parsed: { DB_VENDOR: 'sqlite', DB_HOST: ':memory:', DB_LOGGING: 'false' }}
+
+    return {
+        db: {
+            vendor: output.parsed.DB_VENDOR as any,   // any avoids error in db.ts
+            host: output.parsed.DB_HOST,
+            logging: output.parsed.DB_LOGGING === 'true'
+        },
+    };
 };
+
+//export const config = makeConfig(envTestingFile);
+
+const envTestingFile = join(__dirname, '../../../../.env.testing');
+export const configTest = makeConfig(envTestingFile);
+
+// NOTE: This approach was too much attached to 'process.env' style:
+// readEnv({ path: envTestingFile });  // read .env file into process.env
+// export const config = {
+//     db: {
+//         vendor: process.env.DB_VENDOR as any,   // any avoids error in db.ts
+//         host: process.env.DB_HOST,
+//         logging: process.env.DB_LOGGING === 'true'
+//     },
+//     // mail: {
+//     // },
+//     // storages: {
+//     // }
+// };
+

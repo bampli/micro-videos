@@ -10,6 +10,8 @@ describe('CreateCategoryUseCase Integration Tests', () => {
 
     setupSequelize({ models: [CategoryModel] });
 
+    //setupSequelize({ models: [CategoryModel], ...makeSequelizeOptions(configTest) });
+
     beforeEach(() => {
         repository = new CategoryRepository(CategoryModel);
         useCase = new CreateCategoryUseCase.UseCase(repository);
