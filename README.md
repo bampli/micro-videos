@@ -105,6 +105,17 @@ npm run test -- --projects src/nestjs
 npm run test -w @fc/micro-videos
 npm run test:cov -w @fc/micro-videos
 
+# Install @core
+npm install -w @fc/micro-videos dotenv
+
+# Install nestjs
+npm install -w nestjs @nestjs/config
+npm install -w nestjs joi
+
+nest g module config
+CREATE src/config/config.module.ts (83 bytes)
+UPDATE src/app.module.ts (733 bytes)
+
 ```
 
 ## Versions
