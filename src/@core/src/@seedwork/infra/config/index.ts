@@ -24,13 +24,13 @@ function makeConfig(envFile): Config {
     };
 };
 
-//export const config = makeConfig(envTestingFile);
+//export const config = makeConfig(envTestFile);
 
-const envTestingFile = join(__dirname, '../../../../.env.testing');
-export const configTest = makeConfig(envTestingFile);
+const envTestFile = join(__dirname, '../../../../.env.test');
+export const configTest = makeConfig(envTestFile);
 
 // NOTE: This approach was too much attached to 'process.env' style:
-// readEnv({ path: envTestingFile });  // read .env file into process.env
+// readEnv({ path: envTestFile });  // read .env file into process.env
 // export const config = {
 //     db: {
 //         vendor: process.env.DB_VENDOR as any,   // any avoids error in db.ts

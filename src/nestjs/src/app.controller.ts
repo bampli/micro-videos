@@ -12,7 +12,7 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log(CreateCategoryUseCase);
+    //console.log(CreateCategoryUseCase);
     return this.appService.getHello();
   }
 }

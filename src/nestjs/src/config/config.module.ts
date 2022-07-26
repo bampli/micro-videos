@@ -11,6 +11,7 @@ export class ConfigModule extends NestConfigModule {
                 ...(Array.isArray(options.envFilePath)
                     ? options.envFilePath
                     : [options.envFilePath]),
+                join(__dirname, '../envs/.env.${process.env.NODE_ENV}'),
                 join(__dirname, '../envs/.env'),
             ],
         });
@@ -18,6 +19,10 @@ export class ConfigModule extends NestConfigModule {
 }
 
 // [
-//     .env.qualquer - DB_USER=test    // the first takes precedence
-//     .env - DB_USER=root
+//     .env.other - DB_USER=test    // the first takes precedence
+//     .env       - DB_USER=root
 // ]
+
+// NOTE: Dynamic .env with "NODE_ENV" overrides .env default
+// NODE_ENV=test
+// NODE_ENV=prod

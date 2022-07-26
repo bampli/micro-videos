@@ -12,7 +12,7 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [ConfigModule.forRoot({
-        envFilePath: join(__dirname, 'envs/.env.testing'),
+        envFilePath: join(__dirname, 'envs/.env.test'),
       })],
       controllers: [AppController],
       providers: [AppService],
@@ -20,7 +20,7 @@ describe('AppController', () => {
 
     appController = app.get<AppController>(AppController);
 
-    console.log(app.get(ConfigService).get('DB_VENDOR')); //   now mysql, previous sqlite
+    //console.log(app.get(ConfigService).get('DB_VENDOR')); //   now mysql, previous sqlite
   });
 
   describe('root', () => {
