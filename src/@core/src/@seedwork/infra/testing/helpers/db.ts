@@ -7,6 +7,9 @@ const sequelizeOptions: SequelizeOptions = {
     logging: config.db.logging,
 };
 
+// console.log(sequelizeOptions);
+// { dialect: 'sqlite', host: ':memory:', logging: false }
+
 export function setupSequelize(options: SequelizeOptions = {}) {
 
     let _sequelize: Sequelize;

@@ -105,6 +105,9 @@ npm run test -- --projects src/nestjs
 npm run test -w @fc/micro-videos
 npm run test:cov -w @fc/micro-videos
 
+# Install @core
+npm install -w @fc/micro-videos dotenv
+
 ```
 
 ## Versions
