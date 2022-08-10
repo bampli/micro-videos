@@ -6,6 +6,25 @@ import * as Joi from 'joi';
 
 const DB_SCHEMA = Joi.object({
     DB_VENDOR: Joi.string().required().valid('mysql', 'sqlite'),
+    DB_HOST: Joi.string().required(),
+    DB_DATABASE: Joi.string().when('DB_VENDOR', {
+        is: 'mysql',
+        then: Joi.required(),
+    }),
+    DB_USERNAME: Joi.string().when('DB_VENDOR', {
+        is: 'mysql',
+        then: Joi.required(),
+    }),
+    DB_PASSWORD: Joi.string().when('DB_VENDOR', {
+        is: 'mysql',
+        then: Joi.required(),
+    }),
+    DB_PORT: Joi.number().when('DB_VENDOR', {
+        is: 'mysql',
+        then: Joi.required(),
+    }),
+    DB_LOGGING: Joi.boolean().required(),
+    DB_AUTO_LOAD_MODULES: Joi.boolean().required(),
 });
 
 @Module({})
@@ -16,7 +35,7 @@ export class ConfigModule extends NestConfigModule {
                 ...(Array.isArray(options.envFilePath)
                     ? options.envFilePath
                     : [options.envFilePath]),
-                join(__dirname, '../envs/.env.${process.env.NODE_ENV}'),
+                join(__dirname, `../envs/.env.${process.env.NODE_ENV}`),
                 join(__dirname, '../envs/.env'),
             ],
             validationSchema: DB_SCHEMA,
