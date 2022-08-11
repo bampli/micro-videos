@@ -1,9 +1,9 @@
-//import { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from './config/config.module';
+import { ConfigModule, CONFIG_SCHEMA_TYPE } from './config/config.module';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -21,7 +21,22 @@ describe('AppController', () => {
 
     appController = app.get<AppController>(AppController);
 
-    //console.log(app.get(ConfigService).get('DB_VENDOR')); //   now mysql, previous sqlite
+    const db_vendor = app
+      .get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService)
+      .get<CONFIG_SCHEMA_TYPE['DB_VENDOR']>('DB_VENDOR');
+
+    console.log('DB_VENDOR_1', db_vendor);
+    //DB_VENDOR_1 sqlite
+
+    // const configService: ConfigService =
+    //   app.get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService);
+    // const db_vendor = configService.get<CONFIG_SCHEMA_TYPE['DB_VENDOR']>('DB_VENDOR');
+
+    console.log(
+      'DB_VENDOR_2',
+      app.get(ConfigService).get<'mysql' | 'sqlite'>('DB_VENDOR'),
+    );
+    //DB_VENDOR_2 sqlite
   });
 
   describe('root', () => {

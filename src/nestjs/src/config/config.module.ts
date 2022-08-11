@@ -38,6 +38,8 @@ const DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
     DB_AUTO_LOAD_MODULES: Joi.boolean().required(),
 };
 
+export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE; // && MAIL_SCHEMA_TYPE && CASH_SCHEMA_TYPE
+
 @Module({})
 export class ConfigModule extends NestConfigModule {
     static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
