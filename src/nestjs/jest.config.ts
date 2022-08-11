@@ -18,6 +18,6 @@ export default {
   },
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-    '../../@core/src/@seedwork/domain/tests/jest.ts',      // due to supposed issue with 'fail' at this jest version
+    '../../@core/src/@seedwork/domain/tests/jest.ts', // due to supposed issue with 'fail' at this jest version
   ],
 };

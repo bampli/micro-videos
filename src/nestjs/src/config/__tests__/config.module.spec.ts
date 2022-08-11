@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import { ConfigModule, CONFIG_DB_SCHEMA } from '../config.module';
 import { Test } from '@nestjs/testing';
 import { join } from 'path';
@@ -12,7 +12,7 @@ describe('Schema Unit Tests', () => {
     ...CONFIG_DB_SCHEMA,
   });
 
-  describe('CONFIG_DB_SCHEMA', () => {});
+  //describe('CONFIG_DB_SCHEMA', () => {});
 
   describe('DB_VENDOR', () => {
     test('invalid cases', () => {
@@ -243,7 +243,7 @@ describe('Schema Unit Tests', () => {
   // });
 });
 
-describe('Schema Unit Tests', () => {
+describe('ConfigModule Unit Tests', () => {
   it('should throw an error when env vars are invalid', () => {
     try {
       Test.createTestingModule({
@@ -259,7 +259,7 @@ describe('Schema Unit Tests', () => {
     }
   });
 
-  it('should throw an error when env vars are invalid', () => {
+  it('should be valid', () => {
     const module = Test.createTestingModule({
       imports: [ConfigModule.forRoot()],
     });
