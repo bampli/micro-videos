@@ -43,6 +43,7 @@ export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE; // && MAIL_SCHEMA_TYPE && CASH_
 @Module({})
 export class ConfigModule extends NestConfigModule {
     static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
+        //console.log(join(__dirname, '../envs/.env'));
         return super.forRoot({
             envFilePath: [
                 ...(Array.isArray(options.envFilePath)

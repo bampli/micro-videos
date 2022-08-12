@@ -87,6 +87,7 @@ UPDATE src/app.module.ts (332 bytes)
 
 # Build @core
 npm run build -w @fc/micro-videos
+npm run build -w nestjs
 
 # Start nestjs development
 npm run start:dev

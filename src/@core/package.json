@@ -4,7 +4,9 @@
   "description": "Video catalog admin backend",
   "main": "index.js",
   "imports": {
+    "#seedwork/domain": "./dist/@seedwork/domain/index.js",
     "#seedwork/*": "./dist/@seedwork/*.js",
+    "#category/domain": "./dist/category/domain/index.js",
     "#category/*": "./dist/category/*.js"
   },
   "exports": {
@@ -21,6 +23,9 @@
       ],
       "@seedwork/domain": [
         "./dist/@seedwork/domain/index.d.ts"
+      ],
+      "@seedwork/infra": [
+        "./dist/@seedwork/infra/index.d.ts"
       ],
       "category/application": [
         "./dist/category/application/index.d.ts"
@@ -47,15 +52,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bampli/micro-videos.git"
+    "url": "git+https://github.com/bampli/micro-videos-ts.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bampli/micro-videos/issues"
+    "url": "https://github.com/bampli/micro-videos-ts/issues"
   },
-  "homepage": "https://github.com/bampli/micro-videos#readme",
+  "homepage": "https://github.com/bampli/micro-videos-ts#readme",
   "devDependencies": {
     "@swc/core": "^1.2.175",
     "@swc/jest": "^0.2.20",

@@ -6,14 +6,14 @@ import {
     Table
 } from 'sequelize-typescript';
 import { SequelizeModelFactory } from '../../../../@seedwork/infra/sequelize/sequelize-model-factory';
-import { CategoryRepository as CategoryRepositoryContract, Category } from "#category/domain";
+import { CategoryRepository as CategoryRepositoryContract, Category } from "../../../../category/domain";
 import { Op } from "sequelize";
 import {
     UniqueEntityId,
     EntityValidationError,
     LoadEntityError,
     NotFoundError
-} from "#seedwork/domain";
+} from "../../../../@seedwork/domain";
 
 export namespace CategorySequelize {
 
