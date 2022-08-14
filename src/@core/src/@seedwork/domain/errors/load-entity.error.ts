@@ -1,4 +1,4 @@
-import { FieldsErrors } from '../../../@seedwork/domain';
+import { FieldsErrors } from '@seedwork/domain';
 
 export class LoadEntityError extends Error{
     constructor(public error: FieldsErrors, message?: string) {

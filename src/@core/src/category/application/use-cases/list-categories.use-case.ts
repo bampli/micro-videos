@@ -1,4 +1,4 @@
-import {default as DefaultUseCase} from "../../../@seedwork/application/use-case";
+import { UseCase as DefaultUseCase } from "@seedwork/application";
 import { CategoryRepository } from "../../domain/repository/category.repository";
 import { CategoryOutput } from "../dto/category-output";
 import { SearchInputDto } from "../dto/search-input";

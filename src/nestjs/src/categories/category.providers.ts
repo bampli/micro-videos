@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-
 import {
   CreateCategoryUseCase,
   UpdateCategoryUseCase,
@@ -7,7 +6,7 @@ import {
   ListCategoriesUseCase,
   DeleteCategoryUseCase,
 } from '@fc/micro-videos/category/application';
-import CategoryRepository from '@fc/micro-videos/category/domain/repository/category.repository';
+import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import {
   CategoryInMemoryRepository,
   CategorySequelize,

@@ -1,5 +1,5 @@
-import { SortDirection } from '../../../../@seedwork/domain/repository/repository-contracts';
-import { InMemorySearchableRepository } from '../../../../@seedwork/domain/repository/in-memory.repository';
+import { SortDirection } from '@seedwork/domain';
+import { InMemorySearchableRepository } from '@seedwork/domain/repository/in-memory.repository';
 import { Category } from '../../../domain/entities/category';
 import CategoryRepository from '../../../domain/repository/category.repository';
 
