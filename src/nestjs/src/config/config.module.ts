@@ -12,7 +12,7 @@ type DB_SCHEMA_TYPE = {
     DB_PASSWORD: string;
     DB_PORT: number;
     DB_LOGGING: boolean;
-    DB_AUTO_LOAD_MODULES: boolean;
+    DB_AUTO_LOAD_MODELS: boolean;
 };
 
 export const CONFIG_DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
@@ -35,7 +35,7 @@ export const CONFIG_DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
         then: Joi.required(),
     }),
     DB_LOGGING: Joi.boolean().required(),
-    DB_AUTO_LOAD_MODULES: Joi.boolean().required(),
+    DB_AUTO_LOAD_MODELS: Joi.boolean().required(),
 };
 
 export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE; // && MAIL_SCHEMA_TYPE && CASH_SCHEMA_TYPE
@@ -45,6 +45,7 @@ export class ConfigModule extends NestConfigModule {
     static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
         //console.log(join(__dirname, '../envs/.env'));
         return super.forRoot({
+            isGlobal: true,
             envFilePath: [
                 ...(Array.isArray(options.envFilePath)
                     ? options.envFilePath

@@ -207,26 +207,26 @@ describe('Schema Unit Tests', () => {
     });
   });
 
-  describe('DB_AUTO_LOAD_MODULES', () => {
+  describe('DB_AUTO_LOAD_MODELS', () => {
     test('invalid cases', () => {
       expectValidate(schema, {}).toContain(
-        '"DB_AUTO_LOAD_MODULES" is required',
+        '"DB_AUTO_LOAD_MODELS" is required',
       );
 
-      expectValidate(schema, { DB_AUTO_LOAD_MODULES: 'a' }).toContain(
-        '"DB_AUTO_LOAD_MODULES" must be a boolean',
+      expectValidate(schema, { DB_AUTO_LOAD_MODELS: 'a' }).toContain(
+        '"DB_AUTO_LOAD_MODELS" must be a boolean',
       );
-      expectValidate(schema, { DB_AUTO_LOAD_MODULES: '1' }).toContain(
-        '"DB_AUTO_LOAD_MODULES" must be a boolean',
+      expectValidate(schema, { DB_AUTO_LOAD_MODELS: '1' }).toContain(
+        '"DB_AUTO_LOAD_MODELS" must be a boolean',
       );
-      expectValidate(schema, { DB_AUTO_LOAD_MODULES: 1 }).toContain(
-        '"DB_AUTO_LOAD_MODULES" must be a boolean',
+      expectValidate(schema, { DB_AUTO_LOAD_MODELS: 1 }).toContain(
+        '"DB_AUTO_LOAD_MODELS" must be a boolean',
       );
-      expectValidate(schema, { DB_AUTO_LOAD_MODULES: '0' }).toContain(
-        '"DB_AUTO_LOAD_MODULES" must be a boolean',
+      expectValidate(schema, { DB_AUTO_LOAD_MODELS: '0' }).toContain(
+        '"DB_AUTO_LOAD_MODELS" must be a boolean',
       );
-      expectValidate(schema, { DB_AUTO_LOAD_MODULES: 0 }).toContain(
-        '"DB_AUTO_LOAD_MODULES" must be a boolean',
+      expectValidate(schema, { DB_AUTO_LOAD_MODELS: 0 }).toContain(
+        '"DB_AUTO_LOAD_MODELS" must be a boolean',
       );
     });
 
@@ -234,7 +234,7 @@ describe('Schema Unit Tests', () => {
       const arrange = [true, false, 'true', 'false'];
 
       arrange.forEach((value) => {
-        expectValidate(schema, value).not.toContain('DB_AUTO_LOAD_MODULES');
+        expectValidate(schema, value).not.toContain('DB_AUTO_LOAD_MODELS');
       });
     });
   });

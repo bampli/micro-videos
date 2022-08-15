@@ -117,6 +117,12 @@ nest g module config
 CREATE src/config/config.module.ts (83 bytes)
 UPDATE src/app.module.ts (733 bytes)
 
+# Database module
+cd src/nestjs
+nest g module database
+
+npm install @nestjs/sequelize -w nestjs
+
 ```
 
 ## Versions
@@ -129,5 +135,6 @@ sequelize @6.20.0
 sequelize-typescript @2.1.3
 sqlite3 @5.0.8
 chance @1.1.8
+@nestjs/sequelize @9.0.0
 
 ```

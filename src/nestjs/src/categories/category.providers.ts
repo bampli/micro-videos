@@ -11,6 +11,7 @@ import {
   CategoryInMemoryRepository,
   CategorySequelize,
 } from '@fc/micro-videos/category/infra';
+import { getModelToken } from '@nestjs/sequelize';
 
 export namespace CATEGORY_PROVIDERS {
   export namespace REPOSITORIES {
@@ -21,7 +22,10 @@ export namespace CATEGORY_PROVIDERS {
 
     export const CATEGORY_SEQUELIZE_REPOSITORY = {
       provide: 'CategorySequelizeRepository',
-      useClass: CategorySequelize.CategoryRepository,
+      useFactory: (categoryModel: typeof CategorySequelize.CategoryModel) => {
+        return new CategorySequelize.CategoryRepository(categoryModel);
+      },
+      inject: [getModelToken(CategorySequelize.CategoryModel)],
     };
 
     // alias default
