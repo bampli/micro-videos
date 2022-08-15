@@ -123,6 +123,8 @@ nest g module database
 
 npm install @nestjs/sequelize -w nestjs
 
+npm install mysql2 -w @fc/micro-videos
+
 ```
 
 ## Versions
@@ -136,5 +138,6 @@ sequelize-typescript @2.1.3
 sqlite3 @5.0.8
 chance @1.1.8
 @nestjs/sequelize @9.0.0
+mysql2 @2.3.3
 
 ```

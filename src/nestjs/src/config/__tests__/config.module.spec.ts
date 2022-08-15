@@ -209,9 +209,7 @@ describe('Schema Unit Tests', () => {
 
   describe('DB_AUTO_LOAD_MODELS', () => {
     test('invalid cases', () => {
-      expectValidate(schema, {}).toContain(
-        '"DB_AUTO_LOAD_MODELS" is required',
-      );
+      expectValidate(schema, {}).toContain('"DB_AUTO_LOAD_MODELS" is required');
 
       expectValidate(schema, { DB_AUTO_LOAD_MODELS: 'a' }).toContain(
         '"DB_AUTO_LOAD_MODELS" must be a boolean',
