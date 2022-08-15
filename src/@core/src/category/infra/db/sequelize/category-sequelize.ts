@@ -5,8 +5,14 @@ import {
     PrimaryKey,
     Table
 } from 'sequelize-typescript';
-import { SequelizeModelFactory } from '@seedwork/infra/sequelize/sequelize-model-factory';
-import { CategoryRepository as CategoryRepositoryContract, Category } from "category/domain";
+
+import { SequelizeModelFactory } from '../../../../@seedwork/infra/sequelize/sequelize-model-factory';
+import { CategoryRepository as CategoryRepositoryContract, Category } from "../../../../category/domain";
+// TODO: check this error
+// https://forum.code.education/forum/topico/error-in-workspaces-fcmicro-videos-1774/
+
+// import { SequelizeModelFactory } from '@seedwork/infra/sequelize/sequelize-model-factory';
+// import { CategoryRepository as CategoryRepositoryContract, Category } from "category/domain";
 import { Op } from "sequelize";
 import {
     UniqueEntityId,
