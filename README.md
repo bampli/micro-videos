@@ -122,6 +122,7 @@ cd src/nestjs
 nest g module database
 
 npm install @nestjs/sequelize -w nestjs
+npm install --save-dev @types/sequelize -w nestjs
 
 npm install mysql2 -w @fc/micro-videos
 
@@ -135,6 +136,7 @@ uuid @8.3.2
 class-validator @0.13.2
 sequelize @6.20.0
 sequelize-typescript @2.1.3
+@types/sequelize @4.28.14
 sqlite3 @5.0.8
 chance @1.1.8
 @nestjs/sequelize @9.0.0
