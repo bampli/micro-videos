@@ -4,7 +4,9 @@
   "description": "Video catalog admin backend",
   "main": "index.js",
   "imports": {
+    "#seedwork/domain": "./dist/@seedwork/domain/index.js",
     "#seedwork/*": "./dist/@seedwork/*.js",
+    "#category/domain": "./dist/category/domain/index.js",
     "#category/*": "./dist/category/*.js"
   },
   "exports": {
@@ -21,6 +23,9 @@
       ],
       "@seedwork/domain": [
         "./dist/@seedwork/domain/index.d.ts"
+      ],
+      "@seedwork/infra": [
+        "./dist/@seedwork/infra/index.d.ts"
       ],
       "category/application": [
         "./dist/category/application/index.d.ts"
@@ -43,19 +48,19 @@
     "test": "jest",
     "test:cov": "npm run test -- --coverage",
     "cti": "cti",
-    "cti:@core": "sh ./cti.sh"
+    "cti:make": "sh ./cti.sh"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bampli/micro-videos.git"
+    "url": "git+https://github.com/bampli/micro-videos-ts.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bampli/micro-videos/issues"
+    "url": "https://github.com/bampli/micro-videos-ts/issues"
   },
-  "homepage": "https://github.com/bampli/micro-videos#readme",
+  "homepage": "https://github.com/bampli/micro-videos-ts#readme",
   "devDependencies": {
     "@swc/core": "^1.2.175",
     "@swc/jest": "^0.2.20",
@@ -74,6 +79,7 @@
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.1",
     "lodash": "^4.17.21",
+    "mysql2": "^2.3.3",
     "npm": "^8.9.0",
     "sequelize": "^6.20.0",
     "sequelize-typescript": "^2.1.3",

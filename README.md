@@ -87,12 +87,13 @@ UPDATE src/app.module.ts (332 bytes)
 
 # Build @core
 npm run build -w @fc/micro-videos
+npm run build -w nestjs
 
 # Start nestjs development
 npm run start:dev
 
 # Create index.ts
-npm run cti:@core -w @fc/micro-videos
+npm run cti:make -w @fc/micro-videos
 
 # Compile @core --noEmit
 npm run tsc:check -w @fc/micro-videos
@@ -116,6 +117,15 @@ nest g module config
 CREATE src/config/config.module.ts (83 bytes)
 UPDATE src/app.module.ts (733 bytes)
 
+# Database module
+cd src/nestjs
+nest g module database
+
+npm install @nestjs/sequelize -w nestjs
+npm install --save-dev @types/sequelize -w nestjs
+
+npm install mysql2 -w @fc/micro-videos
+
 ```
 
 ## Versions
@@ -126,7 +136,10 @@ uuid @8.3.2
 class-validator @0.13.2
 sequelize @6.20.0
 sequelize-typescript @2.1.3
+@types/sequelize @4.28.14
 sqlite3 @5.0.8
 chance @1.1.8
+@nestjs/sequelize @9.0.0
+mysql2 @2.3.3
 
 ```
