@@ -3,6 +3,13 @@ import { CategoriesController } from '../../categories.controller';
 import { CategoriesModule } from '../../categories.module';
 import { ConfigModule } from '../../../config/config.module';
 import { DatabaseModule } from '../../../database/database.module';
+import {
+  CreateCategoryUseCase,
+  UpdateCategoryUseCase,
+  ListCategoriesUseCase,
+  GetCategoryUseCase,
+  DeleteCategoryUseCase,
+} from '@fc/micro-videos/category/application';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -15,7 +22,20 @@ describe('CategoriesController Integration Tests', () => {
     controller = module.get(CategoriesController);
   });
 
-  it('xpto', () => {
-    console.log(controller);
+  it('should be defined', () => {
+    expect(controller).toBeDefined();
+    expect(controller['createUseCase']).toBeInstanceOf(
+      CreateCategoryUseCase.UseCase,
+    );
+    expect(controller['updateUseCase']).toBeInstanceOf(
+      UpdateCategoryUseCase.UseCase,
+    );
+    expect(controller['listUseCase']).toBeInstanceOf(
+      ListCategoriesUseCase.UseCase,
+    );
+    expect(controller['getUseCase']).toBeInstanceOf(GetCategoryUseCase.UseCase);
+    expect(controller['deleteUseCase']).toBeInstanceOf(
+      DeleteCategoryUseCase.UseCase,
+    );
   });
 });
