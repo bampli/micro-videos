@@ -15,3 +15,9 @@ import { CategorySequelize } from '@fc/micro-videos/category/infra';
   ],
 })
 export class CategoriesModule {}
+
+// checks at categoriesmodule
+// load module
+// check imports
+// check controllers
+// check providers

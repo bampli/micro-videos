@@ -5,9 +5,9 @@ import {
   ListCategoriesUseCase,
 } from '@fc/micro-videos/category/application';
 import { SortDirection } from '@fc/micro-videos/dist/@seedwork/domain/repository/repository-contracts';
-import { CategoriesController } from './categories.controller';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoriesController } from '../../categories.controller';
+import { CreateCategoryDto } from '../../dto/create-category.dto';
+import { UpdateCategoryDto } from '../../dto/update-category.dto';
 //import { Test, TestingModule } from '@nestjs/testing';
 //import { CategoriesService } from './categories.service';
 
