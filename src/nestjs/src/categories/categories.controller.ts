@@ -71,3 +71,7 @@ export class CategoriesController {
     return this.deleteUseCase.execute({ id });
   }
 }
+
+// Controller tests
+//  integration: sqlite in memory
+//  end-to-end: more expensive, bureaucratic and longstanding
