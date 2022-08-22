@@ -126,6 +126,8 @@ npm install --save-dev @types/sequelize -w nestjs
 
 npm install mysql2 -w @fc/micro-videos
 
+npm install class-transformer -w nestjs
+
 ```
 
 ## Versions
