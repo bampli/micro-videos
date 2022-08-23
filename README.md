@@ -145,3 +145,30 @@ chance @1.1.8
 mysql2 @2.3.3
 
 ```
+
+## Entity generator
+
+Supondo que a maior parte das entidades do domínio de nosso projeto também utilizam as mesmas propriedades da "Categoria", ou seja:
+
+```
+export type CategoryProperties = {
+    name: string;
+    description?: string;
+    is_active?: boolean;
+    created_at?: Date;
+}
+```
+
+O script *new-entity.sh* replica a pasta */src/@core/src/categoria* e renomeia os arquivos apropriadamente. Com o auxílio do Vscode faz-se então um "replace in files" que substitui "Category/category/Categories/categories" pelo novo nome da entidade.
+
+After running the script, do some adjustments:
+
+- Check & include entity at files listed below:
+    src/@core/.swcrc
+    src/@core/cti.sh
+    src/@core/src/package.json
+    src/@core/tsconfig.json
+- Node project name changed to @fc/cyclo-back
+- And finally run:
+    npm run cti:make -w @fc/cyclo-back
+    npm run build -w @fc/cyclo-back
