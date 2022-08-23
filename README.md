@@ -148,9 +148,7 @@ mysql2 @2.3.3
 
 ## Entity generator
 
-## Clone a new entity from Category
-
-A new entity, similar to 'Category', will be replicated.
+There is a script to generate a new entity, similar to 'Category'. It will be replicated.
 
 ### Usage
 
