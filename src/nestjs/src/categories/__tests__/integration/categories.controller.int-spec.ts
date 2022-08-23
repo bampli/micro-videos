@@ -46,24 +46,24 @@ describe('CategoriesController Integration Tests', () => {
   });
 
   it('should create a category', async () => {
-    const output = await controller.create({
+    const presenter = await controller.create({
       name: 'Movie',
     });
-    const entity = await repository.findById(output.id);
+    const entity = await repository.findById(presenter.id);
 
     expect(entity).toMatchObject({
-      id: output.id,
+      id: presenter.id,
       name: 'Movie',
       description: null,
       is_active: true,
-      created_at: output.created_at,
+      created_at: presenter.created_at,
     });
 
-    expect(output.id).toBe(entity.id);
-    expect(output.name).toBe('Movie');
-    expect(output.description).toBeNull();
-    expect(output.name).toBeTruthy();
-    expect(output.created_at).toStrictEqual(entity.created_at);
+    expect(presenter.id).toBe(entity.id);
+    expect(presenter.name).toBe('Movie');
+    expect(presenter.description).toBeNull();
+    expect(presenter.name).toBeTruthy();
+    expect(presenter.created_at).toStrictEqual(entity.created_at);
   });
 
   describe('should create a category with testEach', () => {
@@ -72,7 +72,7 @@ describe('CategoriesController Integration Tests', () => {
         request: {
           name: 'Movie',
         },
-        expectedOutput: {
+        expectedPresenter: {
           name: 'Movie',
           description: null,
           is_active: true,
@@ -83,7 +83,7 @@ describe('CategoriesController Integration Tests', () => {
           name: 'Movie',
           description: null,
         },
-        expectedOutput: {
+        expectedPresenter: {
           name: 'Movie',
           description: null,
           is_active: true,
@@ -94,7 +94,7 @@ describe('CategoriesController Integration Tests', () => {
           name: 'Movie',
           is_active: true,
         },
-        expectedOutput: {
+        expectedPresenter: {
           name: 'Movie',
           description: null,
           is_active: true,
@@ -106,7 +106,7 @@ describe('CategoriesController Integration Tests', () => {
           description: 'some text',
           is_active: false,
         },
-        expectedOutput: {
+        expectedPresenter: {
           name: 'Movie',
           description: 'some text',
           is_active: false,
@@ -116,23 +116,23 @@ describe('CategoriesController Integration Tests', () => {
 
     test.each(arrange)(
       'with request $request',
-      async ({ request, expectedOutput }) => {
-        const output = await controller.create(request);
-        const entity = await repository.findById(output.id);
+      async ({ request, expectedPresenter }) => {
+        const presenter = await controller.create(request);
+        const entity = await repository.findById(presenter.id);
 
         expect(entity).toMatchObject({
-          id: output.id,
-          name: expectedOutput.name,
-          description: expectedOutput.description,
-          is_active: expectedOutput.is_active,
-          created_at: output.created_at,
+          id: presenter.id,
+          name: expectedPresenter.name,
+          description: expectedPresenter.description,
+          is_active: expectedPresenter.is_active,
+          created_at: presenter.created_at,
         });
 
-        expect(output.id).toBe(entity.id);
-        expect(output.name).toBe(expectedOutput.name);
-        expect(output.description).toBe(expectedOutput.description);
-        expect(output.is_active).toBe(expectedOutput.is_active);
-        expect(output.created_at).toStrictEqual(entity.created_at);
+        expect(presenter.id).toBe(entity.id);
+        expect(presenter.name).toBe(expectedPresenter.name);
+        expect(presenter.description).toBe(expectedPresenter.description);
+        expect(presenter.is_active).toBe(expectedPresenter.is_active);
+        expect(presenter.created_at).toStrictEqual(entity.created_at);
       },
     );
   });
