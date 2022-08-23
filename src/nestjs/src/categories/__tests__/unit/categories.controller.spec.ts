@@ -5,6 +5,7 @@ import {
   ListCategoriesUseCase,
 } from '@fc/micro-videos/category/application';
 import { SortDirection } from '@fc/micro-videos/dist/@seedwork/domain/repository/repository-contracts';
+import { CategoryPresenter } from '../../presenter/category.presenter';
 import { CategoriesController } from '../../categories.controller';
 import { CreateCategoryDto } from '../../dto/create-category.dto';
 import { UpdateCategoryDto } from '../../dto/update-category.dto';
@@ -31,7 +32,7 @@ describe('CategoriesController Unit Tests', () => {
   // });
 
   it('should create a category', async () => {
-    const expectedOutput: CreateCategoryUseCase.Output = {
+    const output: CreateCategoryUseCase.Output = {
       id: '957334c5-91b9-4986-9b43-0d42f2edfbe9',
       name: 'Movie',
       description: 'some description',
@@ -39,7 +40,7 @@ describe('CategoriesController Unit Tests', () => {
       created_at: new Date(),
     };
     const mockCreateUseCase = {
-      execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
+      execute: jest.fn().mockReturnValue(Promise.resolve(output)),
     };
     //@ts-expect-error
     controller['createUseCase'] = mockCreateUseCase;
@@ -48,9 +49,12 @@ describe('CategoriesController Unit Tests', () => {
       description: 'some description',
       is_active: true,
     };
-    const output = await controller.create(input);
+    const presenter = await controller.create(input);
     expect(mockCreateUseCase.execute).toBeCalledWith(input);
-    expect(output).toStrictEqual(expectedOutput);
+    expect(presenter).toBeInstanceOf(CategoryPresenter);
+    expect(presenter).toStrictEqual(new CategoryPresenter(output));
+    // when there was no presenter:
+    //expect(output).toStrictEqual(expectedOutput);
   });
 
   it('should update a category', async () => {
