@@ -19,6 +19,7 @@ if [ $# -eq 2 ]
     #find ./src/nestjs/src/categories -name "*categories*" -exec bash -c 'echo mv "{}" "$(echo "{}" | sed 's/categories/''$PLURAL''/g' )"' \;
     #find ./src/nestjs/src/categories -name "*category*" -exec bash -c 'echo mv "{}" "$(echo "{}" | sed 's/category/''$SINGULAR''/g' )"' \;
     find ./src/@core/src/category -name "*category*" -exec bash -c 'echo mv "{}" "$(echo "{}" | sed 's/category/''$SINGULAR''/g' )"' \;
+    find ./src/@core/src/category -name "*categories*" -exec bash -c 'echo mv "{}" "$(echo "{}" | sed 's/categories/''$PLURAL''/g' )"' \;
     exit 0
 fi
 
@@ -38,16 +39,16 @@ if [ $3 = "save" ]
     #find ./src/nestjs/src/$PLURAL -name "*categories*" -exec bash -c 'mv "{}" "$(echo "{}" | sed 's/categories/''$PLURAL''/g' )"' \;
     #find ./src/nestjs/src/$PLURAL -name "*category*" -exec bash -c 'mv "{}" "$(echo "{}" | sed 's/category/''$SINGULAR''/g' )"' \;
     find ./src/@core/src/$SINGULAR -name "*category*" -exec bash -c 'mv "{}" "$(echo "{}" | sed 's/category/''$SINGULAR''/g' )"' \;
+    find ./src/@core/src/$SINGULAR -name "*categories*" -exec bash -c 'mv "{}" "$(echo "{}" | sed 's/categories/''$PLURAL''/g' )"' \;
     exit 0
 fi
 
 # After running the script, do some adjustments
-# - Check & include entity at files listed below:
-#       src/@core/.swcrc
-#       src/@core/cti.sh
-#       src/@core/src/package.json
-#       src/@core/tsconfig.json
-# - Node project name changed to @fc/cyclo-back
-# - And finally run:
+# Check & include entity at files listed below:
+#   src/@core/.swcrc
+#   src/@core/cti.sh
+#   src/@core/src/package.json
+#   src/@core/tsconfig.json
+# And finally run:
 #   npm run cti:make -w @fc/cyclo-back
 #   npm run build -w @fc/cyclo-back
