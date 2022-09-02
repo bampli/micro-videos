@@ -43,12 +43,12 @@ if [ $3 = "save" ]
     exit 0
 fi
 
-# After running the script, do some adjustments
-# Check & include entity at files listed below:
-#   src/@core/.swcrc
-#   src/@core/cti.sh
-#   src/@core/src/package.json
-#   src/@core/tsconfig.json
+# After running the script, do some adjustments at:
+# - src/@core/.swcrc
+# - src/@core/cti.sh
+# - src/@core/package.json
+# - src/@core/tsconfig.json
+# - src/nestjs/jest.config.ts
 # And finally run:
 #   npm run cti:make -w @fc/cyclo-back
 #   npm run build -w @fc/cyclo-back

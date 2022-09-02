@@ -169,13 +169,15 @@ Without 'save' there will be no changes, just to check generated commands.
 
 With 'save' option you change only files names. You should then use vscode to "replace in files" all *category/Category* and *categories/Categories* contents for the corresponding new entity.
 
-After running the script, check & include also the new entity at configuration files:
+After running the script, do some adjustments at:
+
 - src/@core/.swcrc
 - src/@core/cti.sh
-- src/@core/src/package.json
+- src/@core/package.json
 - src/@core/tsconfig.json
+- src/nestjs/jest.config.ts
 
-And finally run 'cti' to generate index.ts and build the project.
+And finally run:
 
-- npm run cti:make -w @fc/micro-videos
-- npm run build -w @fc/micro-videos
+  npm run cti:make -w @fc/cyclo-back
+  npm run build -w @fc/cyclo-back
