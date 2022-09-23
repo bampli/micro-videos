@@ -3,7 +3,7 @@ import { Chance } from "chance";
 
 type PropOrFactory<T> = T | ((_index) => T);
 
-class CategoryFakeBuilder<TBuild> {
+class CategoryFakeBuilder<TBuild = any> {
   private chance: Chance.Chance;
 
   private name: PropOrFactory<string> = (_index) => this.chance.word();
@@ -46,28 +46,32 @@ class CategoryFakeBuilder<TBuild> {
     return this;
   }
 
-  build() {
-    return new Category({
-      name: typeof this.name === "function" ? this.name() : this.name,
-      description:
-        typeof this.description === "function"
-          ? this.description()
-          : this.description,
-      is_active:
-        typeof this.is_active === "function"
-          ? this.is_active()
-          : this.is_active,
-    });
+  build(): TBuild {
+    const categories = new Array(this.countObjs).fill(undefined).map(
+      (_, index) =>
+        new Category({
+          name: this.callFactory(this.name, index),
+          description: this.callFactory(this.description, index),
+          is_active: this.callFactory(this.is_active, index),
+        })
+    );
+    return this.countObjs === 1 ? categories[0] as any : categories;
+  }
+
+  private callFactory(factoryOrValue: PropOrFactory<any>, index: number) {
+    return typeof factoryOrValue === "function"
+      ? factoryOrValue(index)
+      : factoryOrValue;
   }
 }
 
-const category = CategoryFakeBuilder.aCategory().build();
+// const category = CategoryFakeBuilder.aCategory().build();
 
-const faker = CategoryFakeBuilder.aCategory();
-faker.withName("Movie").build;
-faker.build();
-faker.build();
-faker.build();
+// const faker = CategoryFakeBuilder.aCategory();
+// faker.withName("Movie").build;
+// faker.build();
+// faker.build();
+// faker.build();
 
-const faker2 = CategoryFakeBuilder.theCategories();
-faker2.withName((index) => `category ${index}`).build;
+// const faker2 = CategoryFakeBuilder.theCategories();
+// faker2.withName((index) => `category ${index}`).build;
