@@ -148,27 +148,36 @@ mysql2 @2.3.3
 
 ## Entity generator
 
-Supondo que a maior parte das entidades do domínio de nosso projeto também utilizam as mesmas propriedades da "Categoria", ou seja:
+There is a script to generate a new entity, similar to 'Category'. It will be replicated.
+
+### Usage
 
 ```
-export type CategoryProperties = {
-    name: string;
-    description?: string;
-    is_active?: boolean;
-    created_at?: Date;
-}
+./new-entity.sh entity-name-singular entity-name-plural [save]
+
+Examples:
+
+# Do not change, just show the commands to create the "cyclo" entity:
+./new-entity.sh cyclo cyclos
+
+# Create the "stage" entity:
+./new-entity.sh stage stages save
+
 ```
 
-O script *new-entity.sh* replica a pasta */src/@core/src/categoria* e renomeia os arquivos apropriadamente. Com o auxílio do Vscode faz-se então um "replace in files" que substitui "Category/category/Categories/categories" pelo novo nome da entidade.
+Without 'save' there will be no changes, just to check generated commands.
 
-After running the script, do some adjustments:
+With 'save' option you change only files names. You should then use vscode to "replace in files" all *category/Category* and *categories/Categories* contents for the corresponding new entity.
 
-- Check & include entity at files listed below:
-    src/@core/.swcrc
-    src/@core/cti.sh
-    src/@core/src/package.json
-    src/@core/tsconfig.json
-- Node project name changed to @fc/cyclo-back
-- And finally run:
-    npm run cti:make -w @fc/cyclo-back
-    npm run build -w @fc/cyclo-back
+After running the script, do some adjustments at:
+
+- src/@core/.swcrc
+- src/@core/cti.sh
+- src/@core/package.json
+- src/@core/tsconfig.json
+- src/nestjs/jest.config.ts
+
+And finally run:
+
+  npm run cti:make -w @fc/cyclo-back
+  npm run build -w @fc/cyclo-back
