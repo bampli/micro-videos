@@ -13,6 +13,7 @@ import {
 import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
 import { CategorySequelize } from '@fc/micro-videos/category/infra';
+import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -226,6 +227,15 @@ describe('CategoriesController Integration Tests', () => {
         expect(presenter.is_active).toBe(expectedPresenter.is_active);
         expect(presenter.created_at).toStrictEqual(entity.created_at);
       },
+    );
+  });
+
+  it('should update a category', async () => {
+    const category = await CategorySequelize.CategoryModel.factory().create();
+    const response = await controller.remove(category.id);
+    expect(response).not.toBeDefined();
+    await expect(repository.findById(category.id)).rejects.toThrow(
+      new NotFoundError(`Entity not found with ID ${category.id}`),
     );
   });
 });
