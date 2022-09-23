@@ -1,27 +1,37 @@
 import { Category } from "./category";
 import { Chance } from "chance";
 
-class CategoryFakeBuilder {
+type PropOrFactory<T> = T | ((_index) => T);
+
+class CategoryFakeBuilder<TBuild> {
   private chance: Chance.Chance;
 
-  private name: string | (() => string) = () => this.chance.word();
-  private description: string | (() => string) = () => this.chance.paragraph();
-  private is_active: boolean | (() => boolean) = () => true;
+  private name: PropOrFactory<string> = (_index) => this.chance.word();
+  private description: PropOrFactory<string | null> = (_index) =>
+    this.chance.paragraph();
+  private is_active: PropOrFactory<boolean> = (_index) => true;
+
+  private countObjs;
 
   static aCategory() {
-    return new CategoryFakeBuilder();
+    return new CategoryFakeBuilder<Category>();
   }
 
-  constructor() {
+  static theCategories() {
+    return new CategoryFakeBuilder<Category[]>();
+  }
+
+  constructor(countObjs: number = 1) {
+    this.countObjs = countObjs;
     this.chance = Chance();
   }
 
-  withName(name: string) {
+  withName(name: PropOrFactory<string>) {
     this.name = name;
     return this; // fluent pattern
   }
 
-  withDescription(description: string) {
+  withDescription(description: PropOrFactory<string>) {
     this.description = description;
     return this; // fluent pattern
   }
@@ -54,8 +64,10 @@ class CategoryFakeBuilder {
 const category = CategoryFakeBuilder.aCategory().build();
 
 const faker = CategoryFakeBuilder.aCategory();
-faker.withName('Movie').build;
+faker.withName("Movie").build;
 faker.build();
 faker.build();
 faker.build();
 
+const faker2 = CategoryFakeBuilder.theCategories();
+faker2.withName((index) => `category ${index}`).build;
