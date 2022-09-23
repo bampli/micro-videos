@@ -3,7 +3,7 @@ import { Chance } from "chance";
 
 type PropOrFactory<T> = T | ((_index) => T);
 
-class CategoryFakeBuilder<TBuild = any> {
+export class CategoryFakeBuilder<TBuild = any> {
   private chance: Chance.Chance;
 
   private name: PropOrFactory<string> = (_index) => this.chance.word();
@@ -17,8 +17,8 @@ class CategoryFakeBuilder<TBuild = any> {
     return new CategoryFakeBuilder<Category>();
   }
 
-  static theCategories() {
-    return new CategoryFakeBuilder<Category[]>();
+  static theCategories(countObjs: number) {
+    return new CategoryFakeBuilder<Category[]>(countObjs);
   }
 
   constructor(countObjs: number = 1) {
