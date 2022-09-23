@@ -14,6 +14,7 @@ import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
 import { CategorySequelize } from '@fc/micro-videos/category/infra';
 import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
+import { CategoryPresenter } from '../../presenter/category.presenter';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -230,12 +231,23 @@ describe('CategoriesController Integration Tests', () => {
     );
   });
 
-  it('should update a category', async () => {
+  it('should delete a category', async () => {
     const category = await CategorySequelize.CategoryModel.factory().create();
     const response = await controller.remove(category.id);
     expect(response).not.toBeDefined();
     await expect(repository.findById(category.id)).rejects.toThrow(
       new NotFoundError(`Entity not found with ID ${category.id}`),
     );
+  });
+
+  it('should get a category', async () => {
+    const category = await CategorySequelize.CategoryModel.factory().create();
+    const presenter = await controller.findOne(category.id);
+
+    expect(presenter.id).toBe(category.id);
+    expect(presenter.name).toBe(category.name);
+    expect(presenter.description).toBe(category.description);
+    expect(presenter.is_active).toBe(category.is_active);
+    expect(presenter.created_at).toStrictEqual(category.created_at);
   });
 });
