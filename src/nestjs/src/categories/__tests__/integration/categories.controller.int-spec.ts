@@ -10,7 +10,7 @@ import {
   GetCategoryUseCase,
   DeleteCategoryUseCase,
 } from '@fc/micro-videos/category/application';
-import { CategoryRepository } from '@fc/micro-videos/category/domain';
+import { Category, CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
 import { CategorySequelize } from '@fc/micro-videos/category/infra';
 import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
@@ -241,7 +241,9 @@ describe('CategoriesController Integration Tests', () => {
   });
 
   it('should get a category', async () => {
-    const category = await CategorySequelize.CategoryModel.factory().create();
+    const category = new Category({ name: 'Movie' });
+    await repository.insert(category);
+    // const category = await CategorySequelize.CategoryModel.factory().create();
     const presenter = await controller.findOne(category.id);
 
     expect(presenter.id).toBe(category.id);
@@ -251,3 +253,13 @@ describe('CategoriesController Integration Tests', () => {
     expect(presenter.created_at).toStrictEqual(category.created_at);
   });
 });
+
+// Architecture
+// - input ports
+// - use cases
+// - core
+// - infra
+// Tests at input ports should avoid bypass too many levels using infra factory
+// const category = await CategorySequelize.CategoryModel.factory().create();
+
+// Test Data Buiders - Build Design Patterns
