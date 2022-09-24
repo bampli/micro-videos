@@ -105,3 +105,6 @@ export class CategoryFakeBuilder<TBuild = any> {
 
 // const faker2 = CategoryFakeBuilder.theCategories();
 // faker2.withName((index) => `category ${index}`).build;
+
+// more expressive
+// CategoryFakeBuilder.aCategory().withInvalidNameTooLong().build();
