@@ -31,9 +31,29 @@ export class CategoryFakeBuilder<TBuild = any> {
     return this; // fluent pattern
   }
 
+  withInvalidNameEmpty(value: "" | null | undefined) {
+    this.name = value;
+    return this;
+  }
+
+  withInvalidNameNotString(value?: any) {
+    this.name = value ?? 5;
+    return this;
+  }
+
+  withInvalidNameTooLong(value?: string) {
+    this.name = value ?? this.chance.word({ length: 256 });
+    return this;
+  }
+
   withDescription(description: PropOrFactory<string>) {
     this.description = description;
     return this; // fluent pattern
+  }
+
+  withInvalidDescriptionNotString(value?: any) {
+    this.description = value ?? 5;
+    return this;
   }
 
   activate() {
@@ -46,6 +66,16 @@ export class CategoryFakeBuilder<TBuild = any> {
     return this;
   }
 
+  withInvalidIsActiveEmpty(value: "" | null | undefined) {
+    this.is_active = value as any;
+    return this;
+  }
+
+  withInvalidIsActiveNotBoolean(value?: any) {
+    this.is_active = value ?? 'fake boolean';
+    return this;
+  }
+
   build(): TBuild {
     const categories = new Array(this.countObjs).fill(undefined).map(
       (_, index) =>
@@ -55,7 +85,7 @@ export class CategoryFakeBuilder<TBuild = any> {
           is_active: this.callFactory(this.is_active, index),
         })
     );
-    return this.countObjs === 1 ? categories[0] as any : categories;
+    return this.countObjs === 1 ? (categories[0] as any) : categories;
   }
 
   private callFactory(factoryOrValue: PropOrFactory<any>, index: number) {
