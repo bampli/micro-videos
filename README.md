@@ -179,5 +179,7 @@ After running the script, do some adjustments at:
 
 And finally run:
 
+```
   npm run cti:make -w @fc/cyclo-back
   npm run build -w @fc/cyclo-back
+```
