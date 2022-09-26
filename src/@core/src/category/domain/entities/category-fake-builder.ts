@@ -1,15 +1,20 @@
 import { Category } from "./category";
 import { Chance } from "chance";
+import { UniqueEntityId } from "#seedwork/domain";
 
 type PropOrFactory<T> = T | ((_index) => T);
 
 export class CategoryFakeBuilder<TBuild = any> {
   private chance: Chance.Chance;
 
+  // auto-generated in entity
+  private unique_entity_id = undefined;
   private name: PropOrFactory<string> = (_index) => this.chance.word();
   private description: PropOrFactory<string | null> = (_index) =>
     this.chance.paragraph();
   private is_active: PropOrFactory<boolean> = (_index) => true;
+  // auto-generated in entity
+  private created_at = undefined;
 
   private countObjs;
 
@@ -26,8 +31,13 @@ export class CategoryFakeBuilder<TBuild = any> {
     this.chance = Chance();
   }
 
-  withName(name: PropOrFactory<string>) {
-    this.name = name;
+  withUniqueEntityId(valueOrFactory: PropOrFactory<UniqueEntityId>) {
+    this.unique_entity_id = valueOrFactory;
+    return this;
+  }
+
+  withName(valueOrFactory: PropOrFactory<string>) {
+    this.name = valueOrFactory;
     return this; // fluent pattern
   }
 
@@ -46,8 +56,8 @@ export class CategoryFakeBuilder<TBuild = any> {
     return this;
   }
 
-  withDescription(description: PropOrFactory<string>) {
-    this.description = description;
+  withDescription(valueOrFactory: PropOrFactory<string>) {
+    this.description = valueOrFactory;
     return this; // fluent pattern
   }
 
@@ -72,7 +82,12 @@ export class CategoryFakeBuilder<TBuild = any> {
   }
 
   withInvalidIsActiveNotBoolean(value?: any) {
-    this.is_active = value ?? 'fake boolean';
+    this.is_active = value ?? "fake boolean";
+    return this;
+  }
+
+  withCreatedAt(valueOrFactory: PropOrFactory<Date>) {
+    this.created_at = valueOrFactory;
     return this;
   }
 
@@ -80,9 +95,15 @@ export class CategoryFakeBuilder<TBuild = any> {
     const categories = new Array(this.countObjs).fill(undefined).map(
       (_, index) =>
         new Category({
+          ...(this.unique_entity_id && {
+            unique_entity_id: this.callFactory(this.unique_entity_id, index),
+          }),
           name: this.callFactory(this.name, index),
           description: this.callFactory(this.description, index),
           is_active: this.callFactory(this.is_active, index),
+          ...(this.created_at && {
+            created_at: this.callFactory(this.created_at, index),
+          }),
         })
     );
     return this.countObjs === 1 ? (categories[0] as any) : categories;

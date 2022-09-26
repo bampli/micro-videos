@@ -1,10 +1,45 @@
 import { CategoryFakeBuilder } from "../category-fake-builder";
 import { Chance } from "chance";
+import { UniqueEntityId } from "#seedwork/domain";
 
 describe("CategoryFakeBuilder Unit Tests", () => {
-  const faker = CategoryFakeBuilder.aCategory();
 
+  describe("unique_entity_id prop", () => {
+    const faker = CategoryFakeBuilder.aCategory();
+
+    it("should be a undefined", () => {
+      expect(faker["unique_entity_id"]).toBeUndefined();
+    });
+
+    test("withUniqueEntityId", () => {
+      const uniqueEntityId = new UniqueEntityId();
+      const $this = faker.withUniqueEntityId(uniqueEntityId);
+      expect($this).toBeInstanceOf(CategoryFakeBuilder);
+      expect(faker["unique_entity_id"]).toBe(uniqueEntityId);
+
+      faker.withUniqueEntityId(() => uniqueEntityId);
+      expect(faker["unique_entity_id"]()).toBe(uniqueEntityId);
+    });
+
+    it("should pass index to unique_entity_id factory", () => {
+      let mockFactory = jest.fn().mockReturnValue(new UniqueEntityId);
+      faker.withUniqueEntityId(mockFactory);
+      faker.build();
+      expect(mockFactory).toHaveBeenCalledWith(0);
+
+      mockFactory = jest.fn().mockReturnValue(new UniqueEntityId);
+      const fakerMany = CategoryFakeBuilder.theCategories(2);
+      fakerMany.withUniqueEntityId(mockFactory);
+      fakerMany.build();
+
+      expect(mockFactory).toHaveBeenCalledWith(0);
+      expect(mockFactory).toHaveBeenCalledWith(1);
+    });
+  });
+  
   describe("name prop", () => {
+    const faker = CategoryFakeBuilder.aCategory();
+
     it("should be a function", () => {
       expect(typeof faker["name"] === "function").toBeTruthy();
     });
@@ -28,7 +63,7 @@ describe("CategoryFakeBuilder Unit Tests", () => {
       expect(faker["name"]()).toBe("test name");
     });
 
-    it("should pass index to name", () => {
+    it("should pass index to name factory", () => {
       faker.withName((index) => `test name ${index}`);
       const category = faker.build();
       expect(category.name).toBe("test name 0");
@@ -94,7 +129,7 @@ describe("CategoryFakeBuilder Unit Tests", () => {
       expect(faker["description"]()).toBe("test description");
     });
 
-    it("should pass index to description", () => {
+    it("should pass index to description factory", () => {
       faker.withDescription((index) => `test description ${index}`);
       const category = faker.build();
       expect(category.description).toBe("test description 0");
@@ -114,6 +149,8 @@ describe("CategoryFakeBuilder Unit Tests", () => {
   });
 
   describe("is_active prop", () => {
+  const faker = CategoryFakeBuilder.aCategory();
+
     it("should be a function", () => {
       expect(typeof faker["is_active"] === "function").toBeTruthy();
     });
@@ -142,6 +179,38 @@ describe("CategoryFakeBuilder Unit Tests", () => {
     test("invalid not a boolean", () => {
       faker.withInvalidIsActiveNotBoolean();
       expect(faker["is_active"]).not.toBeInstanceOf(Boolean);
+    });
+  });
+
+  describe("created_at prop", () => {
+    const faker = CategoryFakeBuilder.aCategory();
+
+    it("should be a undefined", () => {
+      expect(faker["created_at"]).toBeUndefined();
+    });
+
+    test("withCreatedAt", () => {
+      const date = new Date();
+      const $this = faker.withCreatedAt(date);
+      expect($this).toBeInstanceOf(CategoryFakeBuilder);
+      expect(faker["created_at"]).toBe(date);
+
+      faker.withCreatedAt(() => date);
+      expect(faker["created_at"]()).toBe(date);
+    });
+
+    it("should pass index to created_at factory", () => {
+      const date = new Date();
+      faker.withCreatedAt((index) => new Date(date.getTime() + index + 2));
+      const category = faker.build();
+      expect(category.created_at.getTime()).toBe(date.getTime() + 2);
+
+      const fakerMany = CategoryFakeBuilder.theCategories(2);
+      fakerMany.withCreatedAt((index) => new Date(date.getTime() + index + 2));
+      const categories = fakerMany.build();
+
+      expect(categories[0].created_at.getTime()).toBe(date.getTime() + 0 + 2);
+      expect(categories[1].created_at.getTime()).toBe(date.getTime() + 1 + 2);
     });
   });
 });
