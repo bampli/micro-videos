@@ -7,18 +7,28 @@ describe("CategoryFakeBuilder Unit Tests", () => {
   describe("unique_entity_id prop", () => {
     const faker = CategoryFakeBuilder.aCategory();
 
+    it("should throw error when with methods are called", () => {
+      expect(() => faker["getValue"]("unique_entity_id")).toThrow(
+        new Error(
+          `Property unique_entity_id does not have a factory, use a 'with' method`
+        )
+      );
+    });
+
     it("should be a undefined", () => {
-      expect(faker["unique_entity_id"]).toBeUndefined();
+      expect(faker["_unique_entity_id"]).toBeUndefined();
     });
 
     test("withUniqueEntityId", () => {
       const uniqueEntityId = new UniqueEntityId();
       const $this = faker.withUniqueEntityId(uniqueEntityId);
       expect($this).toBeInstanceOf(CategoryFakeBuilder);
-      expect(faker["unique_entity_id"]).toBe(uniqueEntityId);
+      expect(faker["_unique_entity_id"]).toBe(uniqueEntityId);
 
       faker.withUniqueEntityId(() => uniqueEntityId);
-      expect(faker["unique_entity_id"]()).toBe(uniqueEntityId);
+      expect(faker["_unique_entity_id"]()).toBe(uniqueEntityId);
+
+      expect(faker.unique_entity_id).toBe(uniqueEntityId);
     });
 
     it("should pass index to unique_entity_id factory", () => {
@@ -41,7 +51,7 @@ describe("CategoryFakeBuilder Unit Tests", () => {
     const faker = CategoryFakeBuilder.aCategory();
 
     it("should be a function", () => {
-      expect(typeof faker["name"] === "function").toBeTruthy();
+      expect(typeof faker["_name"] === "function").toBeTruthy();
     });
 
     it("should call the word method", () => {
@@ -56,11 +66,13 @@ describe("CategoryFakeBuilder Unit Tests", () => {
     test("withName", () => {
       faker.withName("test name");
       expect(faker).toBeInstanceOf(CategoryFakeBuilder);
-      expect(faker["name"]).toBe("test name");
+      expect(faker["_name"]).toBe("test name");
 
       faker.withName(() => "test name");
       //@ts-expect-error name is callable
-      expect(faker["name"]()).toBe("test name");
+      expect(faker["_name"]()).toBe("test name");
+
+      expect(faker.name).toBe("test name");
     });
 
     it("should pass index to name factory", () => {
@@ -78,28 +90,28 @@ describe("CategoryFakeBuilder Unit Tests", () => {
 
     test("invalid empty", () => {
       faker.withInvalidNameEmpty(undefined);
-      expect(faker["name"]).toBeUndefined();
+      expect(faker["_name"]).toBeUndefined();
 
       faker.withInvalidNameEmpty(null);
-      expect(faker["name"]).toBeNull();
+      expect(faker["_name"]).toBeNull();
 
       faker.withInvalidNameEmpty("");
-      expect(faker["name"]).toBe("");
+      expect(faker["_name"]).toBe("");
     });
 
     test("invalid too long", () => {
       faker.withInvalidNameTooLong();
-      expect(faker["name"].length).toBe(256);
+      expect(faker["_name"].length).toBe(256);
 
       const tooLong = "a".repeat(256);
       faker.withInvalidNameTooLong(tooLong);
-      expect(faker["name"].length).toBe(256);
-      expect(faker["name"]).toBe(tooLong);
+      expect(faker["_name"].length).toBe(256);
+      expect(faker["_name"]).toBe(tooLong);
     });
 
     test("invalid not a string", () => {
       faker.withInvalidNameNotString();
-      expect(faker["name"]).not.toBeInstanceOf(String);
+      expect(faker["_name"]).not.toBeInstanceOf(String);
     });
   });
 
@@ -107,7 +119,7 @@ describe("CategoryFakeBuilder Unit Tests", () => {
     const faker = CategoryFakeBuilder.aCategory(); // why is it needed? error at top describe?
 
     it("should be a function", () => {
-      expect(typeof faker["description"] === "function").toBeTruthy();
+      expect(typeof faker["_description"] === "function").toBeTruthy();
     });
 
     it("should call the paragraph method", () => {
@@ -122,11 +134,13 @@ describe("CategoryFakeBuilder Unit Tests", () => {
     test("withDescription", () => {
       faker.withDescription("test description");
       expect(faker).toBeInstanceOf(CategoryFakeBuilder);
-      expect(faker["description"]).toBe("test description");
+      expect(faker["_description"]).toBe("test description");
 
       faker.withDescription(() => "test description");
-      //@ts-expect-error description is callable
-      expect(faker["description"]()).toBe("test description");
+      //@ts-expect-error name is callable
+      expect(faker["_description"]()).toBe("test description");
+
+      expect(faker.description).toBe("test description");
     });
 
     it("should pass index to description factory", () => {
@@ -144,7 +158,7 @@ describe("CategoryFakeBuilder Unit Tests", () => {
 
     test("invalid not a string", () => {
       faker.withInvalidDescriptionNotString();
-      expect(faker["description"]).not.toBeInstanceOf(String);
+      expect(faker["_description"]).not.toBeInstanceOf(String);
     });
   });
 
@@ -152,33 +166,35 @@ describe("CategoryFakeBuilder Unit Tests", () => {
   const faker = CategoryFakeBuilder.aCategory();
 
     it("should be a function", () => {
-      expect(typeof faker["is_active"] === "function").toBeTruthy();
+      expect(typeof faker["_is_active"] === "function").toBeTruthy();
     });
 
     test("activate", () => {
       faker.activate();
-      expect(faker["is_active"]).toBeTruthy();
+      expect(faker["_is_active"]).toBeTruthy();
+      expect(faker.is_active).toBeTruthy();
     });
 
     test("deactivate", () => {
       faker.deactivate();
-      expect(faker["is_active"]).toBeFalsy();
+      expect(faker["_is_active"]).toBeFalsy();
+      expect(faker.is_active).toBeFalsy();
     });
 
     test("invalid empty", () => {
       faker.withInvalidIsActiveEmpty(undefined);
-      expect(faker["is_active"]).toBeUndefined();
+      expect(faker["_is_active"]).toBeUndefined();
 
       faker.withInvalidIsActiveEmpty(null);
-      expect(faker["is_active"]).toBeNull();
+      expect(faker["_is_active"]).toBeNull();
 
       faker.withInvalidIsActiveEmpty("");
-      expect(faker["is_active"]).toBe("");
+      expect(faker["_is_active"]).toBe("");
     });
 
     test("invalid not a boolean", () => {
       faker.withInvalidIsActiveNotBoolean();
-      expect(faker["is_active"]).not.toBeInstanceOf(Boolean);
+      expect(faker["_is_active"]).not.toBeInstanceOf(Boolean);
     });
   });
 
@@ -186,17 +202,19 @@ describe("CategoryFakeBuilder Unit Tests", () => {
     const faker = CategoryFakeBuilder.aCategory();
 
     it("should be a undefined", () => {
-      expect(faker["created_at"]).toBeUndefined();
+      expect(faker["_created_at"]).toBeUndefined();
     });
 
     test("withCreatedAt", () => {
       const date = new Date();
       const $this = faker.withCreatedAt(date);
       expect($this).toBeInstanceOf(CategoryFakeBuilder);
-      expect(faker["created_at"]).toBe(date);
+      expect(faker["_created_at"]).toBe(date);
 
       faker.withCreatedAt(() => date);
-      expect(faker["created_at"]()).toBe(date);
+      expect(faker["_created_at"]()).toBe(date);
+
+      expect(faker.created_at).toBe(date);
     });
 
     it("should pass index to created_at factory", () => {
