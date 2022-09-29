@@ -96,17 +96,22 @@ export class CategoryFakeBuilder<TBuild = any> {
   build(): TBuild {
     const categories = new Array(this.countObjs).fill(undefined).map(
       (_, index) =>
-        new Category({
-          ...(this._unique_entity_id && {
-            unique_entity_id: this.callFactory(this._unique_entity_id, index),
-          }),
-          name: this.callFactory(this._name, index),
-          description: this.callFactory(this._description, index),
-          is_active: this.callFactory(this._is_active, index),
-          ...(this._created_at && {
-            created_at: this.callFactory(this._created_at, index),
-          }),
-        })
+        new Category(
+          {
+            // ...(this._unique_entity_id && {
+            //   unique_entity_id: this.callFactory(this._unique_entity_id, index),
+            // }),
+            name: this.callFactory(this._name, index),
+            description: this.callFactory(this._description, index),
+            is_active: this.callFactory(this._is_active, index),
+            ...(this._created_at && {
+              created_at: this.callFactory(this._created_at, index),
+            }),
+        },  // mostrar nas aulas ---- added rows below --- removed rows above
+          !this._unique_entity_id
+            ? undefined
+            : this.callFactory(this._unique_entity_id, index)
+        )
     );
     return this.countObjs === 1 ? (categories[0] as any) : categories;
   }
@@ -162,4 +167,3 @@ export class CategoryFakeBuilder<TBuild = any> {
 // with getters
 // faker.name; faker.name; faker.name; // repeat to generate 3 different names
 // faker.description, etc
-
