@@ -1,4 +1,5 @@
 import {
+  CategoryCollectionPresenter,
   CategoryPresenter,
   CollectionPresenter,
   PaginationPresenter,
@@ -166,6 +167,119 @@ describe('CollectionPresenter Unit Tests', () => {
         last_page: 3,
         total: 4,
       },
+    });
+  });
+});
+
+describe('CategoryCollectionPresenter Unit Tests', () => {
+  describe('constructor', () => {
+    it('should set values', () => {
+      const created_at = new Date();
+      const presenter = new CategoryCollectionPresenter({
+        items: [
+          {
+            id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
+            name: 'movie',
+            description: 'some description',
+            is_active: true,
+            created_at,
+          },
+        ],
+        current_page: 1,
+        per_page: 2,
+        last_page: 3,
+        total: 4,
+      });
+
+      expect(presenter.meta).toBeInstanceOf(PaginationPresenter);
+      expect(presenter.meta).toEqual(
+        new PaginationPresenter({
+          current_page: 1,
+          per_page: 2,
+          last_page: 3,
+          total: 4,
+        }),
+      );
+      expect(presenter.data).toEqual(
+        new CategoryPresenter({
+          id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
+          name: 'movie',
+          description: 'some description',
+          is_active: true,
+          created_at,
+        }),
+      );
+    });
+  });
+
+  it('should convert data', () => {
+    const created_at = new Date();
+    let presenter = new CategoryCollectionPresenter({
+      items: [
+        {
+          id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
+          name: 'movie',
+          description: 'some description',
+          is_active: true,
+          created_at,
+        },
+      ],
+      current_page: 1,
+      per_page: 2,
+      last_page: 3,
+      total: 4,
+    });
+
+    expect(instanceToPlain(presenter)).toStrictEqual({
+      meta: {
+        current_page: 1,
+        per_page: 2,
+        last_page: 3,
+        total: 4,
+      },
+      data: [
+        {
+          id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
+          name: 'movie',
+          description: 'some description',
+          is_active: true,
+          created_at: created_at.toISOString(),
+        },
+      ],
+    });
+
+    presenter = new CategoryCollectionPresenter({
+      items: [
+        {
+          id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
+          name: 'movie',
+          description: 'some description',
+          is_active: true,
+          created_at,
+        },
+      ],
+      current_page: '1' as any,
+      per_page: '2' as any,
+      last_page: '3' as any,
+      total: '4' as any,
+    });
+
+    expect(instanceToPlain(presenter)).toStrictEqual({
+      meta: {
+        current_page: 1,
+        per_page: 2,
+        last_page: 3,
+        total: 4,
+      },
+      data: [
+        {
+          id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
+          name: 'movie',
+          description: 'some description',
+          is_active: true,
+          created_at: created_at.toISOString(),
+        },
+      ],
     });
   });
 });

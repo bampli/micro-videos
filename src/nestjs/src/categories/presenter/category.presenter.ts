@@ -62,24 +62,15 @@ export abstract class CollectionPresenter {
 }
 
 export class CategoryCollectionPresenter extends CollectionPresenter {
-  //@Exclude()
-  //protected _data: CategoryPresenter[];
   data: CategoryPresenter[];
 
-  // reuse suggestion
-  // constructor(output: CategoryOutput[], paginationProps){}
+  // constructor(output: CategoryOutput[], paginationProps){} // reuse suggestion
 
   constructor(output: ListCategoriesUseCase.Output) {
     const { items, ...paginationProps } = output;
     super(paginationProps);
-    //this._data = items.map((item) => new CategoryPresenter(item));
     this.data = items.map((item) => new CategoryPresenter(item));
   }
-
-  // @Expose({ name: 'data' })
-  // get data() {
-  //   return this._data;
-  // }
 }
 
 // API spec:
