@@ -2,7 +2,7 @@ import {
   CategoryOutput,
   ListCategoriesUseCase,
 } from '@fc/micro-videos/category/application';
-import { Transform } from 'class-transformer';
+import { Transform, Exclude, Expose } from 'class-transformer';
 
 export class CategoryPresenter {
   id: string;
@@ -30,7 +30,7 @@ export type PaginationPresenterProps = {
 };
 
 export class PaginationPresenter {
-  @Transform(({ value }) => parseInt(value))
+  @Transform(({ value }) => parseInt(value)) // assures 'int'
   current_page: number;
   @Transform(({ value }) => parseInt(value))
   per_page: number;
@@ -47,11 +47,39 @@ export class PaginationPresenter {
   }
 }
 
-export class CategoryCollectionPresenter {
-  // sugestão reuso
+export abstract class CollectionPresenter {
+  @Exclude() // assures that it will not be serialized
+  protected paginationPresenter: PaginationPresenter;
+
+  constructor(props: PaginationPresenterProps) {
+    this.paginationPresenter = new PaginationPresenter(props);
+  }
+
+  @Expose({ name: 'meta' })
+  get meta() {
+    return this.paginationPresenter; // ok to have cascade presenters
+  }
+}
+
+export class CategoryCollectionPresenter extends CollectionPresenter {
+  //@Exclude()
+  //protected _data: CategoryPresenter[];
+  data: CategoryPresenter[];
+
+  // reuse suggestion
   // constructor(output: CategoryOutput[], paginationProps){}
 
-  constructor(output: ListCategoriesUseCase.Output) {}
+  constructor(output: ListCategoriesUseCase.Output) {
+    const { items, ...paginationProps } = output;
+    super(paginationProps);
+    //this._data = items.map((item) => new CategoryPresenter(item));
+    this.data = items.map((item) => new CategoryPresenter(item));
+  }
+
+  // @Expose({ name: 'data' })
+  // get data() {
+  //   return this._data;
+  // }
 }
 
 // API spec:
