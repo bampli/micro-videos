@@ -200,7 +200,7 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
           total: 4,
         }),
       );
-      expect(presenter.data).toEqual(
+      expect(presenter.data).toEqual([
         new CategoryPresenter({
           id: '61ba6882-2097-4fd5-8a35-0771bec620e8',
           name: 'movie',
@@ -208,7 +208,7 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
           is_active: true,
           created_at,
         }),
-      );
+      ]);
     });
   });
 

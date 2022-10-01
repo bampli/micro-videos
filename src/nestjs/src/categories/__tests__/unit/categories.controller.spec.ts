@@ -5,7 +5,10 @@ import {
   ListCategoriesUseCase,
 } from '@fc/micro-videos/category/application';
 import { SortDirection } from '@fc/micro-videos/dist/@seedwork/domain/repository/repository-contracts';
-import { CategoryPresenter } from '../../presenter/category.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from '../../presenter/category.presenter';
 import { CategoriesController } from '../../categories.controller';
 import { CreateCategoryDto } from '../../dto/create-category.dto';
 import { UpdateCategoryDto } from '../../dto/update-category.dto';
@@ -129,7 +132,7 @@ describe('CategoriesController Unit Tests', () => {
       ],
       current_page: 1,
       last_page: 1,
-      per_page: 1,
+      per_page: 2,
       total: 1,
     };
     const mockListUseCase = {
@@ -146,6 +149,8 @@ describe('CategoriesController Unit Tests', () => {
     };
     const output = await controller.search(searchParams);
     expect(mockListUseCase.execute).toBeCalledWith(searchParams);
-    expect(output).toStrictEqual(expectedOutput);
+    expect(output).toStrictEqual(
+      new CategoryCollectionPresenter(expectedOutput),
+    );
   });
 });
