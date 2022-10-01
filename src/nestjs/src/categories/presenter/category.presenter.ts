@@ -22,56 +22,56 @@ export class CategoryPresenter {
 }
 
 // it will be moved to @fc/micro-videos later
-export type PaginationPresenterProps = {
-  current_page: number;
-  per_page: number;
-  last_page: number;
-  total: number;
-};
+// export type PaginationPresenterProps = {
+//   current_page: number;
+//   per_page: number;
+//   last_page: number;
+//   total: number;
+// };
 
-export class PaginationPresenter {
-  @Transform(({ value }) => parseInt(value)) // assures 'int'
-  current_page: number;
-  @Transform(({ value }) => parseInt(value))
-  per_page: number;
-  @Transform(({ value }) => parseInt(value))
-  last_page: number;
-  @Transform(({ value }) => parseInt(value))
-  total: number;
+// export class PaginationPresenter {
+//   @Transform(({ value }) => parseInt(value)) // assures 'int'
+//   current_page: number;
+//   @Transform(({ value }) => parseInt(value))
+//   per_page: number;
+//   @Transform(({ value }) => parseInt(value))
+//   last_page: number;
+//   @Transform(({ value }) => parseInt(value))
+//   total: number;
 
-  constructor(props: PaginationPresenterProps) {
-    this.current_page = props.current_page;
-    this.per_page = props.per_page;
-    this.last_page = props.last_page;
-    this.total = props.total;
-  }
-}
+//   constructor(props: PaginationPresenterProps) {
+//     this.current_page = props.current_page;
+//     this.per_page = props.per_page;
+//     this.last_page = props.last_page;
+//     this.total = props.total;
+//   }
+// }
 
-export abstract class CollectionPresenter {
-  @Exclude() // assures that it will not be serialized
-  protected paginationPresenter: PaginationPresenter;
+// export abstract class CollectionPresenter {
+//   @Exclude() // assures that it will not be serialized
+//   protected paginationPresenter: PaginationPresenter;
 
-  constructor(props: PaginationPresenterProps) {
-    this.paginationPresenter = new PaginationPresenter(props);
-  }
+//   constructor(props: PaginationPresenterProps) {
+//     this.paginationPresenter = new PaginationPresenter(props);
+//   }
 
-  @Expose({ name: 'meta' })
-  get meta() {
-    return this.paginationPresenter; // ok to have cascade presenters
-  }
-}
+//   @Expose({ name: 'meta' })
+//   get meta() {
+//     return this.paginationPresenter; // ok to have cascade presenters
+//   }
+// }
 
-export class CategoryCollectionPresenter extends CollectionPresenter {
-  data: CategoryPresenter[];
+// export class CategoryCollectionPresenter extends CollectionPresenter {
+//   data: CategoryPresenter[];
 
-  // constructor(output: CategoryOutput[], paginationProps){} // reuse suggestion
+//   // constructor(output: CategoryOutput[], paginationProps){} // reuse suggestion
 
-  constructor(output: ListCategoriesUseCase.Output) {
-    const { items, ...paginationProps } = output;
-    super(paginationProps);
-    this.data = items.map((item) => new CategoryPresenter(item));
-  }
-}
+//   constructor(output: ListCategoriesUseCase.Output) {
+//     const { items, ...paginationProps } = output;
+//     super(paginationProps);
+//     this.data = items.map((item) => new CategoryPresenter(item));
+//   }
+// }
 
 // API spec:
 // {
