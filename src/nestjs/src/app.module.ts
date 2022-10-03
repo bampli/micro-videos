@@ -8,7 +8,12 @@ import { DatabaseModule } from './database/database.module';
 @Module({
   controllers: [AppController],
   providers: [AppService],
-  imports: [ConfigModule.forRoot(), CategoriesModule, DatabaseModule],
+  imports: [
+    ConfigModule.forRoot(),
+    CategoriesModule,
+    DatabaseModule,
+    ShareModule,
+  ],
 })
 export class AppModule {}
 
@@ -17,6 +22,7 @@ export class AppModule {}
 // - but we generated ConfigModule with "nest g module config"
 
 // import { ConfigModule } from '@nestjs/config';
+import { ShareModule } from './@share/@share.module';
 // @Module({
 //   controllers: [AppController],
 //   providers: [AppService],
