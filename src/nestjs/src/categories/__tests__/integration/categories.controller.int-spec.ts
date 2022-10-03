@@ -14,7 +14,10 @@ import { Category, CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
 //import { CategorySequelize } from '@fc/micro-videos/category/infra';
 import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
-import { CategoryPresenter } from '../../presenter/category.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from '../../presenter/category.presenter';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -237,6 +240,112 @@ describe('CategoriesController Integration Tests', () => {
     expect(presenter.description).toBe(category.description);
     expect(presenter.is_active).toBe(category.is_active);
     expect(presenter.created_at).toStrictEqual(category.created_at);
+  });
+
+  describe('search method', () => {
+    it('should return categories ordered by created_at when query is empty', async () => {
+      const categories = Category.fake()
+        .theCategories(4)
+        .withName((index) => index + '')
+        .withCreatedAt((index) => new Date(new Date().getTime() + index))
+        .build();
+      await repository.bulkInsert(categories);
+
+      const arrange = [
+        {
+          send_data: {},
+          expected: {
+            items: [categories[3], categories[2], categories[1], categories[0]],
+            current_page: 1,
+            last_page: 1,
+            per_page: 15,
+            total: 4,
+          },
+        },
+        {
+          send_data: { per_page: 2 },
+          expected: {
+            items: [categories[3], categories[2]],
+            current_page: 1,
+            last_page: 2,
+            per_page: 2,
+            total: 4,
+          },
+        },
+        {
+          send_data: { page: 2, per_page: 2 },
+          expected: {
+            items: [categories[1], categories[0]],
+            current_page: 2,
+            last_page: 2,
+            per_page: 2,
+            total: 4,
+          },
+        },
+      ];
+
+      for (const item of arrange) {
+        const presenter = await controller.search(item.send_data);
+        expect(presenter).toEqual(
+          new CategoryCollectionPresenter(item.expected),
+        );
+      }
+    });
+
+    // it('should combine output with pagination, sort and filter', async () => {
+    //   const created_at = new Date();
+    //   const items = [
+    //     new Category({ name: 'a' }),
+    //     new Category({ name: 'AAA' }),
+    //     new Category({ name: 'AaA' }),
+    //     new Category({ name: 'b' }),
+    //     new Category({ name: 'c' }),
+    //   ];
+    //   repository.items = items;
+
+    //   let output = await useCase.execute({
+    //     page: 1,
+    //     per_page: 2,
+    //     sort: 'name',
+    //     filter: 'a',
+    //   });
+    //   expect(output).toStrictEqual({
+    //     items: [items[1].toJSON(), items[2].toJSON()],
+    //     total: 3,
+    //     current_page: 1,
+    //     per_page: 2,
+    //     last_page: 2,
+    //   });
+
+    //   output = await useCase.execute({
+    //     page: 2,
+    //     per_page: 2,
+    //     sort: 'name',
+    //     filter: 'a',
+    //   });
+    //   expect(output).toStrictEqual({
+    //     items: [items[0].toJSON()],
+    //     total: 3,
+    //     current_page: 2,
+    //     per_page: 2,
+    //     last_page: 2,
+    //   });
+
+    //   output = await useCase.execute({
+    //     page: 1,
+    //     per_page: 2,
+    //     sort: 'name',
+    //     sort_dir: 'desc',
+    //     filter: 'a',
+    //   });
+    //   expect(output).toStrictEqual({
+    //     items: [items[0].toJSON(), items[2].toJSON()],
+    //     total: 3,
+    //     current_page: 1,
+    //     per_page: 2,
+    //     last_page: 2,
+    //   });
+    // });
   });
 
   // describe('should update a category', () => {
