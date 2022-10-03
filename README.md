@@ -26,8 +26,32 @@ Video catalog admin backend
 - RabbitMQ & Encoder integration
 - E2E tests
 
+- Monorepo:
+    src/
+      project1/
+          package.json
+      project2/
+          package.json
+
 - entity: crucial rules (exist)
 - services: app rules (persist)
+
+```
+
+![image](https://user-images.githubusercontent.com/86032/193650879-9226ec52-6939-477a-9399-5fb8e2c57cbe.png)
+
+```
+END-TO-END TESTS
+- how to create end-to-end tests
+- speed up end-to-end tests (mysql, migrations)
+- error handling
+- validation errors
+- serialization - data wrapper
+
+TEST /categories
+- levantar aplicação (config artefatos e db)
+- fazer na prática requisicao HTTP
+- verificar resposta HTTP (status code, body, headers, etc)
 
 ```
 

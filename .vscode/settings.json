@@ -16,5 +16,5 @@
         "*.int-spec.ts": "test-ts",
         "*.ispec.ts": "test-ts",
     },
-    "jestrunner.codeLensSelector": "**/*.{test,spec,int-spec,ispec}.{js,jsx,ts,tsx}",    
+    "jestrunner.codeLensSelector": "**/*.{test,spec,int-spec,ispec,e2e-spec}.{js,jsx,ts,tsx}",    
 }

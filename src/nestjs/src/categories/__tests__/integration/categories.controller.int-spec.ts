@@ -13,7 +13,10 @@ import {
 import { Category, CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
 //import { CategorySequelize } from '@fc/micro-videos/category/infra';
-import { NotFoundError, SortDirection } from '@fc/micro-videos/@seedwork/domain';
+import {
+  NotFoundError,
+  SortDirection,
+} from '@fc/micro-videos/@seedwork/domain';
 import {
   CategoryCollectionPresenter,
   CategoryPresenter,
