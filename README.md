@@ -48,6 +48,11 @@ END-TO-END TESTS
 - validation errors
 - serialization - data wrapper
 
+TEST /categories
+- levantar aplicação (config artefatos e db)
+- fazer na prática requisicao HTTP
+- verificar resposta HTTP (status code, body, headers, etc)
+
 ```
 
 ## Templates
