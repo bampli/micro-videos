@@ -12,7 +12,7 @@ export default {
   collectCoverageFrom: ['**/*.(t|j)s'],
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: 'v8',
-  coverageDirectory: '../coverage/nestjs',
+  coverageDirectory: '../__coverage',
   testEnvironment: 'node',
   moduleNameMapper: {
     '@fc/micro\\-videos/(.*)$':
