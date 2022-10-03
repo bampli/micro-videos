@@ -13,7 +13,7 @@ import {
 import { Category, CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../category.providers';
 //import { CategorySequelize } from '@fc/micro-videos/category/infra';
-import { NotFoundError } from '@fc/micro-videos/@seedwork/domain';
+import { NotFoundError, SortDirection } from '@fc/micro-videos/@seedwork/domain';
 import {
   CategoryCollectionPresenter,
   CategoryPresenter,
@@ -292,60 +292,99 @@ describe('CategoriesController Integration Tests', () => {
       }
     });
 
-    // it('should combine output with pagination, sort and filter', async () => {
-    //   const created_at = new Date();
-    //   const items = [
-    //     new Category({ name: 'a' }),
-    //     new Category({ name: 'AAA' }),
-    //     new Category({ name: 'AaA' }),
-    //     new Category({ name: 'b' }),
-    //     new Category({ name: 'c' }),
-    //   ];
-    //   repository.items = items;
+    it('should combine output with pagination, sort and filter', async () => {
+      const faker = Category.fake().aCategory();
+      const categories = [
+        faker.withName('a').build(),
+        faker.withName('AAA').build(),
+        faker.withName('AaA').build(),
+        faker.withName('b').build(),
+        faker.withName('c').build(),
+      ];
+      await repository.bulkInsert(categories);
 
-    //   let output = await useCase.execute({
-    //     page: 1,
-    //     per_page: 2,
-    //     sort: 'name',
-    //     filter: 'a',
-    //   });
-    //   expect(output).toStrictEqual({
-    //     items: [items[1].toJSON(), items[2].toJSON()],
-    //     total: 3,
-    //     current_page: 1,
-    //     per_page: 2,
-    //     last_page: 2,
-    //   });
+      const arrange_asc = [
+        {
+          send_data: {
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            filter: 'a',
+          },
+          expected: {
+            items: [categories[1], categories[2]],
+            current_page: 1,
+            last_page: 2,
+            per_page: 2,
+            total: 3,
+          },
+        },
+        {
+          send_data: {
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+            filter: 'a',
+          },
+          expected: {
+            items: [categories[0]],
+            current_page: 2,
+            last_page: 2,
+            per_page: 2,
+            total: 3,
+          },
+        },
+      ];
 
-    //   output = await useCase.execute({
-    //     page: 2,
-    //     per_page: 2,
-    //     sort: 'name',
-    //     filter: 'a',
-    //   });
-    //   expect(output).toStrictEqual({
-    //     items: [items[0].toJSON()],
-    //     total: 3,
-    //     current_page: 2,
-    //     per_page: 2,
-    //     last_page: 2,
-    //   });
+      for (const item of arrange_asc) {
+        const presenter = await controller.search(item.send_data);
+        expect(presenter).toEqual(
+          new CategoryCollectionPresenter(item.expected),
+        );
+      }
 
-    //   output = await useCase.execute({
-    //     page: 1,
-    //     per_page: 2,
-    //     sort: 'name',
-    //     sort_dir: 'desc',
-    //     filter: 'a',
-    //   });
-    //   expect(output).toStrictEqual({
-    //     items: [items[0].toJSON(), items[2].toJSON()],
-    //     total: 3,
-    //     current_page: 1,
-    //     per_page: 2,
-    //     last_page: 2,
-    //   });
-    // });
+      const arrange_desc = [
+        {
+          send_data: {
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as SortDirection,
+            filter: 'a',
+          },
+          expected: {
+            items: [categories[0], categories[2]],
+            current_page: 1,
+            last_page: 2,
+            per_page: 2,
+            total: 3,
+          },
+        },
+        {
+          send_data: {
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as SortDirection,
+            filter: 'a',
+          },
+          expected: {
+            items: [categories[1]],
+            current_page: 2,
+            last_page: 2,
+            per_page: 2,
+            total: 3,
+          },
+        },
+      ];
+
+      for (const item of arrange_desc) {
+        const presenter = await controller.search(item.send_data);
+        expect(presenter).toEqual(
+          new CategoryCollectionPresenter(item.expected),
+        );
+      }
+    });
   });
 
   // describe('should update a category', () => {

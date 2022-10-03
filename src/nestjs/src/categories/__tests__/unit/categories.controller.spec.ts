@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   CreateCategoryUseCase,
   GetCategoryUseCase,
@@ -45,7 +44,7 @@ describe('CategoriesController Unit Tests', () => {
     const mockCreateUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(output)),
     };
-    //@ts-expect-error
+    //@ts-expect-error mock
     controller['createUseCase'] = mockCreateUseCase;
     const input: CreateCategoryDto = {
       name: 'Movie',
@@ -56,8 +55,8 @@ describe('CategoriesController Unit Tests', () => {
     expect(mockCreateUseCase.execute).toBeCalledWith(input);
     expect(presenter).toBeInstanceOf(CategoryPresenter);
     expect(presenter).toStrictEqual(new CategoryPresenter(output));
-    // when there was no presenter:
-    //expect(output).toStrictEqual(expectedOutput);
+    // without presenter
+    // expect(output).toStrictEqual(expectedOutput);
   });
 
   it('should update a category', async () => {
@@ -72,7 +71,7 @@ describe('CategoriesController Unit Tests', () => {
     const mockUpdateUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(output)),
     };
-    //@ts-expect-error
+    //@ts-expect-error mock
     controller['updateUseCase'] = mockUpdateUseCase;
     const input: UpdateCategoryDto = {
       name: 'Movie',
@@ -90,7 +89,7 @@ describe('CategoriesController Unit Tests', () => {
     const mockDeleteUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
     };
-    //@ts-expect-error
+    //@ts-expect-error mock
     controller['deleteUseCase'] = mockDeleteUseCase;
     const id = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
     expect(controller.remove(id)).toBeInstanceOf(Promise);
@@ -111,7 +110,7 @@ describe('CategoriesController Unit Tests', () => {
     const mockGetUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
     };
-    //@ts-expect-error
+    //@ts-expect-error mock
     controller['getUseCase'] = mockGetUseCase;
     const presenter = await controller.findOne(id);
     expect(mockGetUseCase.execute).toBeCalledWith({ id });
@@ -138,7 +137,7 @@ describe('CategoriesController Unit Tests', () => {
     const mockListUseCase = {
       execute: jest.fn().mockReturnValue(Promise.resolve(expectedOutput)),
     };
-    //@ts-expect-error
+    //@ts-expect-error mock
     controller['listUseCase'] = mockListUseCase;
     const searchParams = {
       page: 1,
@@ -147,9 +146,10 @@ describe('CategoriesController Unit Tests', () => {
       sort_dir: 'desc' as SortDirection,
       filter: 'test',
     };
-    const output = await controller.search(searchParams);
+    const presenter = await controller.search(searchParams);
+    expect(presenter).toBeInstanceOf(CategoryCollectionPresenter);
     expect(mockListUseCase.execute).toBeCalledWith(searchParams);
-    expect(output).toStrictEqual(
+    expect(presenter).toStrictEqual(
       new CategoryCollectionPresenter(expectedOutput),
     );
   });
