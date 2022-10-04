@@ -85,7 +85,7 @@ describe('CategoriesController Integration Tests', () => {
         const presenter = await controller.create(send_data);
         const entity = await repository.findById(presenter.id);
 
-        expect(entity).toMatchObject({
+        expect(entity.toJSON()).toStrictEqual({
           id: presenter.id,
           created_at: presenter.created_at,
           ...send_data,

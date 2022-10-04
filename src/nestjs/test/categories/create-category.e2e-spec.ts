@@ -5,6 +5,8 @@ import { AppModule } from '../../src/app.module';
 import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../src/categories/category.providers';
 import { CategoryFixture } from '../../src/categories/fixtures';
+import { CategoriesController } from '../../src/categories/categories.controller';
+import { instanceToPlain } from 'class-transformer';
 
 describe('CategoriesController (e2e)', () => {
   let app: INestApplication;
@@ -35,19 +37,15 @@ describe('CategoriesController (e2e)', () => {
             .expect(201);
           const keyInResponse = CategoryFixture.keysInResponse();
           expect(Object.keys(res.body)).toStrictEqual(keyInResponse);
-          const category = await categoryRepo.findById(res.body.id);
-          expect(res.body.id).toBe(category.id);
-          expect(res.body.created_at).toBe(category.created_at.toISOString());
+          const categoryCreated = await categoryRepo.findById(res.body.id);
+          const presenter = CategoriesController.categoryToResponse(
+            categoryCreated.toJSON(),
+          );
+          const serialized = instanceToPlain(presenter);
+          expect(res.body).toStrictEqual(serialized);
           expect(res.body).toStrictEqual({
-            id: category.id,
-            name: category.name,
-            description: category.description,
-            is_active: category.is_active,
-            created_at: category.created_at.toISOString(),
-          });
-          expect(res.body).toStrictEqual({
-            id: res.body.id,
-            created_at: res.body.created_at,
+            id: serialized.id,
+            created_at: serialized.created_at,
             ...send_data,
             ...expected,
           });
