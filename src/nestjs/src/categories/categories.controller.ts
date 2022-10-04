@@ -9,6 +9,7 @@ import {
   Inject,
   HttpCode,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   CategoryOutput,
@@ -25,7 +26,9 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from './presenter/category.presenter';
+import { WrapperDataInterceptor } from '../@share/interceptors/wrapper-data.interceptor';
 
+@UseInterceptors(WrapperDataInterceptor)
 @Controller('categories')
 export class CategoriesController {
   // properties injection
