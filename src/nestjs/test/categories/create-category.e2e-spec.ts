@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../../src/app.module';
 import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../src/categories/category.providers';
+import { CategoryFixture } from '../../src/categories/fixtures';
 
 describe('CategoriesController (e2e)', () => {
   let app: INestApplication;
@@ -21,7 +22,41 @@ describe('CategoriesController (e2e)', () => {
     await app.init();
   });
 
-  it('POST /categories', async () => {
+  describe('POST /categories', () => {
+    describe('should create a category', () => {
+      const arrange = CategoryFixture.arrangeForSave();
+
+      test.each(arrange)(
+        'when body is $send_data',
+        async ({ send_data, expected }) => {
+          const res = await request(app.getHttpServer())
+            .post('/categories')
+            .send(send_data)
+            .expect(201);
+          const keyInResponse = CategoryFixture.keysInResponse();
+          expect(Object.keys(res.body)).toStrictEqual(keyInResponse);
+          const category = await categoryRepo.findById(res.body.id);
+          expect(res.body.id).toBe(category.id);
+          expect(res.body.created_at).toBe(category.created_at.toISOString());
+          expect(res.body).toStrictEqual({
+            id: category.id,
+            name: category.name,
+            description: category.description,
+            is_active: category.is_active,
+            created_at: category.created_at.toISOString(),
+          });
+          expect(res.body).toStrictEqual({
+            id: res.body.id,
+            created_at: res.body.created_at,
+            ...send_data,
+            ...expected,
+          });
+        },
+      );
+    });
+  });
+
+  it('POST /categories without fixture', async () => {
     const res = await request(app.getHttpServer())
       .post('/categories')
       .send({ name: 'Movie' })
@@ -43,13 +78,5 @@ describe('CategoriesController (e2e)', () => {
       is_active: category.is_active,
       created_at: category.created_at.toISOString(),
     });
-    // .expect('Hello World!')
-    // .end((err, res) => {
-    //   console.log('###', err, res.status); // always shows a log
-    //   // ### null 200
-    //   // ### Error: expected 201 "Created", got 200 "OK"
-    //   if (err) return done(err);
-    //   return done();
-    // });
   });
 });

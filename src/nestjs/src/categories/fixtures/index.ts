@@ -1,10 +1,13 @@
 // fixture for categories
 
-import { Category } from "@fc/micro-videos/category/domain";
+import { Category } from '@fc/micro-videos/category/domain';
 
-class CategoryFixture {
+export class CategoryFixture {
+  static keysInResponse() {
+    return ['id', 'name', 'description', 'is_active', 'created_at'];
+  }
   static arrangeForSave() {
-    const faker = Category.fake().aCategory();
+    const faker = Category.fake().aCategory().withName('Movie');
     return [
       {
         send_data: {
