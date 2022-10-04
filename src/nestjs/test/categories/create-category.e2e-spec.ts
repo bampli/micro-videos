@@ -38,14 +38,15 @@ describe('CategoriesController (e2e)', () => {
             .send(send_data)
             .expect(201);
           const keyInResponse = CategoryFixture.keysInResponse();
-          expect(Object.keys(res.body)).toStrictEqual(keyInResponse);
-          const categoryCreated = await categoryRepo.findById(res.body.id);
+          expect(Object.keys(res.body)).toStrictEqual(['data']);
+          expect(Object.keys(res.body.data)).toStrictEqual(keyInResponse);
+          const categoryCreated = await categoryRepo.findById(res.body.data.id);
           const presenter = CategoriesController.categoryToResponse(
             categoryCreated.toJSON(),
           );
           const serialized = instanceToPlain(presenter);
-          expect(res.body).toStrictEqual(serialized);
-          expect(res.body).toStrictEqual({
+          expect(res.body.data).toStrictEqual(serialized);
+          expect(res.body.data).toStrictEqual({
             id: serialized.id,
             created_at: serialized.created_at,
             ...send_data,
@@ -61,17 +62,17 @@ describe('CategoriesController (e2e)', () => {
       .post('/categories')
       .send({ name: 'Movie' })
       .expect(201);
-    expect(Object.keys(res.body)).toStrictEqual([
+    expect(Object.keys(res.body.data)).toStrictEqual([
       'id',
       'name',
       'description',
       'is_active',
       'created_at',
     ]);
-    const category = await categoryRepo.findById(res.body.id);
-    expect(res.body.id).toBe(category.id);
-    expect(res.body.created_at).toBe(category.created_at.toISOString());
-    expect(res.body).toStrictEqual({
+    const category = await categoryRepo.findById(res.body.data.id);
+    expect(res.body.data.id).toBe(category.id);
+    expect(res.body.data.created_at).toBe(category.created_at.toISOString());
+    expect(res.body.data).toStrictEqual({
       id: category.id,
       name: category.name,
       description: category.description,
