@@ -9,7 +9,8 @@ import {
   Inject,
   HttpCode,
   Query,
-  UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   CategoryOutput,
@@ -26,7 +27,6 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from './presenter/category.presenter';
-import { WrapperDataInterceptor } from '../@share/interceptors/wrapper-data.interceptor';
 
 // interceptor moved to global bootstrap
 // at src/nestjs/main.ts
@@ -50,6 +50,23 @@ export class CategoriesController {
   private listUseCase: ListCategoriesUseCase.UseCase;
 
   // Ports from hexagonal architecture
+
+  // There would be a couple ways to use ValidationPipe()
+  // But none will be used, better to use a global ValidationPipe()
+  // @Post()
+  // async create(
+  //   @Body(new ValidationPipe()) createCategoryDto: CreateCategoryDto,
+  // ) {
+  //   const output = await this.createUseCase.execute(createCategoryDto);
+  //   return CategoriesController.categoryToResponse(output);
+  // }
+  //
+  // @UsePipes(new ValidationPipe())
+  // @Post()
+  // async create(@Body() createCategoryDto: CreateCategoryDto) {
+  //   const output = await this.createUseCase.execute(createCategoryDto);
+  //   return CategoriesController.categoryToResponse(output);
+  // }
 
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
