@@ -28,7 +28,9 @@ import {
 } from './presenter/category.presenter';
 import { WrapperDataInterceptor } from '../@share/interceptors/wrapper-data.interceptor';
 
-@UseInterceptors(WrapperDataInterceptor)
+// interceptor moved to global bootstrap
+// at src/nestjs/main.ts
+//@UseInterceptors(WrapperDataInterceptor)
 @Controller('categories')
 export class CategoriesController {
   // properties injection

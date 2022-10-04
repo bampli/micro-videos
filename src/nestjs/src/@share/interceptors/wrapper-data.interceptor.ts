@@ -9,11 +9,13 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class WrapperDataInterceptor implements NestInterceptor {
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(_context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
+      // intercept response
       map((body) => {
-        console.log(body);
-        return body;
+        // console.log(body);
+        // return body;
+        return !body || 'meta' in body ? body : { data: body };
       }),
     );
   }

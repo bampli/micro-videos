@@ -7,6 +7,7 @@ import { CATEGORY_PROVIDERS } from '../../src/categories/category.providers';
 import { CategoryFixture } from '../../src/categories/fixtures';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
+import { applyGlobalConfig } from '../../src/global-config';
 
 describe('CategoriesController (e2e)', () => {
   let app: INestApplication;
@@ -21,6 +22,7 @@ describe('CategoriesController (e2e)', () => {
       CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
     );
     app = moduleFixture.createNestApplication();
+    applyGlobalConfig(app);
     await app.init();
   });
 
