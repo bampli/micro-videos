@@ -114,7 +114,7 @@ export class CategoryFixture {
           message: [
             'name should not be empty',
             'name must be a string',
-            'is_active must be a boolean',
+            'is_active must be a boolean value',
           ],
           ...defaultExpected,
         },

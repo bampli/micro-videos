@@ -9,6 +9,28 @@ import { CategoriesController } from '../../src/categories/categories.controller
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from '../../src/global-config';
 
+function startApp({
+  beforeInit,
+}: { beforeInit?: (app: INestApplication) => void } = {}) {
+  let _app: INestApplication;
+
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+    _app = moduleFixture.createNestApplication();
+    applyGlobalConfig(_app);
+    beforeInit && beforeInit(_app);
+    await _app.init();
+  });
+
+  return {
+    get app() {
+      return _app;
+    },
+  };
+}
+
 describe('CategoriesController (e2e)', () => {
   let app: INestApplication;
   let categoryRepo: CategoryRepository.Repository;
@@ -28,6 +50,7 @@ describe('CategoriesController (e2e)', () => {
 
   describe('POST /categories', () => {
     describe('should have response 422 with invalid request body', () => {
+      const app = startApp();
       const invalidRequest = CategoryFixture.arrangeInvalidRequest();
       const arrange = Object.keys(invalidRequest).map((key) => ({
         label: key,
@@ -35,20 +58,49 @@ describe('CategoriesController (e2e)', () => {
       }));
 
       test.each(arrange)('when body is $label', ({ value }) => {
-        return request(app.getHttpServer())
+        return request(app.app.getHttpServer())
           .post('/categories')
           .send(value.send_data)
-          .expect(422);
+          .expect(422)
+          .expect(value.expected);
+      });
+    });
+
+    describe('should have response 422 to EntityValidationError', () => {
+      const app = startApp({
+        beforeInit: (app) => {
+          app['config'].globalPipes = []; // cancel NestJS validation at DTO
+        },
+      });
+      const invalidRequest = CategoryFixture.arrangeInvalidRequest();
+      const arrange = Object.keys(invalidRequest).map((key) => ({
+        label: key,
+        value: invalidRequest[key],
+      }));
+
+      test.each(arrange)('when body is $label', async ({ value }) => {
+        const res = await request(app.app.getHttpServer()).post('/categories');
+        console.log(res.body, res.statusCode);
+        // { statusCode: 500, message: 'Internal server error' } 500
+        // .send(value.send_data)
+        // .expect(422);
       });
     });
 
     describe('should create a category', () => {
+      const app = startApp();
       const arrange = CategoryFixture.arrangeForSave();
+
+      beforeEach(async () => {
+        categoryRepo = app.app.get<CategoryRepository.Repository>(
+          CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+        );
+      });
 
       test.each(arrange)(
         'when body is $send_data',
         async ({ send_data, expected }) => {
-          const res = await request(app.getHttpServer())
+          const res = await request(app.app.getHttpServer())
             .post('/categories')
             .send(send_data)
             .expect(201);
