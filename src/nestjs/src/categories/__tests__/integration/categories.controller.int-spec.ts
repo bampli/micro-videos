@@ -21,6 +21,7 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from '../../presenter/category.presenter';
+import { CategoryFixture } from '../../fixtures';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -75,73 +76,23 @@ describe('CategoriesController Integration Tests', () => {
     expect(presenter.created_at).toStrictEqual(entity.created_at);
   });
 
-  describe('should create a category with testEach', () => {
-    const arrange = [
-      {
-        request: {
-          name: 'Movie',
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: null,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          is_active: true,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: 'some text',
-          is_active: false,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: 'some text',
-          is_active: false,
-        },
-      },
-    ];
+  describe('should create a category with fixture & testEach', () => {
+    const arrange = CategoryFixture.arrangeForSave();
 
     test.each(arrange)(
-      'with request $request',
-      async ({ request, expectedPresenter }) => {
-        const presenter = await controller.create(request);
+      'when body is $send_data',
+      async ({ send_data, expected }) => {
+        const presenter = await controller.create(send_data);
         const entity = await repository.findById(presenter.id);
 
-        expect(entity).toMatchObject({
+        expect(entity.toJSON()).toStrictEqual({
           id: presenter.id,
-          name: expectedPresenter.name,
-          description: expectedPresenter.description,
-          is_active: expectedPresenter.is_active,
           created_at: presenter.created_at,
+          ...send_data,
+          ...expected,
         });
 
-        expect(presenter.id).toBe(entity.id);
-        expect(presenter.name).toBe(expectedPresenter.name);
-        expect(presenter.description).toBe(expectedPresenter.description);
-        expect(presenter.is_active).toBe(expectedPresenter.is_active);
-        expect(presenter.created_at).toStrictEqual(entity.created_at);
+        expect(presenter).toEqual(new CategoryPresenter(entity));
       },
     );
   });

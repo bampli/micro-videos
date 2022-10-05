@@ -9,8 +9,11 @@ import {
   Inject,
   HttpCode,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
+  CategoryOutput,
   CreateCategoryUseCase,
   DeleteCategoryUseCase,
   GetCategoryUseCase,
@@ -25,6 +28,9 @@ import {
   CategoryPresenter,
 } from './presenter/category.presenter';
 
+// interceptor moved to global bootstrap
+// at src/nestjs/main.ts
+//@UseInterceptors(WrapperDataInterceptor)
 @Controller('categories')
 export class CategoriesController {
   // properties injection
@@ -45,10 +51,27 @@ export class CategoriesController {
 
   // Ports from hexagonal architecture
 
+  // There would be a couple ways to use ValidationPipe()
+  // But none will be used, better to use a global ValidationPipe()
+  // @Post()
+  // async create(
+  //   @Body(new ValidationPipe()) createCategoryDto: CreateCategoryDto,
+  // ) {
+  //   const output = await this.createUseCase.execute(createCategoryDto);
+  //   return CategoriesController.categoryToResponse(output);
+  // }
+  //
+  // @UsePipes(new ValidationPipe())
+  // @Post()
+  // async create(@Body() createCategoryDto: CreateCategoryDto) {
+  //   const output = await this.createUseCase.execute(createCategoryDto);
+  //   return CategoriesController.categoryToResponse(output);
+  // }
+
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     const output = await this.createUseCase.execute(createCategoryDto);
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Get()
@@ -60,7 +83,7 @@ export class CategoriesController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const output = await this.getUseCase.execute({ id });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @Put(':id')
@@ -72,13 +95,17 @@ export class CategoriesController {
       id,
       ...updateCategoryDto,
     });
-    return new CategoryPresenter(output);
+    return CategoriesController.categoryToResponse(output);
   }
 
   @HttpCode(204)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.deleteUseCase.execute({ id });
+  }
+
+  static categoryToResponse(output: CategoryOutput) {
+    return new CategoryPresenter(output);
   }
 }
 
