@@ -75,6 +75,50 @@ export class CategoryFixture {
           ...defaultExpected,
         },
       },
+      NAME_NULL: {
+        send_data: {
+          name: faker.withInvalidNameEmpty(null).name,
+        },
+        expected: {
+          message: ['name should not be empty', 'name must be a string'],
+          ...defaultExpected,
+        },
+      },
+      NAME_EMPTY: {
+        send_data: {
+          name: faker.withInvalidNameEmpty('').name,
+        },
+        expected: {
+          message: ['name should not be empty'],
+          ...defaultExpected,
+        },
+      },
+      DESCRIPTION_NOT_A_STRING: {
+        send_data: {
+          description: faker.withInvalidDescriptionNotString().description,
+        },
+        expected: {
+          message: [
+            'name should not be empty',
+            'name must be a string',
+            'description must be a string',
+          ],
+          ...defaultExpected,
+        },
+      },
+      IS_ACTIVE_NOT_A_BOOLEAN: {
+        send_data: {
+          is_active: faker.withInvalidIsActiveNotBoolean().is_active,
+        },
+        expected: {
+          message: [
+            'name should not be empty',
+            'name must be a string',
+            'is_active must be a boolean',
+          ],
+          ...defaultExpected,
+        },
+      },
     };
   }
 }
