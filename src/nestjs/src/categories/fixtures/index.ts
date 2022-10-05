@@ -6,6 +6,7 @@ export class CategoryFixture {
   static keysInResponse() {
     return ['id', 'name', 'description', 'is_active', 'created_at'];
   }
+
   static arrangeForSave() {
     const faker = Category.fake().aCategory().withName('Movie');
     return [
@@ -48,5 +49,32 @@ export class CategoryFixture {
         },
       },
     ];
+  }
+
+  static arrangeInvalidRequest() {
+    const faker = Category.fake().aCategory();
+    const defaultExpected = {
+      statusCode: 422,
+      error: 'Unprocessable Entity',
+    };
+
+    return {
+      EMPTY: {
+        send_data: {},
+        expected: {
+          message: ['name should not be empty', 'name must be a string'],
+          ...defaultExpected,
+        },
+      },
+      NAME_UNDEFINED: {
+        send_data: {
+          name: faker.withInvalidNameEmpty(undefined).name,
+        },
+        expected: {
+          message: ['name should not be empty', 'name must be a string'],
+          ...defaultExpected,
+        },
+      },
+    };
   }
 }

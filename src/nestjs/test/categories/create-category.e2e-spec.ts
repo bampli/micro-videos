@@ -27,23 +27,31 @@ describe('CategoriesController (e2e)', () => {
   });
 
   describe('POST /categories', () => {
-    it('validation', async () => {
-      const res = await request(app.getHttpServer())
-        .post('/categories')
-        .send({})
-        .expect(422); // see global-config.ts
+    describe('should have response 422 with invalid request body', () => {
+      const invalidRequest = CategoryFixture.arrangeInvalidRequest();
+      const arrange = Object.keys(invalidRequest).map((key) => ({
+        label: key,
+        value: invalidRequest[key],
+      }));
 
-      console.log(res.body);
-      // {
-      //   statusCode: 422,
-      //   message: [ 'name should not be empty' ],
-      //   error: 'Unprocessable Entity'
-      // }
-      // {
-      //   statusCode: 400,
-      //   message: [ 'name should not be empty' ],
-      //   error: 'Bad Request'
-      // }
+      test.each(arrange)('when body is $label', async ({ value }) => {
+        const res = await request(app.getHttpServer())
+          .post('/categories')
+          .send(value)
+          .expect(422); // see global-config.ts
+
+        console.log(res.body);
+        // {
+        //   statusCode: 422,
+        //   message: [ 'name should not be empty' ],
+        //   error: 'Unprocessable Entity'
+        // }
+        // {
+        //   statusCode: 400,
+        //   message: [ 'name should not be empty' ],
+        //   error: 'Bad Request'
+        // }
+      });
     });
 
     describe('should create a category', () => {
