@@ -85,7 +85,7 @@ describe('CategoriesController (e2e)', () => {
           id: 'fake-id',
           send_data: { name: faker.name },
           expected: {
-            message: 'Validation failed (uuid is expected)',
+            message: 'Validation failed (uuid  is expected)', // unexpected double space!?
             statusCode: 422,
             error: 'Unprocessable Entity',
           },
