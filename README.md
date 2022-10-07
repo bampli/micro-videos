@@ -164,6 +164,9 @@ npm install class-transformer -w nestjs
 
 nest g interceptor @share/interceptors/wrapper-data
 
+nest g filter @share/exception-filters/entity-validation-error
+nest g filter @share/exception-filters/not-found-error
+
 ```
 
 ## Versions

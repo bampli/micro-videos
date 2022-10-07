@@ -67,6 +67,43 @@ describe('CategoriesController (e2e)', () => {
       });
     });
 
+    describe('should handle response when id is invalid or not found', () => {
+      const nestApp = startApp();
+      const faker = Category.fake().aCategory();
+      const arrange = [
+        {
+          id: '957334c5-91b9-4986-9b43-0d42f2edfbe9',
+          send_data: { name: faker.name },
+          expected: {
+            message:
+              'Entity not found with ID 957334c5-91b9-4986-9b43-0d42f2edfbe9',
+            statusCode: 404,
+            error: 'Not Found',
+          },
+        },
+        // {
+        //   id: 'fake-id',
+        //   send_data: { name: faker.name },
+        //   expected: {
+        //     message: 'Validation failed (uuid is expected',
+        //     statusCode: 400,
+        //     error: 'Bad Request',
+        //   },
+        // },
+      ];
+
+      test.each(arrange)(
+        'when id is $id',
+        async ({ id, send_data, expected }) => {
+          return request(nestApp.app.getHttpServer())
+            .put(`/categories/${id}`)
+            .send(send_data)
+            .expect(expected.statusCode)
+            .expect(expected);
+        },
+      );
+    });
+
     describe('should have response 422 to EntityValidationError', () => {
       const app = startApp({
         beforeInit: (app) => {
