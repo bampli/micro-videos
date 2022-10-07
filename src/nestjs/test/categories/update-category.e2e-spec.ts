@@ -34,21 +34,6 @@ function startApp({
 describe('CategoriesController (e2e)', () => {
   const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
 
-  // let app: INestApplication;
-  // let categoryRepo: CategoryRepository.Repository;
-  // beforeEach(async () => {
-  //   const moduleFixture: TestingModule = await Test.createTestingModule({
-  //     imports: [AppModule],
-  //   }).compile();
-  //   // repo does not need to wait for app.init()
-  //   categoryRepo = moduleFixture.get<CategoryRepository.Repository>(
-  //     CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
-  //   );
-  //   app = moduleFixture.createNestApplication();
-  //   applyGlobalConfig(app);
-  //   await app.init();
-  // });
-
   describe('PUT /categories/:id', () => {
     describe('should have response 422 with invalid request body', () => {
       const app = startApp();
