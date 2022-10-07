@@ -81,15 +81,15 @@ describe('CategoriesController (e2e)', () => {
             error: 'Not Found',
           },
         },
-        // {
-        //   id: 'fake-id',
-        //   send_data: { name: faker.name },
-        //   expected: {
-        //     message: 'Validation failed (uuid is expected',
-        //     statusCode: 400,
-        //     error: 'Bad Request',
-        //   },
-        // },
+        {
+          id: 'fake-id',
+          send_data: { name: faker.name },
+          expected: {
+            message: 'Validation failed (uuid is expected)',
+            statusCode: 422,
+            error: 'Unprocessable Entity',
+          },
+        },
       ];
 
       test.each(arrange)(
