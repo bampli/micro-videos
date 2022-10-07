@@ -32,22 +32,6 @@ function startApp({
 }
 
 describe('CategoriesController (e2e)', () => {
-  // let app: INestApplication;
-  // let categoryRepo: CategoryRepository.Repository;
-
-  // beforeEach(async () => {
-  //   const moduleFixture: TestingModule = await Test.createTestingModule({
-  //     imports: [AppModule],
-  //   }).compile();
-  //   // repo does not need to wait for app.init()
-  //   categoryRepo = moduleFixture.get<CategoryRepository.Repository>(
-  //     CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
-  //   );
-  //   app = moduleFixture.createNestApplication();
-  //   applyGlobalConfig(app);
-  //   await app.init();
-  // });
-
   describe('POST /categories', () => {
     describe('should have response 422 with invalid request body', () => {
       const app = startApp();
@@ -72,7 +56,8 @@ describe('CategoriesController (e2e)', () => {
           app['config'].globalPipes = []; // cancel NestJS validation at DTO
         },
       });
-      const validationError = CreateCategoryFixture.arrangeForEntityValidationError();
+      const validationError =
+        CreateCategoryFixture.arrangeForEntityValidationError();
       const arrange = Object.keys(validationError).map((key) => ({
         label: key,
         value: validationError[key],
