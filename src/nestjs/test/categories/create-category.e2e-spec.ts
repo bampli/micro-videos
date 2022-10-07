@@ -79,9 +79,23 @@ describe('CategoriesController (e2e)', () => {
       }));
 
       test.each(arrange)('when body is $label', async ({ value }) => {
-        const res = await request(app.app.getHttpServer()).post('/categories');
+        const res = await request(app.app.getHttpServer())
+          .post('/categories')
+          .send({ name: 5, description: 5 });
         console.log(res.body, res.statusCode);
+        // BEFORE EXCEPTION-FILTER
         // { statusCode: 500, message: 'Internal server error' } 500
+        // AFTER EXCEPTION-FILTER
+        // {
+        //   statusCode: 422,
+        //   error: 'Unprocessable Entity',
+        //   message: [
+        //     'name must be a string',
+        //     'name must be shorter than or equal to 255 characters',
+        //     'description must be a string'
+        //   ]
+        // } 422
+
         // .send(value.send_data)
         // .expect(422);
       });
@@ -112,6 +126,8 @@ describe('CategoriesController (e2e)', () => {
             categoryCreated.toJSON(),
           );
           const serialized = instanceToPlain(presenter);
+          // presenter: {... created_at: 2022-10-07T14:03:42.208Z }
+          // serialized: {... created_at: '2022-10-07T14:03:42.208Z' }
           expect(res.body.data).toStrictEqual(serialized);
           expect(res.body.data).toStrictEqual({
             id: serialized.id,
