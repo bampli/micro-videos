@@ -11,6 +11,7 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import {
   CategoryOutput,
@@ -51,23 +52,6 @@ export class CategoriesController {
 
   // Ports from hexagonal architecture
 
-  // There would be a couple ways to use ValidationPipe()
-  // But none will be used, better to use a global ValidationPipe()
-  // @Post()
-  // async create(
-  //   @Body(new ValidationPipe()) createCategoryDto: CreateCategoryDto,
-  // ) {
-  //   const output = await this.createUseCase.execute(createCategoryDto);
-  //   return CategoriesController.categoryToResponse(output);
-  // }
-  //
-  // @UsePipes(new ValidationPipe())
-  // @Post()
-  // async create(@Body() createCategoryDto: CreateCategoryDto) {
-  //   const output = await this.createUseCase.execute(createCategoryDto);
-  //   return CategoriesController.categoryToResponse(output);
-  // }
-
   @Post()
   async create(@Body() createCategoryDto: CreateCategoryDto) {
     const output = await this.createUseCase.execute(createCategoryDto);
@@ -81,14 +65,16 @@ export class CategoriesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
     const output = await this.getUseCase.execute({ id });
     return CategoriesController.categoryToResponse(output);
   }
 
-  @Put(':id')
+  @Put(':id') // PUT vs PATH
   async update(
-    @Param('id') id: string,
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     const output = await this.updateUseCase.execute({
@@ -100,7 +86,9 @@ export class CategoriesController {
 
   @HttpCode(204)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(
+    @Param('id', new ParseUUIDPipe({ errorHttpStatusCode: 422 })) id: string,
+  ) {
     return this.deleteUseCase.execute({ id });
   }
 
@@ -112,3 +100,20 @@ export class CategoriesController {
 // Controller tests
 //  integration: sqlite in memory
 //  end-to-end: more expensive, bureaucratic and longstanding
+
+// There would be a couple ways to use ValidationPipe()
+// But none will be used, better to use a global ValidationPipe()
+// @Post()
+// async create(
+//   @Body(new ValidationPipe()) createCategoryDto: CreateCategoryDto,
+// ) {
+//   const output = await this.createUseCase.execute(createCategoryDto);
+//   return CategoriesController.categoryToResponse(output);
+// }
+//
+// @UsePipes(new ValidationPipe())
+// @Post()
+// async create(@Body() createCategoryDto: CreateCategoryDto) {
+//   const output = await this.createUseCase.execute(createCategoryDto);
+//   return CategoriesController.categoryToResponse(output);
+// }
