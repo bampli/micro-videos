@@ -72,32 +72,18 @@ describe('CategoriesController (e2e)', () => {
           app['config'].globalPipes = []; // cancel NestJS validation at DTO
         },
       });
-      const invalidRequest = CategoryFixture.arrangeInvalidRequest();
-      const arrange = Object.keys(invalidRequest).map((key) => ({
+      const validationError = CategoryFixture.arrangeForEntityValidationError();
+      const arrange = Object.keys(validationError).map((key) => ({
         label: key,
-        value: invalidRequest[key],
+        value: validationError[key],
       }));
 
-      test.each(arrange)('when body is $label', async ({ value }) => {
-        const res = await request(app.app.getHttpServer())
+      test.each(arrange)('when body is $label', ({ value }) => {
+        return request(app.app.getHttpServer())
           .post('/categories')
-          .send({ name: 5, description: 5 });
-        console.log(res.body, res.statusCode);
-        // BEFORE EXCEPTION-FILTER
-        // { statusCode: 500, message: 'Internal server error' } 500
-        // AFTER EXCEPTION-FILTER
-        // {
-        //   statusCode: 422,
-        //   error: 'Unprocessable Entity',
-        //   message: [
-        //     'name must be a string',
-        //     'name must be shorter than or equal to 255 characters',
-        //     'description must be a string'
-        //   ]
-        // } 422
-
-        // .send(value.send_data)
-        // .expect(422);
+          .send(value.send_data)
+          .expect(422)
+          .expect(value.expected);
       });
     });
 

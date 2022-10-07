@@ -1,7 +1,6 @@
 import { EntityValidationError } from '@fc/micro-videos/@seedwork/domain';
 import { Controller, Get, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from 'src/app.module';
 import { EntityValidationErrorFilter } from './entity-validation-error.filter';
 import request from 'supertest';
 
