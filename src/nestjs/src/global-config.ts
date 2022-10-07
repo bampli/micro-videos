@@ -1,4 +1,3 @@
-import { EntityValidationError } from '@fc/micro-videos/@seedwork/domain';
 import {
   ClassSerializerInterceptor,
   INestApplication,
