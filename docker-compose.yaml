@@ -9,3 +9,23 @@ services:
       - .:/home/node/app
     ports:
       - 3000:3000
+
+  db:
+    image: mysql:8.0.30-debian
+    container_name: micro-videos-db
+    # ports:
+    #   - 3306:3306
+    environment:
+      - MYSQL_DATABASE=micro-videos
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./.docker/dbdata:/var/lib/mysql:delegated
+
+      ## volumes:
+      # since .devcontainer/docker-compose is using 'cached'
+      # then, there would be a sync between linux & container folders
+      # but there is no concurrency, just a backup in this use case
+      # then delegated guarantees a faster db access in the container
+      # although the update at linux side may be delayed
+      ## ports:
+      # ports are necessary to allow external access
