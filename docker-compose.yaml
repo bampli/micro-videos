@@ -23,7 +23,7 @@ services:
   
   db_test:
     image: mysql:8.0.30-debian
-    container_name: micro-videos-db-test
+    container_name: micro-videos-test
     environment:
       - MYSQL_DATABASE=micro_videos
       - MYSQL_ROOT_PASSWORD=root
