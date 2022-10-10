@@ -28,16 +28,18 @@ services:
       - MYSQL_DATABASE=micro_videos
       - MYSQL_ROOT_PASSWORD=root
 
-      ## volumes
-      # DEVELOPMENT: since .devcontainer/docker-compose is using 'cached'
-      # then, there would be a sync between linux & container folders
-      # but there is no concurrency, just a backup in this use case
-      # then delegated guarantees a faster db access in the container
-      # although the update at linux side may be delayed
-      # TESTS: do not use volumes to speed up access even more
+# Notes:
+  ## volumes
+  # DEVELOPMENT: .devcontainer/docker-compose is using 'cached'.
+  # Then, there would be a sync between linux & container folders.
+  # But there is no concurrency, just a backup in this case.
+  # Then, 'delegated' guarantees faster db access inside container.
+  # As a side effect, updates at linux side may be delayed.
+  #
+  # TESTS: Do not use volumes, in order to speed up db access.
 
-      ## ports
-      # only necessary to declare in case of external access
-      # ports:
-      # - 3306:3306
+  ## ports
+  # only necessary if use case allows external access
+  # ports:
+  # - 3306:3306
     
