@@ -10,16 +10,16 @@ services:
     ports:
       - 3000:3000
 
-  db:
-    image: mysql:8.0.30-debian
-    container_name: micro-videos-db
-    profiles:
-      - dev
-    environment:
-      - MYSQL_DATABASE=micro_videos
-      - MYSQL_ROOT_PASSWORD=root
-    volumes:
-      - ./.docker/dbdata:/var/lib/mysql:delegated
+  # db:
+  #   image: mysql:8.0.30-debian
+  #   container_name: micro-videos-db
+  #   profiles:
+  #     - dev
+  #   environment:
+  #     - MYSQL_DATABASE=micro_videos
+  #     - MYSQL_ROOT_PASSWORD=root
+  #   volumes:
+  #     - ./.docker/dbdata:/var/lib/mysql:delegated
   
   db_test:
     image: mysql:8.0.30-debian

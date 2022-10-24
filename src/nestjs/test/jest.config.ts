@@ -1,8 +1,13 @@
 export default {
   ...require('../jest.config').default,
+  displayName: {
+    name: 'nestjs-e2e',
+    color: 'yellow',
+  },
   rootDir: './',
   testRegex: '.*\\.e2e-spec\\.ts$',
   maxWorkers: 1,
+  setupFiles: ['<rootDir>/setup-test.ts'],
   moduleNameMapper: {
     '@fc/micro\\-videos/(.*)$':
       '<rootDir>/../../../node_modules/@fc/micro-videos/dist/$1',
@@ -12,6 +17,4 @@ export default {
     '#category/(.*)$':
       '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/$1',
   },
-  // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ['../../@core/src/@seedwork/domain/tests/jest.ts'],
 };

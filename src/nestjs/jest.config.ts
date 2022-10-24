@@ -4,6 +4,7 @@ export default {
     color: 'magentaBright',
   },
   moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: 'src',
   testRegex: '.*\\..*spec\\.ts$',
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
@@ -26,7 +27,8 @@ export default {
     //'#category/domain': '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/domain/index.js',
   },
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: ['../@core/src/@seedwork/domain/tests/jest.ts'],
+  setupFiles: ['<rootDir>/setup-test.ts'],
+  setupFilesAfterEnv: ['../../@core/src/@seedwork/domain/tests/jest.ts'],
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {
     global: {
