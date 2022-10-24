@@ -15,13 +15,15 @@ export default {
   testEnvironment: 'node',
   moduleNameMapper: {
     '@fc/micro\\-videos/(.*)$':
-      '<rootDir>/../../node_modules/@fc/micro-videos/dist/$1',
-    //'#seedwork/domain': '<rootDir>/../../node_modules/@fc/micro-videos/dist/@seedwork/domain/index.js',
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/$1',
+    // TODO: check both later
     '#seedwork/(.*)$':
-      '<rootDir>/../../node_modules/@fc/micro-videos/dist/@seedwork/$1',
-    //'#category/domain': '<rootDir>/../../node_modules/@fc/micro-videos/dist/category/domain/index.js',
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/@seedwork/$1',
     '#category/(.*)$':
-      '<rootDir>/../../node_modules/@fc/micro-videos/dist/category/$1',
+      '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/$1',
+    // Commented a long time ago
+    //'#seedwork/domain': '<rootDir>/../../../node_modules/@fc/micro-videos/dist/@seedwork/domain/index.js',
+    //'#category/domain': '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/domain/index.js',
   },
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: ['../@core/src/@seedwork/domain/tests/jest.ts'],
