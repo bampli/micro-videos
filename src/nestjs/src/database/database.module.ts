@@ -9,6 +9,8 @@ import { CategorySequelize } from '@fc/micro-videos/category/infra';
     SequelizeModule.forRootAsync({
       useFactory: async (config: ConfigService<CONFIG_SCHEMA_TYPE>) => {
         const models = [CategorySequelize.CategoryModel];
+        //console.log('DB_VENDOR', config.get('DB_VENDOR'));
+
         if (config.get('DB_VENDOR') === 'sqlite') {
           return {
             dialect: 'sqlite',

@@ -27,7 +27,7 @@ export default {
     //'#category/domain': '<rootDir>/../../../node_modules/@fc/micro-videos/dist/category/domain/index.js',
   },
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFiles: ['<rootDir>/setup-test.ts'],
+  //setupFiles: ['<rootDir>/setup-test.ts'],
   setupFilesAfterEnv: ['../../@core/src/@seedwork/domain/tests/jest.ts'],
   // An object that configures minimum threshold enforcement for coverage results
   coverageThreshold: {

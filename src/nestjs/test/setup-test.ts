@@ -1,3 +1,2 @@
-console.log(process.env.XPTO);
-process.env.XPTO = 'e2e';
-console.log(process.env.XPTO);
+// Used at config/config.module.ts
+process.env.NODE_ENV = 'e2e';

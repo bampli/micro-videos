@@ -218,8 +218,10 @@ mysql> select * from categories;
 ## Tests
 
 ```
-# Add runInBand to run one test after the other, avoiding concurrency.
+# Run tests only when file changes
+npm run test -- --watch
 
+# Add runInBand to run one test after the other, avoiding concurrency
 npm run test -w --runInBand --test
 
 node 'node_modules/.bin/jest' --runInBand '/home/node/app/src/nestjs/test/categories/create-category.e2e-spec.ts' -c '/home/node/app/src/nestjs/jest.config.ts' -t 'CategoriesController \(e2e\) POST /categories should create a category'
