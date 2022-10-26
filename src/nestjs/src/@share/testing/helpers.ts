@@ -20,7 +20,7 @@ export function startApp({
 
   afterEach(async () => {
     if (_app) {
-      await _app.close();
+      await _app.close(); // finish DBs
     }
   });
 
