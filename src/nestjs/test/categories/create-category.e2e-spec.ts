@@ -8,7 +8,7 @@ import { getConnectionToken } from '@nestjs/sequelize';
 import { startApp } from '../../src/@share/testing/helpers';
 
 describe('CategoriesController (e2e)', () => {
-  describe('POST /categories', () => {
+  describe('/categories (POST)', () => {
     describe('should have response 422 with invalid request body', () => {
       const app = startApp();
       const invalidRequest = CreateCategoryFixture.arrangeInvalidRequest();
@@ -86,10 +86,9 @@ describe('CategoriesController (e2e)', () => {
           const serialized = instanceToPlain(presenter);
           // presenter: {... created_at: 2022-10-07T14:03:42.208Z }
           // serialized: {... created_at: '2022-10-07T14:03:42.208Z' }
-          //expect(res.body.data).toStrictEqual(serialized);
-          expect(res.body.data).toMatchObject({
+          expect(res.body.data).toStrictEqual({
             id: serialized.id,
-            //created_at: serialized.created_at,
+            created_at: serialized.created_at,
             ...send_data,
             ...expected,
           });
