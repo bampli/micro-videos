@@ -1,54 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from '../../src/app.module';
 import { CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../src/categories/category.providers';
 import { CreateCategoryFixture } from '../../src/categories/fixtures';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
-import { applyGlobalConfig } from '../../src/global-config';
-
-function startApp({
-  beforeInit,
-}: { beforeInit?: (app: INestApplication) => void } = {}) {
-  let _app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    _app = moduleFixture.createNestApplication();
-    applyGlobalConfig(_app);
-    beforeInit && beforeInit(_app);
-    await _app.init();
-  });
-
-  return {
-    get app() {
-      return _app;
-    },
-  };
-}
+import { getConnectionToken } from '@nestjs/sequelize';
+import { startApp } from '../../src/@share/testing/helpers';
 
 describe('CategoriesController (e2e)', () => {
-  // let app: INestApplication;
-  // let categoryRepo: CategoryRepository.Repository;
-
-  // beforeEach(async () => {
-  //   const moduleFixture: TestingModule = await Test.createTestingModule({
-  //     imports: [AppModule],
-  //   }).compile();
-  //   // repo does not need to wait for app.init()
-  //   categoryRepo = moduleFixture.get<CategoryRepository.Repository>(
-  //     CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
-  //   );
-  //   app = moduleFixture.createNestApplication();
-  //   applyGlobalConfig(app);
-  //   await app.init();
-  // });
-
-  describe('POST /categories', () => {
+  describe('/categories (POST)', () => {
     describe('should have response 422 with invalid request body', () => {
       const app = startApp();
       const invalidRequest = CreateCategoryFixture.arrangeInvalidRequest();
@@ -72,7 +32,8 @@ describe('CategoriesController (e2e)', () => {
           app['config'].globalPipes = []; // cancel NestJS validation at DTO
         },
       });
-      const validationError = CreateCategoryFixture.arrangeForEntityValidationError();
+      const validationError =
+        CreateCategoryFixture.arrangeForEntityValidationError();
       const arrange = Object.keys(validationError).map((key) => ({
         label: key,
         value: validationError[key],
@@ -92,7 +53,17 @@ describe('CategoriesController (e2e)', () => {
       const arrange = CreateCategoryFixture.arrangeForSave();
       let categoryRepo: CategoryRepository.Repository;
 
+      // beforeEach(async () => {
+      //   categoryRepo = app.app.get<CategoryRepository.Repository>(
+      //     CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+      //   );
+      // });
+
       beforeEach(async () => {
+        // clear db, getting sequelize token first
+        const sequelize = app.app.get(getConnectionToken());
+        await sequelize.sync({ force: true });
+
         categoryRepo = app.app.get<CategoryRepository.Repository>(
           CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );
@@ -115,7 +86,6 @@ describe('CategoriesController (e2e)', () => {
           const serialized = instanceToPlain(presenter);
           // presenter: {... created_at: 2022-10-07T14:03:42.208Z }
           // serialized: {... created_at: '2022-10-07T14:03:42.208Z' }
-          expect(res.body.data).toStrictEqual(serialized);
           expect(res.body.data).toStrictEqual({
             id: serialized.id,
             created_at: serialized.created_at,

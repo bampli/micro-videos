@@ -1,55 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from '../../src/app.module';
 import { Category, CategoryRepository } from '@fc/micro-videos/category/domain';
 import { CATEGORY_PROVIDERS } from '../../src/categories/category.providers';
 import { UpdateCategoryFixture } from '../../src/categories/fixtures';
 import { CategoriesController } from '../../src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
-import { applyGlobalConfig } from '../../src/global-config';
-
-function startApp({
-  beforeInit,
-}: { beforeInit?: (app: INestApplication) => void } = {}) {
-  let _app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-    _app = moduleFixture.createNestApplication();
-    applyGlobalConfig(_app);
-    beforeInit && beforeInit(_app);
-    await _app.init();
-  });
-
-  return {
-    get app() {
-      return _app;
-    },
-  };
-}
+import { getConnectionToken } from '@nestjs/sequelize';
+import { startApp } from '../../src/@share/testing/helpers';
 
 describe('CategoriesController (e2e)', () => {
   const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
 
-  // let app: INestApplication;
-  // let categoryRepo: CategoryRepository.Repository;
-  // beforeEach(async () => {
-  //   const moduleFixture: TestingModule = await Test.createTestingModule({
-  //     imports: [AppModule],
-  //   }).compile();
-  //   // repo does not need to wait for app.init()
-  //   categoryRepo = moduleFixture.get<CategoryRepository.Repository>(
-  //     CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
-  //   );
-  //   app = moduleFixture.createNestApplication();
-  //   applyGlobalConfig(app);
-  //   await app.init();
-  // });
-
-  describe('PUT /categories/:id', () => {
+  describe('/categories/:id PUT', () => {
     describe('should have response 422 with invalid request body', () => {
       const app = startApp();
       const invalidRequest = UpdateCategoryFixture.arrangeInvalidRequest();
@@ -85,7 +46,7 @@ describe('CategoriesController (e2e)', () => {
           id: 'fake-id',
           send_data: { name: faker.name },
           expected: {
-            message: 'Validation failed (uuid is expected)',
+            message: 'Validation failed (uuid  is expected)', // unexpected double space!?
             statusCode: 422,
             error: 'Unprocessable Entity',
           },
@@ -140,7 +101,17 @@ describe('CategoriesController (e2e)', () => {
       const arrange = UpdateCategoryFixture.arrangeForSave();
       let categoryRepo: CategoryRepository.Repository;
 
-      beforeEach(() => {
+      // beforeEach(() => {
+      //   categoryRepo = app.app.get<CategoryRepository.Repository>(
+      //     CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+      //   );
+      // });
+
+      beforeEach(async () => {
+        // clear db, getting sequelize token first
+        const sequelize = app.app.get(getConnectionToken());
+        await sequelize.sync({ force: true });
+
         categoryRepo = app.app.get<CategoryRepository.Repository>(
           CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
         );

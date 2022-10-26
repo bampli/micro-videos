@@ -9,3 +9,39 @@ services:
       - .:/home/node/app
     ports:
       - 3000:3000
+
+  # db:
+  #   image: mysql:8.0.30-debian
+  #   container_name: micro-videos-db
+  #   profiles:
+  #     - dev
+  #   environment:
+  #     - MYSQL_DATABASE=micro_videos
+  #     - MYSQL_ROOT_PASSWORD=root
+  #   volumes:
+  #     - ./.docker/dbdata:/var/lib/mysql:delegated
+  
+  db_test:
+    image: mysql:8.0.30-debian
+    container_name: micro-videos-test
+    environment:
+      - MYSQL_DATABASE=micro_videos
+      - MYSQL_ROOT_PASSWORD=root
+    tmpfs:
+      - /var/lib/mysql
+
+# Notes:
+  ## volumes
+  # DEVELOPMENT: .devcontainer/docker-compose is using 'cached'.
+  # Then, there would be a sync between linux & container folders.
+  # But there is no concurrency, just a backup in this case.
+  # Then, 'delegated' guarantees faster db access inside container.
+  # As a side effect, updates at linux side may be delayed.
+  #
+  # TESTS: Do not use volumes, in order to speed up db access.
+
+  ## ports
+  # only necessary if use case allows external access
+  # ports:
+  # - 3306:3306
+    

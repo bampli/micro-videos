@@ -41,7 +41,7 @@ describe('CategoryPresenter Unit Tests', () => {
         name: 'movie',
         description: 'some description',
         is_active: true,
-        created_at: created_at.toISOString(),
+        created_at: created_at.toISOString().slice(0, 19) + '.000Z', // .000Z at end
       });
     });
   });

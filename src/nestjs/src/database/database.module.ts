@@ -9,6 +9,8 @@ import { CategorySequelize } from '@fc/micro-videos/category/infra';
     SequelizeModule.forRootAsync({
       useFactory: async (config: ConfigService<CONFIG_SCHEMA_TYPE>) => {
         const models = [CategorySequelize.CategoryModel];
+        //console.log('DB_VENDOR', config.get('DB_VENDOR'));
+
         if (config.get('DB_VENDOR') === 'sqlite') {
           return {
             dialect: 'sqlite',
@@ -18,20 +20,20 @@ import { CategorySequelize } from '@fc/micro-videos/category/infra';
             logging: config.get('DB_LOGGING'),
           };
         }
-        // TODO also spec.ts
-        // if (config.get('DB_VENDOR') === 'mysql') {
-        //   return {
-        //     dialect: 'mysql',
-        //     host: config.get('DB_HOST'),
-        //     database: config.get('DB_DATABASE'),
-        //     username: config.get('DB_USERNAME'),
-        //     password: config.get('DB_PASSWORD'),
-        //     port: config.get('DB_PORT'),
-        //     models,
-        //     autoLoadModels: config.get('DB_AUTO_LOAD_MODELS'),
-        //     logging: config.get('DB_LOGGING'),
-        //   };
-        // }
+
+        if (config.get('DB_VENDOR') === 'mysql') {
+          return {
+            dialect: 'mysql',
+            host: config.get('DB_HOST'),
+            database: config.get('DB_DATABASE'),
+            username: config.get('DB_USERNAME'),
+            password: config.get('DB_PASSWORD'),
+            port: config.get('DB_PORT'),
+            models,
+            autoLoadModels: config.get('DB_AUTO_LOAD_MODELS'),
+            logging: config.get('DB_LOGGING'),
+          };
+        }
         throw new Error('Unsupported database config');
       },
       inject: [ConfigService],

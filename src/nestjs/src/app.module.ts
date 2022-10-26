@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { CategoriesModule } from './categories/categories.module';
 import { ConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
+import { ShareModule } from './@share/@share.module';
 
 @Module({
   controllers: [AppController],
@@ -22,7 +23,6 @@ export class AppModule {}
 // - but we generated ConfigModule with "nest g module config"
 
 // import { ConfigModule } from '@nestjs/config';
-import { ShareModule } from './@share/@share.module';
 // @Module({
 //   controllers: [AppController],
 //   providers: [AppService],

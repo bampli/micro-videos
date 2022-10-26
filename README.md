@@ -169,6 +169,65 @@ nest g filter @share/exception-filters/not-found-error
 
 ```
 
+### Database
+
+```
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| micro_videos       |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> show tables;
++------------------------+
+| Tables_in_micro_videos |
++------------------------+
+| categories             |
++------------------------+
+1 row in set (0.00 sec)
+
+mysql> describe categories;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| id          | char(36)     | NO   | PRI | NULL    |       |
+| name        | varchar(255) | NO   |     | NULL    |       |
+| description | text         | YES  |     | NULL    |       |
+| is_active   | tinyint(1)   | NO   |     | NULL    |       |
+| created_at  | datetime     | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from categories;
++--------------------------------------+-------+-------------+-----------+---------------------+
+| id                                   | name  | description | is_active | created_at          |
++--------------------------------------+-------+-------------+-----------+---------------------+
+| 8391590d-159a-4cd1-aa6c-09131e00245a | Movie | NULL        |         1 | 2022-10-08 14:55:39 |
++--------------------------------------+-------+-------------+-----------+---------------------+
+1 row in set (0.00 sec)
+
+
+```
+
+## Tests
+
+```
+# Run tests only when file changes
+npm run test -- --watch
+
+# Add runInBand to run one test after the other, avoiding concurrency
+npm run test -w --runInBand --test
+
+node 'node_modules/.bin/jest' --runInBand '/home/node/app/src/nestjs/test/categories/create-category.e2e-spec.ts' -c '/home/node/app/src/nestjs/jest.config.ts' -t 'CategoriesController \(e2e\) POST /categories should create a category'
+
+```
+
 ## Versions
 
 ```
