@@ -21,7 +21,11 @@ import {
   CategoryCollectionPresenter,
   CategoryPresenter,
 } from '../../presenter/category.presenter';
-import { CategoryFixture, ListCategoriesFixture } from '../../fixtures';
+import {
+  CategoryFixture,
+  ListCategoriesFixture,
+  UpdateCategoryFixture,
+} from '../../fixtures';
 
 describe('CategoriesController Integration Tests', () => {
   let controller: CategoriesController;
@@ -76,7 +80,7 @@ describe('CategoriesController Integration Tests', () => {
     expect(presenter.created_at).toStrictEqual(entity.created_at);
   });
 
-  describe('should create a category with fixture & testEach', () => {
+  describe('should create a category (with fixture & testEach)', () => {
     const arrange = CategoryFixture.arrangeForSave();
 
     test.each(arrange)(
@@ -97,79 +101,29 @@ describe('CategoriesController Integration Tests', () => {
     );
   });
 
-  describe('should update a category with Category.fake()', () => {
+  describe('should update a category (with fake & fixture)', () => {
+    const arrange = UpdateCategoryFixture.arrangeForSave();
+
     const category = Category.fake().aCategory().build();
 
     beforeEach(async () => {
       await repository.insert(category);
     });
 
-    const arrange = [
-      {
-        request: {
-          name: 'Movie',
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: null,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          is_active: true,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: 'some text',
-          is_active: false,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: 'some text',
-          is_active: false,
-        },
-      },
-    ];
-
     test.each(arrange)(
-      'with request $request',
-      async ({ request, expectedPresenter }) => {
-        const presenter = await controller.update(category.id, request);
+      'with request $send_data',
+      async ({ send_data, expected }) => {
+        const presenter = await controller.update(category.id, send_data);
         const entity = await repository.findById(presenter.id);
 
         expect(entity).toMatchObject({
           id: presenter.id,
-          name: expectedPresenter.name,
-          description: expectedPresenter.description,
-          is_active: expectedPresenter.is_active,
           created_at: presenter.created_at,
+          ...send_data,
+          ...expected,
         });
 
-        expect(presenter.id).toBe(entity.id);
-        expect(presenter.name).toBe(expectedPresenter.name);
-        expect(presenter.description).toBe(expectedPresenter.description);
-        expect(presenter.is_active).toBe(expectedPresenter.is_active);
-        expect(presenter.created_at).toStrictEqual(entity.created_at);
+        expect(presenter).toEqual(new CategoryPresenter(entity));
       },
     );
   });
@@ -240,6 +194,83 @@ describe('CategoriesController Integration Tests', () => {
         },
       );
     });
+
+    // describe('should update a category with Category.fake()', () => {
+    //   const category = Category.fake().aCategory().build();
+
+    //   beforeEach(async () => {
+    //     await repository.insert(category);
+    //   });
+
+    //   const arrange = [
+    //     {
+    //       request: {
+    //         name: 'Movie',
+    //       },
+    //       expectedPresenter: {
+    //         name: 'Movie',
+    //         description: null,
+    //         is_active: true,
+    //       },
+    //     },
+    //     {
+    //       request: {
+    //         name: 'Movie',
+    //         description: null,
+    //       },
+    //       expectedPresenter: {
+    //         name: 'Movie',
+    //         description: null,
+    //         is_active: true,
+    //       },
+    //     },
+    //     {
+    //       request: {
+    //         name: 'Movie',
+    //         is_active: true,
+    //       },
+    //       expectedPresenter: {
+    //         name: 'Movie',
+    //         description: null,
+    //         is_active: true,
+    //       },
+    //     },
+    //     {
+    //       request: {
+    //         name: 'Movie',
+    //         description: 'some text',
+    //         is_active: false,
+    //       },
+    //       expectedPresenter: {
+    //         name: 'Movie',
+    //         description: 'some text',
+    //         is_active: false,
+    //       },
+    //     },
+    //   ];
+
+    //   test.each(arrange)(
+    //     'with request $request',
+    //     async ({ request, expectedPresenter }) => {
+    //       const presenter = await controller.update(category.id, request);
+    //       const entity = await repository.findById(presenter.id);
+
+    //       expect(entity).toMatchObject({
+    //         id: presenter.id,
+    //         name: expectedPresenter.name,
+    //         description: expectedPresenter.description,
+    //         is_active: expectedPresenter.is_active,
+    //         created_at: presenter.created_at,
+    //       });
+
+    //       expect(presenter.id).toBe(entity.id);
+    //       expect(presenter.name).toBe(expectedPresenter.name);
+    //       expect(presenter.description).toBe(expectedPresenter.description);
+    //       expect(presenter.is_active).toBe(expectedPresenter.is_active);
+    //       expect(presenter.created_at).toStrictEqual(entity.created_at);
+    //     },
+    //   );
+    // });
 
     // it('should return categories ordered by created_at when query is empty', async () => {
     //   const categories = Category.fake()
