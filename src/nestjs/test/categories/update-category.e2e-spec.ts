@@ -10,7 +10,7 @@ import { startApp } from '../../src/@share/testing/helpers';
 describe('CategoriesController (e2e)', () => {
   const uuid = '957334c5-91b9-4986-9b43-0d42f2edfbe9';
 
-  describe('/categories/:id PUT', () => {
+  describe('/categories/:id (PUT)', () => {
     describe('should have response 422 with invalid request body', () => {
       const app = startApp();
       const invalidRequest = UpdateCategoryFixture.arrangeInvalidRequest();
