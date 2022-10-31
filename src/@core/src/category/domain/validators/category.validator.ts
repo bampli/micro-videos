@@ -48,9 +48,7 @@ export class CategoryValidatorFactory{
 
 export default CategoryValidatorFactory;
 
-// Unsafe code for domain because more properties could be passed here
+// Fixed unsafe code because more properties could be passed here
 // constructor(data: CategoryProperties){
 //     Object.assign(this, data);
 // }
-
-// CategoryValidator: any special reason to comment out 'implements'?
