@@ -13,8 +13,11 @@ export function startApp({
     const moduleBuilder: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
+
+    // clear db
     const sequelize = moduleBuilder.get(getConnectionToken());
-    await sequelize.sync({ force: true }); // clear db
+    await sequelize.sync({ force: true });
+
     _app = moduleBuilder.createNestApplication();
     applyGlobalConfig(_app);
     beforeInit && beforeInit(_app);

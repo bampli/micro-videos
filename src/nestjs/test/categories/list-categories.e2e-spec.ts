@@ -26,8 +26,46 @@ describe('CategoriesController (e2e)', () => {
         'when query params is $send_data',
         async ({ send_data, expected }) => {
           const queryParams = new URLSearchParams(send_data as any).toString();
+          // const res = await request(nestApp.app.getHttpServer()).get(
+          //   `/categories/?${queryParams}`,
+          // );
+          // console.log(res.body);
           return request(nestApp.app.getHttpServer())
-            .get(`/categories/${queryParams}`)
+            .get(`/categories/?${queryParams}`)
+            .expect(200)
+            .expect({
+              data: expected.entities.map((e) =>
+                instanceToPlain(CategoriesController.categoryToResponse(e)),
+              ),
+              meta: expected.meta,
+            });
+        },
+      );
+    });
+
+    describe('should return categories using paginate, filter & sort', () => {
+      let categoryRepo: CategoryRepository.Repository;
+      const nestApp = startApp();
+      const { entitiesMap, arrange } = ListCategoriesFixture.arrangeUnsorted();
+
+      beforeEach(async () => {
+        categoryRepo = nestApp.app.get<CategoryRepository.Repository>(
+          CATEGORY_PROVIDERS.REPOSITORIES.CATEGORY_REPOSITORY.provide,
+        );
+
+        await categoryRepo.bulkInsert(Object.values(entitiesMap));
+      });
+
+      test.each(arrange)(
+        'when query params is $send_data',
+        async ({ send_data, expected }) => {
+          const queryParams = new URLSearchParams(send_data as any).toString();
+          // const res = await request(nestApp.app.getHttpServer()).get(
+          //   `/categories/?${queryParams}`,
+          // );
+          // console.log(res.body);
+          return request(nestApp.app.getHttpServer())
+            .get(`/categories/?${queryParams}`)
             .expect(200)
             .expect({
               data: expected.entities.map((e) =>
