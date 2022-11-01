@@ -107,7 +107,7 @@ export class CategoryFakeBuilder<TBuild = any> {
             ...(this._created_at && {
               created_at: this.callFactory(this._created_at, index),
             }),
-        },  // mostrar nas aulas ---- added rows below --- removed rows above
+        },  // added rows below & removed rows above
           !this._unique_entity_id
             ? undefined
             : this.callFactory(this._unique_entity_id, index)
