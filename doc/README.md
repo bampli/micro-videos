@@ -2,7 +2,7 @@
 
 ## Overview
 
-After a couple weeks working on the backend, I would like to add some observations. Sorry if I missed something. This document proposes a new backend architecture for the Encore Operator. The current version would be improved in the following aspects:
+This document proposes a backend template architecture with the following features:
 
 - monorepo architecture.
 - validate all input data, detect and handle errors, avoiding their propagation.
