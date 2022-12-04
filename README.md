@@ -169,6 +169,33 @@ nest g filter @share/exception-filters/not-found-error
 
 ```
 
+#### Migration
+
+```
+npm install umzug -w @fc/micro-videos
+```
+
+migrator.runAsCLI();
+
+```
+❯ node_modules/.bin/ts-node src/@core/src/@seedwork/infra/db/sequelize/migrator.ts
+usage: <script> [-h] <command> ...
+
+Umzug migrator
+
+Positional arguments:
+  <command>
+    up        Applies pending migrations
+    down      Revert migrations
+    pending   Lists pending migrations
+    executed  Lists executed migrations
+    create    Create a migration file
+
+Optional arguments:
+  -h, --help  Show this help message and exit.
+
+```
+
 ### Database
 
 ```
